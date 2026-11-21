@@ -26,6 +26,19 @@
   --color-text: #f5f6fa;
   --color-text-muted: #8b91a7;
 
+  --color-info-500: #60a5fa;
+  --color-tip-500: #2dd4bf;
+  --color-question-500: #a78bfa;
+  --color-warning-500: #fbbf24;
+  --color-failure-500: #fb7185;
+  --color-danger-500: var(--color-brand-500);
+  --color-bug-500: #f472b6;
+  --color-example-500: var(--color-accent-500);
+  --color-quote-500: var(--color-text-muted);
+
+  --color-skeleton-base: #262a3a;
+  --color-skeleton-highlight: #3a4060;
+
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: ui-monospace, "SFMono-Regular", Menlo, monospace;
 
@@ -298,4 +311,179 @@ a:focus-visible {
   border-top: 1px solid var(--color-border);
   color: var(--color-text-muted);
   font-size: 0.9375rem;
+}
+
+/* Button: secondary / ghost / disabled */
+
+.theme-button--secondary {
+  background-color: transparent;
+  color: var(--color-brand-500);
+  border: 1px solid var(--color-brand-500);
+}
+
+.theme-button--secondary:hover {
+  background-color: color-mix(in srgb, var(--color-brand-500) 15%, transparent);
+}
+
+.theme-button--ghost {
+  background-color: transparent;
+  color: var(--color-brand-500);
+  border: none;
+}
+
+.theme-button--ghost:hover {
+  background-color: color-mix(in srgb, var(--color-brand-500) 12%, transparent);
+}
+
+.theme-button:disabled,
+.theme-button[disabled] {
+  background-color: var(--color-surface-alt);
+  color: var(--color-text-muted);
+  border-color: var(--color-border);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.theme-button:disabled:hover,
+.theme-button[disabled]:hover {
+  background-color: var(--color-surface-alt);
+}
+
+/* Container / Item */
+
+.theme-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  margin: 0;
+  list-style: none;
+}
+
+.theme-item {
+  border-radius: var(--radius-theme-sm);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface-alt);
+  color: var(--color-text);
+  padding: 0.75rem 1rem;
+  font-family: var(--font-sans);
+}
+
+/* Field (general label-above-input binding, distinct from .theme-field-label) */
+
+.theme-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  font-family: var(--font-sans);
+}
+
+.theme-field label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* Blockquote */
+
+.theme-blockquote {
+  --bq-accent: var(--color-info-500);
+  border-left: 4px solid var(--bq-accent);
+  background-color: color-mix(in srgb, var(--bq-accent) 15%, var(--color-surface));
+  border-radius: var(--radius-theme);
+  padding: 0.75rem 1rem;
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--color-text);
+}
+
+.theme-blockquote__label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: var(--bq-accent);
+}
+
+.theme-blockquote--info {
+  --bq-accent: var(--color-info-500);
+}
+
+.theme-blockquote--tip {
+  --bq-accent: var(--color-tip-500);
+}
+
+.theme-blockquote--question {
+  --bq-accent: var(--color-question-500);
+}
+
+.theme-blockquote--success {
+  --bq-accent: var(--color-success-500);
+}
+
+.theme-blockquote--warning {
+  --bq-accent: var(--color-warning-500);
+}
+
+.theme-blockquote--failure {
+  --bq-accent: var(--color-failure-500);
+}
+
+.theme-blockquote--danger {
+  --bq-accent: var(--color-danger-500);
+}
+
+.theme-blockquote--bug {
+  --bq-accent: var(--color-bug-500);
+}
+
+.theme-blockquote--example {
+  --bq-accent: var(--color-example-500);
+}
+
+.theme-blockquote--quote {
+  --bq-accent: var(--color-quote-500);
+}
+
+/* Skeleton */
+
+@keyframes theme-skeleton-shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: 200px 0;
+  }
+}
+
+.theme-skeleton-heading,
+.theme-skeleton-text {
+  display: block;
+  border-radius: var(--radius-theme-sm);
+  background: linear-gradient(
+    90deg,
+    var(--color-skeleton-base) 25%,
+    var(--color-skeleton-highlight) 37%,
+    var(--color-skeleton-base) 63%
+  );
+  background-size: 400px 100%;
+  animation: theme-skeleton-shimmer 1.4s ease-in-out infinite;
+}
+
+.theme-skeleton-heading {
+  height: 1.5rem;
+  width: 60%;
+  margin-bottom: 0.5rem;
+}
+
+.theme-skeleton-text {
+  height: 0.875rem;
+  width: 100%;
+  margin-bottom: 0.375rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-skeleton-heading,
+  .theme-skeleton-text {
+    animation: none;
+  }
 }

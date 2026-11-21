@@ -1,0 +1,65 @@
+import type { Meta, StoryObj } from "@storybook/html";
+
+const meta: Meta = {
+  title: "Theme/Network Ops/Blockquote",
+};
+export default meta;
+
+type Story = StoryObj;
+
+function blockquote(variant: string, label: string, text: string): string {
+  return `
+    <blockquote class="theme-blockquote theme-blockquote--${variant}">
+      <span class="theme-blockquote__label">${label}</span>
+      <p>${text}</p>
+    </blockquote>
+  `;
+}
+
+export const Info: Story = {
+  render: () => blockquote("info", "Info", "Node E reports nominal throughput."),
+};
+
+export const Tip: Story = {
+  render: () => blockquote("tip", "Tip", "Pin dashboards you check hourly to the sidebar."),
+};
+
+export const Question: Story = {
+  render: () =>
+    blockquote("question", "Question", "Is the drop on Node C expected during maintenance?"),
+};
+
+export const Success: Story = {
+  render: () =>
+    blockquote("success", "Success", "Failover to Node B completed with zero packet loss."),
+};
+
+export const Warning: Story = {
+  render: () => blockquote("warning", "Warning", "Node D is approaching its bandwidth ceiling."),
+};
+
+export const Failure: Story = {
+  render: () => blockquote("failure", "Failure", "Health check for Node A did not return in time."),
+};
+
+export const Danger: Story = {
+  render: () => blockquote("danger", "Danger", "Disabling this firewall rule exposes the subnet."),
+};
+
+export const Bug: Story = {
+  render: () => blockquote("bug", "Bug", "Latency graph mislabels Node C as Node E."),
+};
+
+export const Example: Story = {
+  render: () =>
+    blockquote(
+      "example",
+      "Example",
+      'Sample alert payload: <code>{ "node": "B", "status": "degraded" }</code>',
+    ),
+};
+
+export const Quote: Story = {
+  render: () =>
+    blockquote("quote", "Quote", "&ldquo;Uptime is a side effect of good defaults.&rdquo;"),
+};

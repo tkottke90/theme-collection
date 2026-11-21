@@ -15,7 +15,8 @@
     "prestorybook": "npm run build",
     "storybook": "storybook dev -p 6006",
     "prebuild-storybook": "npm run build",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "screenshot": "node ../../scripts/screenshot.mjs"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^8.4.0",
