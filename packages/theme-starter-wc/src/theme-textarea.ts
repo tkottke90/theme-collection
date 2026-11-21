@@ -1,25 +1,14 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { tokens } from "./tokens.js";
+import { themeStyles } from "./generated/theme-styles.js";
 
 @customElement("theme-textarea")
 export class ThemeTextarea extends LitElement {
   static styles = [
-    tokens,
+    themeStyles,
     css`
       :host {
         display: inline-block;
-      }
-      textarea {
-        border-radius: var(--radius-theme);
-        border: 1px solid var(--neutral-300);
-        padding: 0.5rem 0.75rem;
-        font: inherit;
-        color: var(--neutral-900);
-      }
-      textarea:focus {
-        outline: 2px solid var(--brand-500);
-        outline-offset: 1px;
       }
     `,
   ];
@@ -33,6 +22,7 @@ export class ThemeTextarea extends LitElement {
       rows=${this.rows}
       .value=${this.value}
       placeholder=${this.placeholder}
+      class="rounded-theme border border-neutral-300 px-3 py-2 [font:inherit] text-neutral-900 focus:outline focus:outline-2 focus:outline-brand-500 focus:outline-offset-1"
     ></textarea>`;
   }
 }

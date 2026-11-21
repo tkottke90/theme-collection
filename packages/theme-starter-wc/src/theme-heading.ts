@@ -1,7 +1,7 @@
 import { LitElement, css } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { html as staticHtml, literal, type StaticValue } from "lit/static-html.js";
-import { tokens } from "./tokens.js";
+import { themeStyles } from "./generated/theme-styles.js";
 
 const TAGS: Record<1 | 2 | 3 | 4, StaticValue> = {
   1: literal`h1`,
@@ -13,12 +13,10 @@ const TAGS: Record<1 | 2 | 3 | 4, StaticValue> = {
 @customElement("theme-heading")
 export class ThemeHeading extends LitElement {
   static styles = [
-    tokens,
+    themeStyles,
     css`
       :host {
         display: block;
-        font-family: var(--font-sans);
-        color: var(--neutral-900);
       }
     `,
   ];
@@ -27,7 +25,7 @@ export class ThemeHeading extends LitElement {
 
   render() {
     const tag = TAGS[this.level] ?? TAGS[1];
-    return staticHtml`<${tag}><slot></slot></${tag}>`;
+    return staticHtml`<${tag} class="font-sans text-neutral-900"><slot></slot></${tag}>`;
   }
 }
 

@@ -8,9 +8,30 @@ tooling (TypeScript, ESLint, Prettier, Jest, esbuild).
 
 ```
 packages/      every published theme package (@tkottke90/theme-*)
+themes/        shared design tokens per theme (themes/<name>/theme.css) —
+               not an npm workspace, not published on its own; see below
 apps/site      the Eleventy site that showcases the repo + each package's Storybook
 scripts/       shared build helpers used by package build scripts
+docs/adr/      architecture decision records
 ```
+
+### `themes/` vs `packages/`
+
+A theme's design tokens (colors, radius, font) live once, in
+`themes/<name>/theme.css`, as a Tailwind v4 `@theme {}` block — nothing
+else. Every package for that theme (CSS, Web Components, React) compiles
+its own styling from that one file via `scripts/compile-theme.mjs`, rather
+than each package hand-copying token values. See
+`docs/adr/0001-theme-token-architecture.md` for why: token values had
+already drifted out of sync across package types before this split
+existed.
+
+When a theme has more than one package (e.g. a CSS theme plus a matching
+Web Components or React variant), name them `theme-<name>`,
+`theme-<name>-wc`, `theme-<name>-react` — all three paired with the same
+`themes/<name>/theme.css`. The three `theme-starter-*` packages are the
+exception: they're generic reference templates, not a specific theme, so
+they keep their current names and are paired with `themes/theme-starter/`.
 
 ## Adding a new theme package
 
@@ -38,6 +59,18 @@ Steps:
 
 The component tech (Web Components vs Preact/React vs CSS-only) is a
 **per-package choice** — pick whichever fits that theme.
+
+Component styling is authored with Tailwind utility classes against the
+theme's shared `themes/<name>/theme.css`, not bespoke per-component CSS or
+inline-style objects — see `docs/adr/0001-theme-token-architecture.md`.
+Web Components keep Shadow DOM and get their compiled styles embedded via
+a generated `src/generated/theme-styles.ts` (see `theme-starter-wc`'s
+`scripts/generate-theme-styles.mjs`); React ships a real `dist/theme.css`
+consumers import separately (see `theme-starter-react`'s `scripts/build.mjs`).
+A `:host { display: ...; }` rule (and, where a form control relies on
+`font: inherit`, `font-family`) is the one piece of CSS Tailwind genuinely
+can't express for Shadow DOM components — keep it as a small hand-written
+`css` block alongside the generated styles, nothing more.
 
 ### Minimum component set
 
@@ -106,6 +139,9 @@ Every package:
   ESM + CJS + type-declaration shape in `dist/`.
 - Has its own `.storybook/` config and `*.stories.ts(x)` files — Storybook is
   per package, not a single root instance.
+- A component package (WC or React) with styling depends on its theme's
+  `themes/<name>/theme.css` through `scripts/compile-theme.mjs`, not a
+  hand-copied token file — see "`themes/` vs `packages/`" above.
 
 ## Required checks before opening a PR
 

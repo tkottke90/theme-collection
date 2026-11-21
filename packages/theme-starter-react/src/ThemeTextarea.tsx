@@ -1,5 +1,4 @@
 import type { JSX } from "preact";
-import { tokens } from "./tokens.js";
 
 export interface ThemeTextareaProps {
   value?: string;
@@ -23,16 +22,7 @@ export function ThemeTextarea({
       rows={rows}
       disabled={disabled}
       onChange={onChange}
-      style={{
-        borderRadius: tokens.radiusTheme,
-        border: `1px solid ${tokens.neutral300}`,
-        padding: "0.5rem 0.75rem",
-        font: "inherit",
-        color: tokens.neutral900,
-        backgroundColor: disabled ? tokens.neutral100 : "white",
-        cursor: disabled ? "not-allowed" : "text",
-        resize: "vertical",
-      }}
+      className="rounded-theme border border-neutral-300 px-3 py-2 [font:inherit] text-neutral-900 bg-white resize-y cursor-text disabled:bg-neutral-100 disabled:cursor-not-allowed focus:outline focus:outline-2 focus:outline-brand-500 focus:outline-offset-1"
     />
   );
 }

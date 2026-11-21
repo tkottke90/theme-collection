@@ -13,8 +13,13 @@ points at it and adds agent-specific guardrails.
 - `apps/site` — the Eleventy site. It lists packages by reading
   `packages/*/package.json` at build time; you don't need to hand-edit a
   page when a package is added or removed.
-- `scripts/` — shared build helpers (`esbuild-base.mjs`). Package-level
-  `scripts/build.mjs` files should stay thin wrappers around it.
+- `themes/*` — shared design tokens, one `theme.css` per theme. Not an npm
+  workspace, not published on its own. A package's styling is compiled
+  from here via `scripts/compile-theme.mjs`, never hand-copied into the
+  package. See `CONTRIBUTING.md`'s "`themes/` vs `packages/`" and
+  `docs/adr/` for why.
+- `scripts/` — shared build helpers (`esbuild-base.mjs`, `compile-theme.mjs`).
+  Package-level `scripts/build.mjs` files should stay thin wrappers around them.
 - Root `tsconfig.base.json`, `eslint.config.mjs`, `.prettierrc.json`,
   `jest.config.base.cjs` — the single source of truth for TS/lint/format/test
   config. Packages extend these; they don't redefine them.
@@ -48,8 +53,12 @@ checks CI enforces (`Test`, `Lint`, `Style`, `Build Site`).
 
 ## Guardrails
 
-- Don't commit build output (`dist/`, `storybook-static/`, `_site/`) — all
-  gitignored on purpose.
+- Don't commit build output (`dist/`, `storybook-static/`, `_site/`,
+  `packages/theme-starter-wc/src/generated/`) — all gitignored on purpose.
+- Don't hand-copy token values into a WC/React package's own source (a
+  `tokens.ts`, an inline hex, a duplicated custom property). Styling is
+  compiled from `themes/<name>/theme.css` via `scripts/compile-theme.mjs` —
+  see `CONTRIBUTING.md` and `docs/adr/0001-theme-token-architecture.md`.
 - Don't add a per-package ESLint/Prettier/Jest config, or a new root
   dependency that duplicates something already in `scripts/esbuild-base.mjs`,
   `tsconfig.base.json`, `eslint.config.mjs`, or `jest.config.base.cjs` —

@@ -1,39 +1,14 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { tokens } from "./tokens.js";
+import { themeStyles } from "./generated/theme-styles.js";
 
 @customElement("theme-skeleton-heading")
 export class ThemeSkeletonHeading extends LitElement {
   static styles = [
-    tokens,
+    themeStyles,
     css`
       :host {
         display: block;
-      }
-      @keyframes shimmer {
-        0% {
-          background-position: -200px 0;
-        }
-        100% {
-          background-position: 200px 0;
-        }
-      }
-      .bar {
-        height: 1.5rem;
-        border-radius: var(--radius-theme);
-        background: linear-gradient(
-          90deg,
-          var(--skeleton-base) 25%,
-          var(--skeleton-highlight) 37%,
-          var(--skeleton-base) 63%
-        );
-        background-size: 400px 100%;
-        animation: shimmer 1.4s ease-in-out infinite;
-      }
-      @media (prefers-reduced-motion: reduce) {
-        .bar {
-          animation: none;
-        }
       }
     `,
   ];
@@ -41,7 +16,10 @@ export class ThemeSkeletonHeading extends LitElement {
   @property({ type: String }) width = "60%";
 
   render() {
-    return html`<div class="bar" style="width:${this.width}"></div>`;
+    return html`<div
+      class="bar theme-shimmer rounded-theme h-6 mb-2"
+      style="width:${this.width}"
+    ></div>`;
   }
 }
 

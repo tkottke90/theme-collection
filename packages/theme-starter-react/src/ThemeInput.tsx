@@ -1,5 +1,4 @@
 import type { JSX } from "preact";
-import { tokens } from "./tokens.js";
 
 export type ThemeInputType = "text" | "email" | "password" | "number" | "checkbox" | "radio";
 
@@ -21,6 +20,9 @@ export function ThemeInput({
   onChange,
 }: ThemeInputProps): JSX.Element {
   const isBoxType = BOX_TYPES.includes(type);
+  const classes = isBoxType
+    ? "rounded-theme border border-neutral-300 px-3 py-2 [font:inherit] text-neutral-900 bg-white cursor-text disabled:bg-neutral-100 disabled:cursor-not-allowed focus:outline focus:outline-2 focus:outline-brand-500 focus:outline-offset-1"
+    : "accent-brand-500 w-[1.1rem] h-[1.1rem] cursor-pointer disabled:cursor-not-allowed";
 
   return (
     <input
@@ -29,24 +31,7 @@ export function ThemeInput({
       placeholder={placeholder}
       disabled={disabled}
       onChange={onChange}
-      style={
-        isBoxType
-          ? {
-              borderRadius: tokens.radiusTheme,
-              border: `1px solid ${tokens.neutral300}`,
-              padding: "0.5rem 0.75rem",
-              font: "inherit",
-              color: tokens.neutral900,
-              backgroundColor: disabled ? tokens.neutral100 : "white",
-              cursor: disabled ? "not-allowed" : "text",
-            }
-          : {
-              accentColor: tokens.brand500,
-              width: "1.1rem",
-              height: "1.1rem",
-              cursor: disabled ? "not-allowed" : "pointer",
-            }
-      }
+      className={classes}
     />
   );
 }

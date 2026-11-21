@@ -12,7 +12,8 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
-    }
+    },
+    "./theme.css": "./dist/theme.css"
   },
   "files": [
     "dist"
@@ -21,7 +22,9 @@
     "build": "node scripts/build.mjs",
     "test": "jest",
     "lint": "eslint .",
+    "prestorybook": "npm run build",
     "storybook": "storybook dev -p 6006",
+    "prebuild-storybook": "npm run build",
     "build-storybook": "storybook build",
     "screenshot": "node ../../scripts/screenshot.mjs"
   },
@@ -32,8 +35,10 @@
     "@storybook/addon-essentials": "^8.4.0",
     "@storybook/preact": "^8.4.0",
     "@storybook/preact-vite": "^8.4.0",
+    "@tailwindcss/cli": "^4.0.0",
     "@testing-library/preact": "^3.2.0",
     "preact": "^10.24.0",
-    "storybook": "^8.4.0"
+    "storybook": "^8.4.0",
+    "tailwindcss": "^4.0.0"
   }
 }

@@ -1,5 +1,4 @@
 import type { ComponentChildren, JSX } from "preact";
-import { tokens } from "./tokens.js";
 
 export type ThemeItemTag = "li" | "div";
 
@@ -12,15 +11,7 @@ export function ThemeItem({ as = "li", children }: ThemeItemProps): JSX.Element 
   const Tag = as;
 
   return (
-    <Tag
-      style={{
-        padding: "0.5rem 0.75rem",
-        borderRadius: tokens.radiusTheme,
-        backgroundColor: "white",
-        border: `1px solid ${tokens.neutral100}`,
-        color: tokens.neutral900,
-      }}
-    >
+    <Tag className="py-2 px-3 rounded-theme bg-white border border-neutral-100 text-neutral-900">
       {children}
     </Tag>
   );

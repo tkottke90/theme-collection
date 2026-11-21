@@ -1,7 +1,7 @@
 import { LitElement, css } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { html as staticHtml, literal, type StaticValue } from "lit/static-html.js";
-import { tokens } from "./tokens.js";
+import { themeStyles } from "./generated/theme-styles.js";
 
 export type ThemeContainerTag = "div" | "ol" | "ul";
 
@@ -14,19 +14,10 @@ const TAGS: Record<ThemeContainerTag, StaticValue> = {
 @customElement("theme-container")
 export class ThemeContainer extends LitElement {
   static styles = [
-    tokens,
+    themeStyles,
     css`
       :host {
         display: block;
-      }
-      div,
-      ol,
-      ul {
-        border-radius: var(--radius-theme);
-        border: 1px solid var(--neutral-100);
-        background-color: var(--neutral-50);
-        padding: 1rem 1.25rem;
-        margin: 0;
       }
     `,
   ];
@@ -35,7 +26,7 @@ export class ThemeContainer extends LitElement {
 
   render() {
     const tag = TAGS[this.as] ?? TAGS.div;
-    return staticHtml`<${tag}><slot></slot></${tag}>`;
+    return staticHtml`<${tag} class="rounded-theme border border-neutral-100 bg-neutral-50 px-5 py-4 m-0"><slot></slot></${tag}>`;
   }
 }
 
