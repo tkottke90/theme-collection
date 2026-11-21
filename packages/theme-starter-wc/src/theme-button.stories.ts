@@ -4,15 +4,28 @@ import "./theme-button.js";
 
 const meta: Meta = {
   title: "Theme/Starter WC/Button",
-  render: (args) => html`<theme-button label=${args["label"]}></theme-button>`,
-  args: { label: "Click me" },
+  render: (args) =>
+    html`<theme-button
+      label=${args["label"]}
+      variant=${args["variant"]}
+      ?disabled=${args["disabled"]}
+    ></theme-button>`,
+  args: { label: "Click me", variant: "primary", disabled: false },
 };
 export default meta;
 
 type Story = StoryObj;
 
-export const Default: Story = {};
+export const Primary: Story = {};
 
-export const CustomLabel: Story = {
-  args: { label: "Submit" },
+export const Secondary: Story = {
+  args: { variant: "secondary", label: "Secondary" },
+};
+
+export const Ghost: Story = {
+  args: { variant: "ghost", label: "Ghost" },
+};
+
+export const Disabled: Story = {
+  args: { disabled: true, label: "Disabled" },
 };

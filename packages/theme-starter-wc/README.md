@@ -4,6 +4,8 @@ Starter / reference template for a component-library theme built as
 framework-agnostic Web Components with [Lit](https://lit.dev). Works in any
 project regardless of framework.
 
+![Component gallery for @tkottke90/theme-starter-wc](./docs/screenshot.png)
+
 ## Usage
 
 ```

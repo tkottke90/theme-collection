@@ -39,6 +39,56 @@ Steps:
 The component tech (Web Components vs Preact/React vs CSS-only) is a
 **per-package choice** — pick whichever fits that theme.
 
+### Minimum component set
+
+Every new theme package (regardless of tech) implements the same baseline
+set of components before it's ready for review, so every
+`@tkottke90/theme-*` package offers a consistent surface and shows off the
+theme's styling across real UI patterns:
+
+- [ ] **Button** — primary, secondary, ghost, and disabled variants
+- [ ] **Input** — text, email, password, number, textarea, select, checkbox,
+      and radio
+- [ ] **Card**
+- [ ] **Typography scale** — headings (a reasonable subset of h1-h6), body
+      text, and caption text
+- [ ] **Link**
+- [ ] **Container** — a generic styled wrapper, used with `ol`/`ul`/`div` to
+      express visual hierarchy
+- [ ] **Item** — a generic styled child, used with `li` or other container
+      children
+- [ ] **Field** — binds a `label` to an `input`/`select` with consistent
+      spacing/layout
+- [ ] **Detail** — `<details>`/`<summary>`
+- [ ] **Blockquote** — 10 color variants (info, tip, question, success,
+      warning, failure, danger, bug, example, quote), each visually distinct
+      by color
+- [ ] **Skeleton** — standalone placeholder elements per typography level
+      (e.g. `theme-skeleton-heading`, `theme-skeleton-text`), manually
+      placed by the consumer — not an auto-detecting wrapper
+
+Skipping an item requires a note in the PR description explaining why it
+doesn't apply to that theme.
+
+### Screenshots for style changes
+
+Any PR that adds or changes a package's styles (new components, new
+variants, token/color changes) must regenerate that package's component
+screenshot and commit it:
+
+```
+npm run build-storybook -w <package-name>
+npm run screenshot -w <package-name>
+```
+
+This renders every Storybook story for the package headlessly (via
+[Playwright](https://playwright.dev)) and writes one composite PNG to
+`packages/<package-name>/docs/screenshot.png`. Commit the updated PNG and
+make sure it's linked from the package's `README.md` (see the starter
+packages for the exact markdown). The screenshot script uses a headless
+Chromium browser; run `npx playwright install chromium` once after
+`npm install` if you haven't already.
+
 ## Package conventions
 
 Every package:
