@@ -24,7 +24,18 @@ or link `dist/index.css` directly in an HTML `<link>` tag.
 
 - `.theme-card` / `.theme-card__title` / `.theme-card__body`
 - `.theme-button` (add `.theme-button--glow` for an alert/critical state)
-- `.theme-input`
+- `.theme-input` — text inputs; combine with a modifier for other field types:
+  - `.theme-textarea`, `.theme-select` (use alongside `.theme-input` for the
+    shared box styling, e.g. `class="theme-input theme-textarea"`)
+  - `.theme-checkbox`, `.theme-radio`, `.theme-range` (standalone, native
+    `accent-color` theming)
+  - `.theme-field-label` wraps a checkbox/radio and its label text
+- `.theme-details` / `.theme-details__body` — a themed `<details>`/`<summary>`
+  disclosure
+- Typography is applied directly to elements, not classes: `h1`–`h6`, `p`,
+  `a`, `small`, `code`/`pre`/`kbd`
+
+![Typography, a themed details/summary disclosure, and input variants (text, select, checkbox, range)](./screenshot-components.png)
 
 ## Local development
 
