@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/html";
 
 const meta: Meta = {
-  title: "Theme/Starter CSS",
+  title: "Theme/Starter CSS/Card",
 };
 export default meta;
 
 type Story = StoryObj;
 
-export const Card: Story = {
+export const Default: Story = {
   render: () => `
     <div class="theme-card">
       <h2>Card title</h2>
@@ -15,8 +15,4 @@ export const Card: Story = {
       <button class="theme-button">Action</button>
     </div>
   `,
-};
-
-export const Button: Story = {
-  render: () => `<button class="theme-button">Click me</button>`,
 };

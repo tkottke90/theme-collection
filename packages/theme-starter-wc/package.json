@@ -22,7 +22,8 @@
     "test": "jest",
     "lint": "eslint .",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "screenshot": "node ../../scripts/screenshot.mjs"
   },
   "peerDependencies": {
     "lit": "^3.2.0"

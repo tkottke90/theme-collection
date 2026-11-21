@@ -5,6 +5,8 @@ Starter / reference template for a component-library theme built with
 `react` in this package's own dependencies if a given theme specifically
 needs React instead of Preact.
 
+![Component gallery for @tkottke90/theme-starter-react](./docs/screenshot.png)
+
 ## Usage
 
 ```
