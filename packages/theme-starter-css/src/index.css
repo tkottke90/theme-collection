@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens for this theme, exposed as CSS custom properties via
+ * Tailwind v4's @theme directive. Consumers that also run Tailwind can
+ * @import this file to pick up the tokens as utilities (bg-brand-500, etc);
+ * everyone else can just use the hand-written component classes below.
+ */
+@theme {
+  --color-brand-50: #f5f7ff;
+  --color-brand-100: #e8ecfe;
+  --color-brand-500: #4f5bd5;
+  --color-brand-600: #3f4ab0;
+  --color-brand-900: #262d6b;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --radius-theme: 0.5rem;
+}
+
+:root {
+  color-scheme: light dark;
+}
+
+.theme-card {
+  border-radius: var(--radius-theme);
+  background-color: var(--color-brand-50);
+  color: var(--color-brand-900);
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--color-brand-100);
+  font-family: var(--font-sans);
+}
+
+.theme-button {
+  border-radius: var(--radius-theme);
+  background-color: var(--color-brand-500);
+  color: white;
+  padding: 0.5rem 1rem;
+  font-family: var(--font-sans);
+  border: none;
+  cursor: pointer;
+}
+
+.theme-button:hover {
+  background-color: var(--color-brand-600);
+}

@@ -1,0 +1,34 @@
+name: Site Deploy
+
+# Builds and (eventually) deploys the Eleventy site on every push to main.
+# The actual S3 upload is intentionally a TODO stub — see the "S3 deploy
+# wiring" tracking issue. Do not fill this in without being asked; the
+# bucket/credentials are connected by the repo owner separately.
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    name: Deploy Site
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build --workspaces --if-present
+      - run: npm run storybook:build
+      - run: npm run build -w site
+
+      # TODO: replace with the real S3 upload once the bucket/credentials
+      # are connected, e.g.:
+      #   - uses: aws-actions/configure-aws-credentials@v4
+      #     with:
+      #       role-to-assume: <role-arn>
+      #       aws-region: <region>
+      #   - run: aws s3 sync apps/site/_site s3://<bucket-name> --delete
+      - name: Deploy to S3 (not yet configured)
+        run: 'echo "TODO: S3 deploy is not wired up yet — see the tracking issue."'

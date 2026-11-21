@@ -1,0 +1,21 @@
+name: Site Build
+
+# Build-only check for PRs: proves the Eleventy site (and every package's
+# Storybook) still builds, without deploying anything.
+on:
+  pull_request:
+
+jobs:
+  build:
+    name: Build Site
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build --workspaces --if-present
+      - run: npm run storybook:build
+      - run: npm run build -w site

@@ -1,0 +1,15 @@
+{
+  "name": "site",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Eleventy site showcasing the theme collection and linking to each package's Storybook.",
+  "type": "module",
+  "scripts": {
+    "build": "eleventy && node scripts/collect-storybooks.mjs",
+    "serve": "eleventy --serve",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.0.0"
+  }
+}
