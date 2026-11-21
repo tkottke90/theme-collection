@@ -1,0 +1,43 @@
+{
+  "name": "theme-collection",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Collection of drop-in CSS themes and component libraries, published as @tkottke90/theme-* npm packages.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "storybook:build": "npm run build-storybook --workspaces --if-present"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
+    "@eslint/js": "^9.14.0",
+    "@types/jest": "^29.5.0",
+    "@types/node": "^20.17.0",
+    "babel-jest": "^29.7.0",
+    "esbuild": "^0.24.0",
+    "eslint": "^9.14.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react": "^7.37.0",
+    "globals": "^15.11.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "prettier": "^3.3.0",
+    "rimraf": "^6.0.0",
+    "ts-jest": "^29.2.0",
+    "typescript": "^5.6.0",
+    "typescript-eslint": "^8.13.0"
+  }
+}
