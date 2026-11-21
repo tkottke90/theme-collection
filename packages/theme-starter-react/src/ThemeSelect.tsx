@@ -1,5 +1,4 @@
 import type { ComponentChildren, JSX } from "preact";
-import { tokens } from "./tokens.js";
 
 export interface ThemeSelectProps {
   value?: string;
@@ -19,15 +18,7 @@ export function ThemeSelect({
       value={value}
       disabled={disabled}
       onChange={onChange}
-      style={{
-        borderRadius: tokens.radiusTheme,
-        border: `1px solid ${tokens.neutral300}`,
-        padding: "0.5rem 0.75rem",
-        font: "inherit",
-        color: tokens.neutral900,
-        backgroundColor: disabled ? tokens.neutral100 : "white",
-        cursor: disabled ? "not-allowed" : "pointer",
-      }}
+      className="rounded-theme border border-neutral-300 px-3 py-2 [font:inherit] text-neutral-900 bg-white cursor-pointer disabled:bg-neutral-100 disabled:cursor-not-allowed focus:outline focus:outline-2 focus:outline-brand-500 focus:outline-offset-1"
     >
       {children}
     </select>

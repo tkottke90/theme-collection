@@ -1,5 +1,4 @@
 import type { ComponentChildren, JSX } from "preact";
-import { tokens } from "./tokens.js";
 
 export interface ThemeFieldProps {
   label: string;
@@ -9,21 +8,8 @@ export interface ThemeFieldProps {
 
 export function ThemeField({ label, htmlFor, children }: ThemeFieldProps): JSX.Element {
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "0.375rem",
-      }}
-    >
-      <label
-        htmlFor={htmlFor}
-        style={{
-          fontSize: "0.875rem",
-          fontWeight: 600,
-          color: tokens.neutral900,
-        }}
-      >
+    <div className="flex flex-col gap-1.5">
+      <label htmlFor={htmlFor} className="text-sm font-semibold text-neutral-900">
         {label}
       </label>
       {children}

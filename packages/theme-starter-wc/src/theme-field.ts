@@ -1,24 +1,14 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { tokens } from "./tokens.js";
+import { themeStyles } from "./generated/theme-styles.js";
 
 @customElement("theme-field")
 export class ThemeField extends LitElement {
   static styles = [
-    tokens,
+    themeStyles,
     css`
       :host {
         display: block;
-        font-family: var(--font-sans);
-      }
-      .field {
-        display: flex;
-        flex-direction: column;
-        gap: 0.375rem;
-      }
-      label {
-        font-weight: 600;
-        color: var(--neutral-900);
       }
     `,
   ];
@@ -28,8 +18,8 @@ export class ThemeField extends LitElement {
 
   render() {
     return html`
-      <div class="field">
-        <label for=${this.for}>${this.label}</label>
+      <div class="field font-sans flex flex-col gap-1.5">
+        <label for=${this.for} class="font-semibold text-neutral-900">${this.label}</label>
         <slot></slot>
       </div>
     `;

@@ -1,22 +1,14 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { tokens } from "./tokens.js";
+import { themeStyles } from "./generated/theme-styles.js";
 
 @customElement("theme-link")
 export class ThemeLink extends LitElement {
   static styles = [
-    tokens,
+    themeStyles,
     css`
       :host {
         display: inline;
-        font-family: var(--font-sans);
-      }
-      a {
-        color: var(--brand-500);
-        text-decoration: underline;
-      }
-      a:hover {
-        color: var(--brand-600);
       }
     `,
   ];
@@ -24,7 +16,9 @@ export class ThemeLink extends LitElement {
   @property({ type: String }) href = "#";
 
   render() {
-    return html`<a href=${this.href}><slot></slot></a>`;
+    return html`<a href=${this.href} class="font-sans text-brand-500 underline hover:text-brand-600"
+      ><slot></slot
+    ></a>`;
   }
 }
 

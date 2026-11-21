@@ -1,5 +1,4 @@
 import type { ComponentChildren, JSX } from "preact";
-import { tokens } from "./tokens.js";
 
 export interface ThemeLinkProps {
   href?: string;
@@ -12,12 +11,7 @@ export function ThemeLink({ href = "#", onClick, children }: ThemeLinkProps): JS
     <a
       href={href}
       onClick={onClick}
-      style={{
-        color: tokens.brand500,
-        textDecoration: "underline",
-        textDecorationColor: tokens.brand100,
-        cursor: "pointer",
-      }}
+      className="text-brand-500 underline decoration-brand-100 cursor-pointer"
     >
       {children}
     </a>

@@ -1,5 +1,4 @@
 import type { ComponentChildren, JSX } from "preact";
-import { tokens } from "./tokens.js";
 
 export type ThemeContainerTag = "div" | "ol" | "ul";
 
@@ -12,19 +11,7 @@ export function ThemeContainer({ as = "div", children }: ThemeContainerProps): J
   const Tag = as;
 
   return (
-    <Tag
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "0.5rem",
-        padding: 0,
-        margin: 0,
-        listStyle: "none",
-        border: `1px solid ${tokens.neutral100}`,
-        borderRadius: tokens.radiusTheme,
-        backgroundColor: tokens.neutral50,
-      }}
-    >
+    <Tag className="flex flex-col gap-2 m-0 list-none border border-neutral-100 rounded-theme bg-neutral-50">
       {children}
     </Tag>
   );

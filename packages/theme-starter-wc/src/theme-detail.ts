@@ -1,25 +1,14 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { tokens } from "./tokens.js";
+import { themeStyles } from "./generated/theme-styles.js";
 
 @customElement("theme-detail")
 export class ThemeDetail extends LitElement {
   static styles = [
-    tokens,
+    themeStyles,
     css`
       :host {
         display: block;
-        font-family: var(--font-sans);
-      }
-      details {
-        border-radius: var(--radius-theme);
-        border: 1px solid var(--neutral-100);
-        padding: 0.75rem 1rem;
-      }
-      summary {
-        font-weight: 600;
-        cursor: pointer;
-        color: var(--neutral-900);
       }
     `,
   ];
@@ -28,8 +17,8 @@ export class ThemeDetail extends LitElement {
 
   render() {
     return html`
-      <details>
-        <summary>${this.summary}</summary>
+      <details class="font-sans rounded-theme border border-neutral-100 px-4 py-3">
+        <summary class="font-semibold cursor-pointer text-neutral-900">${this.summary}</summary>
         <slot></slot>
       </details>
     `;

@@ -1,48 +1,20 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { tokens } from "./tokens.js";
+import { themeStyles } from "./generated/theme-styles.js";
+
+const VARIANT_CLASSES: Record<"primary" | "secondary" | "ghost", string> = {
+  primary: "bg-brand-500 text-white hover:bg-brand-600",
+  secondary: "bg-transparent text-brand-500 border border-brand-500 hover:bg-brand-50",
+  ghost: "bg-transparent text-brand-500 hover:bg-brand-50",
+};
 
 @customElement("theme-button")
 export class ThemeButton extends LitElement {
   static styles = [
-    tokens,
+    themeStyles,
     css`
       :host {
         display: inline-block;
-      }
-      button {
-        border-radius: var(--radius-theme);
-        background-color: var(--brand-500);
-        color: white;
-        padding: 0.5rem 1rem;
-        border: none;
-        cursor: pointer;
-        font: inherit;
-      }
-      button:hover {
-        background-color: var(--brand-600);
-      }
-      :host([variant="secondary"]) button {
-        background-color: transparent;
-        color: var(--brand-500);
-        border: 1px solid var(--brand-500);
-      }
-      :host([variant="secondary"]) button:hover {
-        background-color: var(--brand-50);
-      }
-      :host([variant="ghost"]) button {
-        background-color: transparent;
-        color: var(--brand-500);
-      }
-      :host([variant="ghost"]) button:hover {
-        background-color: var(--brand-50);
-      }
-      button:disabled {
-        cursor: not-allowed;
-        opacity: 0.5;
-        background-color: var(--neutral-300);
-        color: var(--neutral-500);
-        border-color: var(--neutral-300);
       }
     `,
   ];
@@ -52,7 +24,12 @@ export class ThemeButton extends LitElement {
   @property({ type: Boolean, reflect: true }) disabled = false;
 
   render() {
-    return html`<button ?disabled=${this.disabled}><slot>${this.label}</slot></button>`;
+    return html`<button
+      ?disabled=${this.disabled}
+      class="rounded-theme px-4 py-2 cursor-pointer [font:inherit] disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-neutral-100 disabled:text-neutral-500 disabled:border-neutral-100 ${VARIANT_CLASSES[this.variant]}"
+    >
+      <slot>${this.label}</slot>
+    </button>`;
   }
 }
 

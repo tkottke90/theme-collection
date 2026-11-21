@@ -1,21 +1,14 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { tokens } from "./tokens.js";
+import { themeStyles } from "./generated/theme-styles.js";
 
 @customElement("theme-card")
 export class ThemeCard extends LitElement {
   static styles = [
-    tokens,
+    themeStyles,
     css`
       :host {
         display: block;
-      }
-      .card {
-        border-radius: var(--radius-theme);
-        background-color: var(--brand-50);
-        color: var(--brand-900);
-        border: 1px solid var(--brand-100);
-        padding: 1rem 1.25rem;
       }
     `,
   ];
@@ -24,7 +17,7 @@ export class ThemeCard extends LitElement {
 
   render() {
     return html`
-      <div class="card">
+      <div class="card rounded-theme bg-brand-50 text-brand-900 border border-brand-100 px-5 py-4">
         ${this.heading ? html`<h2>${this.heading}</h2>` : null}
         <slot></slot>
       </div>
