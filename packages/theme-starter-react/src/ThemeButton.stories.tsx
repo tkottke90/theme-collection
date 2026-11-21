@@ -10,8 +10,18 @@ export default meta;
 
 type Story = StoryObj<typeof ThemeButton>;
 
-export const Default: Story = {};
+export const Primary: Story = {
+  args: { variant: "primary" },
+};
 
-export const CustomLabel: Story = {
-  args: { label: "Submit" },
+export const Secondary: Story = {
+  args: { variant: "secondary", label: "Secondary" },
+};
+
+export const Ghost: Story = {
+  args: { variant: "ghost", label: "Ghost" },
+};
+
+export const Disabled: Story = {
+  args: { label: "Disabled", disabled: true },
 };

@@ -4,6 +4,8 @@ Starter / reference template for a plain CSS theme, authored with
 Tailwind v4's CSS-first `@theme` directive and built to a single
 self-contained stylesheet.
 
+![Component gallery for @tkottke90/theme-starter-css](./docs/screenshot.png)
+
 ## Usage
 
 ```
