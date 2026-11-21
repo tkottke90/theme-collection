@@ -6,6 +6,8 @@ Tokens are modeled on a network-topology/infra monitoring dashboard design:
 a near-black surface, coral/red accent for alert states, and an indigo
 accent for secondary data.
 
+![Card, button, and input components rendered with the theme](./screenshot.png)
+
 ## Usage
 
 ```
