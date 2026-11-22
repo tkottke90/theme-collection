@@ -11,6 +11,19 @@ comes from hairline rules, warm shadows and SVG-filter grain.
 
 ![Component gallery for @tkottke90/theme-field-journal-wc](./docs/screenshot.png)
 
+## Demo
+
+`demo/index.html` is a full, interactive page built from every component in
+the package — a six-section book (Quests, Places, People, Creatures, Notes,
+Collection) with real tab switching, not just isolated Storybook stories.
+It imports the actual `dist/` build, the same way a real consumer would:
+
+```
+npm run build
+npx http-server .   # or any static server — ES modules need http(s), not file://
+# open http://localhost:8080/demo/index.html
+```
+
 ## Usage
 
 ```
