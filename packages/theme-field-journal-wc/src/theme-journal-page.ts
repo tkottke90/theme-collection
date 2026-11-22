@@ -31,7 +31,29 @@ export class ThemeJournalPage extends LitElement {
         isolation: isolate;
         min-width: 0;
         min-height: 420px;
-        padding: 50px 54px 58px;
+      }
+      /*
+       * The padding that clears the corner flourishes lives on this inner
+       * wrapper, not on :host. A consumer's page can legitimately load a
+       * copy of this theme's compiled stylesheet at the document level
+       * (its own base-layer reset sets padding to zero on the universal
+       * selector, which also matches custom element hosts) — and a
+       * same-origin, layered rule at an outer scope can still out-cascade
+       * an unlayered host rule at this element's own shadow root for the
+       * host element itself, zeroing out host padding no matter what
+       * value is set here. An element that only exists inside the shadow
+       * tree (this wrapper) is never reachable by any outer-document
+       * selector at all, layered or not, so it has no such conflict.
+       * Confirmed against this package's own Storybook preview, which
+       * does exactly this (see .storybook/preview.ts).
+       */
+      .content {
+        /* Corner flourishes are 38px boxes inset 12px from each edge (see
+           .page-corner below), so they reach 50px in from every edge.
+           Padding needs real clearance past that on every side, not just
+           enough to avoid a hard overlap — content flush against a
+           flourish still reads as crowded. */
+        padding: 68px 66px 74px;
       }
       :host::before,
       :host::after {
@@ -131,7 +153,7 @@ export class ThemeJournalPage extends LitElement {
       <svg class="page-corner bl" viewBox="0 0 40 40" aria-hidden="true">
         ${renderFlourishPath()}
       </svg>
-      <slot></slot>
+      <div class="content"><slot></slot></div>
     `;
   }
 }
