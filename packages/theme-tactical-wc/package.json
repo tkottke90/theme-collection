@@ -1,7 +1,7 @@
 {
   "name": "@tkottke90/theme-tactical-wc",
   "version": "0.1.0",
-  "description": "Dark/light HUD-inspired Web Component theme (Lit) with cyan glow accents, resizable SVG panel frames with tab-and-chevron accents, and data-display components (stat readout, progress bar, radial gauge).",
+  "description": "Dark/light HUD-inspired Web Component theme (Lit) with cyan glow accents, resizable SVG panel frames (tab-and-chevron on Card/Stat, uneven-corner-plus-bracket on Viewfinder), and data-display components (stat readout, progress bar, radial gauge).",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.cjs",
