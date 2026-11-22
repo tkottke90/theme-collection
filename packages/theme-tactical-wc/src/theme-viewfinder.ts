@@ -7,8 +7,8 @@ import { renderViewfinderFrame } from "./viewfinder-frame-svg.js";
 
 /**
  * A generic bordered panel, like `theme-card`, but with the "viewfinder"
- * two-layer border: an outer rounded outline with deliberately uneven
- * corners and a tab notch, plus four identical, symmetrical corner-bracket
+ * two-layer border: an outer outline with a raised top tab and inward
+ * side/bottom notches, plus four identical, symmetrical corner-bracket
  * accents inset from the edge.
  */
 @customElement("theme-viewfinder")
@@ -31,7 +31,7 @@ export class ThemeViewfinder extends LitElement {
   render() {
     return html`
       ${renderViewfinderFrame(this.frame.geometry)}
-      <div class="relative px-6 py-6 font-sans text-text">
+      <div class="relative px-10 py-9 font-sans text-text">
         ${
           this.heading
             ? html`<h2 class="text-brand-500 mb-2 text-sm font-semibold tracking-widest uppercase">
