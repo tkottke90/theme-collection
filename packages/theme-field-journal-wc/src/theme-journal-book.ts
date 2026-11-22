@@ -14,9 +14,9 @@ export interface JournalTab {
 /**
  * The leather book: a two-column cover holding a left/right page (projected
  * via the `left`/`right` slots — typically a pair of `theme-journal-page`
- * elements), a column of colored leather tabs for navigation, and the
- * decorative strap + bookmark ribbon. Below 980px wide the cover stacks to
- * one column and the tabs become a wrapping row along the top.
+ * elements), a column of colored leather tabs for navigation, and a
+ * decorative bookmark ribbon. Below 980px wide the cover stacks to one
+ * column and the tabs become a wrapping row along the top.
  */
 @customElement("theme-journal-book")
 export class ThemeJournalBook extends LitElement {
@@ -61,10 +61,10 @@ export class ThemeJournalBook extends LitElement {
         border: 2px dashed var(--stitch);
         border-radius: 12px;
         /* Without an explicit (negative) z-index here, this paints over
-           the strap and bookmark ribbon where they cross it — raising
-           .strap/.ribbon's own z-index (already 3) doesn't fix that, only
-           giving this element a negative one does; confirmed empirically
-           against a real render, not just reasoned from the spec. */
+           the bookmark ribbon where it crosses it — raising .ribbon's own
+           z-index (already 3) doesn't fix that, only giving this element
+           a negative one does; confirmed empirically against a real
+           render, not just reasoned from the spec. */
         z-index: -1;
         pointer-events: none;
       }
@@ -169,45 +169,6 @@ export class ThemeJournalBook extends LitElement {
         outline-offset: 2px;
       }
 
-      .strap {
-        position: absolute;
-        z-index: 3;
-        right: -46px;
-        top: 52%;
-        width: 98px;
-        height: 42px;
-        border-radius: 4px 10px 10px 4px;
-        background:
-          var(--grain),
-          linear-gradient(
-            180deg,
-            color-mix(in srgb, var(--leather) 85%, white),
-            var(--leather-dark)
-          );
-        box-shadow:
-          inset 0 0 0 2px #24140a,
-          0 6px 10px rgba(0, 0, 0, 0.45);
-      }
-      .strap::before {
-        content: "";
-        position: absolute;
-        inset: 5px 8px;
-        border: 1.5px dashed var(--stitch);
-        border-radius: 3px 7px 7px 3px;
-      }
-      .strap::after {
-        content: "";
-        position: absolute;
-        right: 14px;
-        top: 50%;
-        width: 16px;
-        height: 16px;
-        margin-top: -8px;
-        border-radius: 50%;
-        background: radial-gradient(circle at 35% 35%, #f3d68c, var(--brass) 45%, #7a5a22);
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-      }
-
       .ribbon {
         position: absolute;
         z-index: 3;
@@ -251,9 +212,6 @@ export class ThemeJournalBook extends LitElement {
         .tab[aria-current="page"] {
           transform: translateY(-3px);
         }
-        .strap {
-          display: none;
-        }
       }
     `,
   ];
@@ -293,7 +251,6 @@ export class ThemeJournalBook extends LitElement {
           <slot name="left"></slot>
           <slot name="right"></slot>
         </div>
-        <div class="strap" aria-hidden="true"></div>
         <div class="ribbon" aria-hidden="true"></div>
       </div>
     `;

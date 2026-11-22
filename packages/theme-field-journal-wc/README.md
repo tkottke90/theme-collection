@@ -95,7 +95,7 @@ this theme adds the book itself:
 | Component            | What it is                                                                                                            |
 | -------------------- | --------------------------------------------------------------------------------------------------------------------- |
 | `theme-journal-page` | A parchment page: stacked paper edges, grain/stains, vignette, gutter shadow, a double ruled frame, corner flourishes |
-| `theme-journal-book` | The leather cover: two slotted pages (`slot="left"`/`slot="right"`), colored nav tabs, strap, bookmark ribbon         |
+| `theme-journal-book` | The leather cover: two slotted pages (`slot="left"`/`slot="right"`), colored nav tabs, bookmark ribbon                |
 | `theme-ribbon`       | A notched cloth banner heading, one of six category colors                                                            |
 | `theme-quest-card`   | A cream card with a colored pennant strip, title/status-tag/favorite, location, description + task list               |
 | `theme-progress`     | A pressed-in parchment track with a grainy green fill                                                                 |

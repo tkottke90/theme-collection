@@ -17,13 +17,13 @@ const TABS: JournalTab[] = [
   { id: "collection", label: "Collection", color: "orange", icon: "bag" },
 ];
 
-// The tabs stick out ~92px to the left of the cover and the strap ~46px to
-// the right (see this package's README) — a consumer leaves room for that
-// in their own page padding, which this wrapper stands in for.
+// The tabs stick out ~92px to the left of the cover (see this package's
+// README) — a consumer leaves room for that in their own page padding,
+// which this wrapper stands in for.
 const meta: Meta = {
   title: "Theme/Field Journal WC/Journal Book",
   render: () => html`
-    <div style="padding: 8px 60px 90px 108px;">
+    <div style="padding: 8px 24px 90px 108px;">
       <theme-journal-book .tabs=${TABS} selected="quests">
         <theme-journal-page slot="left" side="left">
           <h1
