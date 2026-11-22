@@ -53,8 +53,11 @@
   --color-example-500: #b6773f;
   --color-quote-500: #7a6048;
 
-  --color-skeleton-base: #d5c296;
-  --color-skeleton-highlight: #f6ebd1;
+  /* The ink colors themselves, not a parchment tone — a skeleton this
+     close in color to the page it sits on (paper/card) reads as "barely
+     there" instead of "text is about to appear here". */
+  --color-skeleton-base: var(--ink);
+  --color-skeleton-highlight: var(--ink-soft);
 
   --font-sans: "EB Garamond", Georgia, serif;
   --font-title: "IM Fell English SC", "IM Fell English", Georgia, serif;

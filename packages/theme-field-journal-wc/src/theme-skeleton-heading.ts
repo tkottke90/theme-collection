@@ -17,7 +17,7 @@ export class ThemeSkeletonHeading extends LitElement {
 
   render() {
     return html`<div
-      class="bar theme-shimmer rounded-theme h-6 mb-2"
+      class="bar theme-shimmer rounded-full h-6 mb-2"
       style="width:${this.width}"
     ></div>`;
   }
