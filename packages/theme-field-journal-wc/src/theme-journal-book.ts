@@ -52,6 +52,12 @@ export class ThemeJournalBook extends LitElement {
         inset: 9px;
         border: 2px dashed var(--stitch);
         border-radius: 12px;
+        /* Without an explicit (negative) z-index here, this paints over
+           the strap and bookmark ribbon where they cross it — raising
+           .strap/.ribbon's own z-index (already 3) doesn't fix that, only
+           giving this element a negative one does; confirmed empirically
+           against a real render, not just reasoned from the spec. */
+        z-index: -1;
         pointer-events: none;
       }
       .cover::before {
@@ -67,6 +73,7 @@ export class ThemeJournalBook extends LitElement {
           rgba(255, 220, 170, 0.08) 50%,
           rgba(0, 0, 0, 0.5)
         );
+        z-index: -1;
         pointer-events: none;
       }
       .pages {
