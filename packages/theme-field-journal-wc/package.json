@@ -1,0 +1,44 @@
+{
+  "name": "@tkottke90/theme-field-journal-wc",
+  "version": "0.1.0",
+  "description": "Fantasy/medieval \"leather-bound explorer's field journal\" Web Component theme (Lit): a leather book cover with colored tabs, parchment pages with a ruled double frame and corner flourishes, and hand-placed content (ribbon headings, quest cards, taped sketches, handwritten notes) on top of the repo's baseline component set.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "generate-theme-styles": "node scripts/generate-theme-styles.mjs",
+    "pretest": "npm run generate-theme-styles",
+    "test": "jest",
+    "lint": "eslint .",
+    "prestorybook": "npm run generate-theme-styles",
+    "storybook": "storybook dev -p 6006",
+    "prebuild-storybook": "npm run generate-theme-styles",
+    "build-storybook": "storybook build",
+    "screenshot": "node ../../scripts/screenshot.mjs"
+  },
+  "peerDependencies": {
+    "lit": "^3.2.0"
+  },
+  "devDependencies": {
+    "@storybook/addon-essentials": "^8.4.0",
+    "@storybook/web-components": "^8.4.0",
+    "@storybook/web-components-vite": "^8.4.0",
+    "@tailwindcss/cli": "^4.0.0",
+    "lit": "^3.2.0",
+    "storybook": "^8.4.0",
+    "tailwindcss": "^4.0.0"
+  }
+}
