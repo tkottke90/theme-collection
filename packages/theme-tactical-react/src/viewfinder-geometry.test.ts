@@ -26,7 +26,7 @@ describe("computeViewfinderFrame", () => {
   });
 
   it("drops the tab notch when there's no room for it", () => {
-    const geometry = computeViewfinderFrame(30, 30);
+    const geometry = computeViewfinderFrame(18, 18);
     // With radii eating nearly the whole width, the notch (which steps to a
     // negative y to poke above the panel) should be skipped entirely rather
     // than collide with the corner arcs.

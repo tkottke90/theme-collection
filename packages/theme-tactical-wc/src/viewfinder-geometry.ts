@@ -22,7 +22,7 @@ export interface ViewfinderOptions {
   bracketArm?: number;
 }
 
-const DEFAULT_RADIUS = { tl: 18, tr: 12, br: 20, bl: 14 };
+const DEFAULT_RADIUS = { tl: 5, tr: 3, br: 6, bl: 4 };
 const DEFAULT_NOTCH = { width: 40, depth: 8, offsetFraction: 0.58 };
 const DEFAULT_BRACKET_MARGIN = 16;
 const DEFAULT_BRACKET_ARM = 22;
