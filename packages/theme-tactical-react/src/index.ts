@@ -28,7 +28,6 @@ export { ThemeSkeletonHeading } from "./ThemeSkeletonHeading.js";
 export type { ThemeSkeletonHeadingProps } from "./ThemeSkeletonHeading.js";
 export { ThemeSkeletonText } from "./ThemeSkeletonText.js";
 export type { ThemeSkeletonTextProps } from "./ThemeSkeletonText.js";
-export { ThemeFrame, frameClipPath, FRAME_NOTCH } from "./ThemeFrame.js";
 export { ThemeStat } from "./ThemeStat.js";
 export type { ThemeStatProps } from "./ThemeStat.js";
 export { ThemeProgress } from "./ThemeProgress.js";

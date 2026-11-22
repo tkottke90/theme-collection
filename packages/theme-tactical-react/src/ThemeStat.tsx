@@ -1,5 +1,6 @@
 import type { JSX } from "preact";
-import { ThemeFrame, frameClipPath } from "./ThemeFrame.js";
+import { HudFrameSvg } from "./HudFrameSvg.js";
+import { useHudFrame } from "./useHudFrame.js";
 
 export interface ThemeStatProps {
   label: string;
@@ -9,13 +10,12 @@ export interface ThemeStatProps {
 
 /** Large numeric readout panel, e.g. "SYSTEM STATUS 1565". */
 export function ThemeStat({ label, value, unit }: ThemeStatProps): JSX.Element {
+  const { ref, geometry } = useHudFrame<HTMLDivElement>();
+
   return (
-    <div
-      className="relative border border-border bg-surface px-5 py-4"
-      style={{ clipPath: frameClipPath() }}
-    >
-      <ThemeFrame />
-      <div className="relative font-sans">
+    <div ref={ref} className="relative isolate block">
+      <HudFrameSvg geometry={geometry} />
+      <div className="relative px-8 py-7 font-sans">
         <p className="m-0 text-xs font-semibold tracking-[0.2em] text-text-muted uppercase">
           {label}
         </p>

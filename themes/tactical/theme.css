@@ -3,6 +3,7 @@
   --color-surface: #0a1218;
   --color-surface-alt: #101c24;
   --color-border: #1c3640;
+  --color-frame-inner: #132129;
 
   --color-brand-50: #e3fbff;
   --color-brand-100: #aaeffd;
@@ -40,10 +41,4 @@
   --radius-theme-sm: 0.0625rem;
 
   --shadow-glow: 0 0 0 1px var(--color-brand-600), 0 0 16px 0 rgb(34 211 238 / 0.35);
-
-  /* Non-color/non-utility tokens used by the SVG panel-frame treatment
-     (Card and the data-display components) rather than by a Tailwind
-     utility class. */
-  --tactical-notch: 10px;
-  --tactical-frame-width: 1.5px;
 }

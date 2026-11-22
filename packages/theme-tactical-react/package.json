@@ -1,7 +1,7 @@
 {
   "name": "@tkottke90/theme-tactical-react",
   "version": "0.1.0",
-  "description": "Dark/light HUD-inspired component theme (Preact, React-API compatible) with cyan glow accents, notched SVG panel frames, and data-display components (stat readout, progress bar, radial gauge).",
+  "description": "Dark/light HUD-inspired component theme (Preact, React-API compatible) with cyan glow accents, resizable SVG panel frames with tab-and-chevron accents, and data-display components (stat readout, progress bar, radial gauge).",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.cjs",

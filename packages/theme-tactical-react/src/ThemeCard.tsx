@@ -1,5 +1,6 @@
 import type { ComponentChildren, JSX } from "preact";
-import { ThemeFrame, frameClipPath } from "./ThemeFrame.js";
+import { HudFrameSvg } from "./HudFrameSvg.js";
+import { useHudFrame } from "./useHudFrame.js";
 
 export interface ThemeCardProps {
   heading?: string;
@@ -7,13 +8,12 @@ export interface ThemeCardProps {
 }
 
 export function ThemeCard({ heading, children }: ThemeCardProps): JSX.Element {
+  const { ref, geometry } = useHudFrame<HTMLDivElement>();
+
   return (
-    <div
-      className="relative border border-border bg-surface px-5 py-4 font-sans text-text"
-      style={{ clipPath: frameClipPath() }}
-    >
-      <ThemeFrame />
-      <div className="relative">
+    <div ref={ref} className="relative isolate block">
+      <HudFrameSvg geometry={geometry} />
+      <div className="relative px-8 py-7 font-sans text-text">
         {heading ? (
           <h2 className="mb-2 text-sm font-semibold tracking-widest text-brand-500 uppercase">
             {heading}

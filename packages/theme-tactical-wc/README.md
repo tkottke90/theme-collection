@@ -1,9 +1,10 @@
 # @tkottke90/theme-tactical-wc
 
 Dark/light HUD-inspired component theme, built as framework-agnostic Web
-Components with [Lit](https://lit.dev). Cyan glow accents, notched SVG panel
-frames, and a data-display set (stat readout, segmented progress bar, radial
-gauge) on top of the repo's baseline component set.
+Components with [Lit](https://lit.dev). Cyan glow accents, resizable SVG
+panel frames with tab-and-chevron accents, and a data-display set (stat
+readout, segmented progress bar, radial gauge) on top of the repo's baseline
+component set.
 
 ![Component gallery for @tkottke90/theme-tactical-wc](./docs/screenshot.png)
 

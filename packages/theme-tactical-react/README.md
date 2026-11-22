@@ -2,10 +2,10 @@
 
 Dark/light HUD-inspired component theme, built with
 [Preact](https://preactjs.com) (React-API compatible). Cyan glow accents,
-notched SVG panel frames, and a data-display set (stat readout, segmented
-progress bar, radial gauge) on top of the repo's baseline component set.
-Swap `preact` for `react` in this package's own dependencies if you
-specifically need React instead of Preact.
+resizable SVG panel frames with tab-and-chevron accents, and a data-display
+set (stat readout, segmented progress bar, radial gauge) on top of the
+repo's baseline component set. Swap `preact` for `react` in this package's
+own dependencies if you specifically need React instead of Preact.
 
 ![Component gallery for @tkottke90/theme-tactical-react](./docs/screenshot.png)
 
