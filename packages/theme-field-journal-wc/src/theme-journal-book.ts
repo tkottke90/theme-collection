@@ -28,6 +28,14 @@ export class ThemeJournalBook extends LitElement {
       }
       .cover {
         position: relative;
+        /* Establishes its own stacking context so the negative z-index on
+           its ::before/::after below (see there for why) only sends them
+           behind *this* element's own background — without this, nothing
+           here was an actual stacking context, so a negative z-index sent
+           them behind whatever ancestor stacking context was next, which
+           made them vanish behind other, more distant backgrounds
+           entirely instead of just this one's leather. */
+        isolation: isolate;
         display: grid;
         grid-template-columns: 1fr 1fr;
         padding: 22px 26px 30px;
