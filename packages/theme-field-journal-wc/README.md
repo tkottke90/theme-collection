@@ -90,6 +90,16 @@ this theme adds the book itself:
 | `theme-notes`        | A cream card with ruled lines for handwritten margin notes                                                            |
 | `theme-divider`      | An ornamental divider for under page titles / between sections                                                        |
 
+`theme-journal-page`'s inner content padding is themeable: it reads
+`--page-padding` (default `68px 66px 74px`, set in
+`themes/field-journal/theme.css`, sized to clear the corner flourishes with
+real breathing room). Override it per-instance — any 1-4 value `padding`
+shorthand works — for a lighter or heavier margin:
+
+```html
+<theme-journal-page style="--page-padding: 48px 46px 54px;">…</theme-journal-page>
+```
+
 `theme-journal-book`'s tabs, `theme-ribbon` and `theme-quest-card`'s pennant
 all take the same `color` enum — `"red" | "blue" | "tan" | "green" |
 "purple" | "orange"` — one per section (Quests/Places/People/Creatures/

@@ -70,6 +70,13 @@
   --shadow-taped: 0 3px 8px rgba(70, 45, 20, 0.3);
   --shadow-book: 0 30px 60px rgba(0, 0, 0, 0.55), 0 8px 18px rgba(0, 0, 0, 0.35);
 
+  /* theme-journal-page's inner content padding (any 1-4 value CSS
+     `padding` shorthand). Defaults to clearing the 38px corner flourishes
+     (inset 12px, so they reach 50px in) with real breathing room on every
+     side — override per-instance with `style="--page-padding: …"` on a
+     <theme-journal-page>, or here, for a lighter/heavier margin. */
+  --page-padding: 68px 66px 74px;
+
   /* ---- Field-journal literals (table, leather, paper, ink) ---- */
   --table: #1d3a28;
   --table-dark: #0e2217;

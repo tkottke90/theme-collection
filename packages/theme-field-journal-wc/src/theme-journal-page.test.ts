@@ -38,13 +38,15 @@ describe("theme-journal-page", () => {
     el.remove();
   });
 
-  it("renders slotted content", async () => {
+  it("renders slotted content inside the padded .content wrapper, not on :host", async () => {
     const el = document.createElement("theme-journal-page") as ThemeJournalPage;
     el.textContent = "Page body";
     document.body.appendChild(el);
     await el.updateComplete;
 
-    expect(el.shadowRoot?.querySelector("slot")).not.toBeNull();
+    const slot = el.shadowRoot?.querySelector("slot");
+    expect(slot).not.toBeNull();
+    expect(slot?.parentElement?.classList.contains("content")).toBe(true);
     expect(el.textContent?.trim()).toBe("Page body");
 
     el.remove();

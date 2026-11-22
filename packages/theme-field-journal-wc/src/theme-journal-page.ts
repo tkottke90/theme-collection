@@ -48,12 +48,11 @@ export class ThemeJournalPage extends LitElement {
        * does exactly this (see .storybook/preview.ts).
        */
       .content {
-        /* Corner flourishes are 38px boxes inset 12px from each edge (see
-           .page-corner below), so they reach 50px in from every edge.
-           Padding needs real clearance past that on every side, not just
-           enough to avoid a hard overlap — content flush against a
-           flourish still reads as crowded. */
-        padding: 68px 66px 74px;
+        /* Themeable — see --page-padding in themes/field-journal/theme.css
+           for the default and why it's sized the way it is. Override
+           per-instance with style="--page-padding: …" on a
+           <theme-journal-page> (any 1-4 value padding shorthand works). */
+        padding: var(--page-padding);
       }
       :host::before,
       :host::after {

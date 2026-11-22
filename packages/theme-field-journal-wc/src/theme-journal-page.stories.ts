@@ -47,3 +47,21 @@ export const Spread: Story = {
     </div>
   `,
 };
+
+/** Overriding --page-padding (any 1-4 value padding shorthand) for a lighter margin than the default. */
+export const CompactPadding: Story = {
+  render: (args) => html`
+    <div style="max-width: 420px;">
+      <theme-journal-page side=${args["side"]} style="--page-padding: 48px 46px 54px;">
+        <h1
+          style="font-family: var(--font-title); font-weight: 400; margin: 0 0 8px; text-align: center;"
+        >
+          Field Journal
+        </h1>
+        <p style="font-family: var(--font-sans); color: var(--color-text); margin: 0;">
+          Same page, a lighter --page-padding override.
+        </p>
+      </theme-journal-page>
+    </div>
+  `,
+};
