@@ -4,6 +4,7 @@ storybook-static/
 _site/
 coverage/
 packages/theme-starter-wc/src/generated/
+packages/theme-tactical-wc/src/generated/
 .compile-theme-tmp-*/
 *.log
 .DS_Store

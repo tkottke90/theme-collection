@@ -1,0 +1,108 @@
+/*
+ * Light/dark mode overrides for themes/tactical/theme.css.
+ *
+ * The `@theme {}` block in theme.css defines the dark palette as the
+ * default (it's the theme's native look, matching the source HUD design).
+ * This file is compiled alongside it (see each package's build script) and
+ * supplies the light counterpart, wired up two ways:
+ *
+ *  - Automatic: `prefers-color-scheme: light`, applied whenever nothing has
+ *    explicitly opted out of following the OS/browser setting.
+ *  - Explicit: a `data-theme="light"|"dark"` attribute always wins over the
+ *    OS preference, wherever it's set.
+ *
+ * The explicit override uses a bare `[data-theme="..."]` attribute selector
+ * (not `:root[data-theme="..."]`) so it matches wherever a consumer sets it —
+ * `<html>`, an app wrapper `<div>`, anywhere — and the resulting custom
+ * property values inherit down normally from there. The automatic
+ * (`prefers-color-scheme`) branch is deliberately `:root`-only: it answers
+ * "has *the document* opted out of following the OS setting", which only
+ * makes sense checked once, at the root.
+ *
+ * `:root` only ever matches the real document root, so it's inert inside a
+ * Web Component's own (shadow-scoped) stylesheet — these rules dual-target
+ * `:root`/`:host` the same way Tailwind's own compiled `@theme` output does,
+ * so the WC build picks up the `:host(...)` half and the React/CSS builds
+ * pick up the plain-selector/`:root` half from the same file. Shadow DOM
+ * encapsulation means a `data-theme` attribute set on a page's `<html>` (or
+ * any other ancestor outside a component's own shadow tree) does NOT cascade
+ * into a `<theme-*>` element's shadow tree (confirmed empirically) — for the
+ * Web Components package, set `data-theme` directly on each `theme-*`
+ * element you want to override; the React package has no such restriction,
+ * since `data-theme` can be set on any ancestor and inherits normally
+ * (confirmed empirically against this package's own Storybook build).
+ */
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]),
+  :host(:not([data-theme])) {
+    --color-bg: #eef5f7;
+    --color-surface: #ffffff;
+    --color-surface-alt: #e4eef1;
+    --color-border: #c3d8dc;
+
+    --color-brand-500: #0891b2;
+    --color-brand-600: #0e7490;
+
+    --color-neutral-100: #e4eef1;
+    --color-neutral-300: #b7cdd2;
+    --color-neutral-500: #5c7d84;
+    --color-neutral-900: #0b2027;
+
+    --color-text: #0b2027;
+    --color-text-muted: #4b6a72;
+
+    --color-skeleton-base: #dfecef;
+    --color-skeleton-highlight: #eef8fa;
+
+    --shadow-glow: 0 0 0 1px var(--color-brand-600), 0 0 10px 0 rgb(8 145 178 / 0.25);
+  }
+}
+
+[data-theme="light"],
+:host([data-theme="light"]) {
+  --color-bg: #eef5f7;
+  --color-surface: #ffffff;
+  --color-surface-alt: #e4eef1;
+  --color-border: #c3d8dc;
+
+  --color-brand-500: #0891b2;
+  --color-brand-600: #0e7490;
+
+  --color-neutral-100: #e4eef1;
+  --color-neutral-300: #b7cdd2;
+  --color-neutral-500: #5c7d84;
+  --color-neutral-900: #0b2027;
+
+  --color-text: #0b2027;
+  --color-text-muted: #4b6a72;
+
+  --color-skeleton-base: #dfecef;
+  --color-skeleton-highlight: #eef8fa;
+
+  --shadow-glow: 0 0 0 1px var(--color-brand-600), 0 0 10px 0 rgb(8 145 178 / 0.25);
+}
+
+[data-theme="dark"],
+:host([data-theme="dark"]) {
+  --color-bg: #05090c;
+  --color-surface: #0a1218;
+  --color-surface-alt: #101c24;
+  --color-border: #1c3640;
+
+  --color-brand-500: #22d3ee;
+  --color-brand-600: #0ea5c4;
+
+  --color-neutral-100: #a9c7cf;
+  --color-neutral-300: #6f8e96;
+  --color-neutral-500: #4c6b73;
+  --color-neutral-900: #091015;
+
+  --color-text: #d9f6ff;
+  --color-text-muted: #5f8a95;
+
+  --color-skeleton-base: #11232b;
+  --color-skeleton-highlight: #1c3540;
+
+  --shadow-glow: 0 0 0 1px var(--color-brand-600), 0 0 16px 0 rgb(34 211 238 / 0.35);
+}

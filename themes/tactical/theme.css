@@ -1,0 +1,49 @@
+@theme {
+  --color-bg: #05090c;
+  --color-surface: #0a1218;
+  --color-surface-alt: #101c24;
+  --color-border: #1c3640;
+
+  --color-brand-50: #e3fbff;
+  --color-brand-100: #aaeffd;
+  --color-brand-500: #22d3ee;
+  --color-brand-600: #0ea5c4;
+  --color-brand-900: #0a3540;
+
+  --color-neutral-50: #d9f6ff;
+  --color-neutral-100: #a9c7cf;
+  --color-neutral-300: #6f8e96;
+  --color-neutral-500: #4c6b73;
+  --color-neutral-900: #091015;
+
+  --color-info-500: #38bdf8;
+  --color-tip-500: #2dd4bf;
+  --color-question-500: #a78bfa;
+  --color-success-500: #4ade80;
+  --color-warning-500: #fbbf24;
+  --color-failure-500: #fb7185;
+  --color-danger-500: #f43f5e;
+  --color-bug-500: #f472b6;
+  --color-example-500: #22d3ee;
+  --color-quote-500: #6f8e96;
+
+  --color-text: #d9f6ff;
+  --color-text-muted: #5f8a95;
+
+  --color-skeleton-base: #11232b;
+  --color-skeleton-highlight: #1c3540;
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+
+  --radius-theme: 0.125rem;
+  --radius-theme-sm: 0.0625rem;
+
+  --shadow-glow: 0 0 0 1px var(--color-brand-600), 0 0 16px 0 rgb(34 211 238 / 0.35);
+
+  /* Non-color/non-utility tokens used by the SVG panel-frame treatment
+     (Card and the data-display components) rather than by a Tailwind
+     utility class. */
+  --tactical-notch: 10px;
+  --tactical-frame-width: 1.5px;
+}
