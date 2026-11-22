@@ -106,11 +106,25 @@ async function generateForPackage(pkgDir) {
     return;
   }
 
-  const server = serveStatic(staticDir);
-  const port = await listen(server);
-  const browser = await chromium.launch();
-
+  // Server and browser are both opened inside this try so that a failure
+  // either way (e.g. no matching browser installed) still runs the
+  // matching finally below instead of leaving the server listening —
+  // an open http.Server keeps the process alive, and main()'s catch only
+  // sets process.exitCode without forcing exit, so a leaked server here
+  // means the script hangs on error instead of failing fast.
+  let server;
+  let browser;
   try {
+    server = serveStatic(staticDir);
+    const port = await listen(server);
+    // Most environments resolve a browser automatically once `npx
+    // playwright install chromium` has been run (see CONTRIBUTING.md).
+    // Some sandboxes/CI images instead ship a browser preinstalled at a
+    // fixed, non-default path — point at it with this env var rather
+    // than editing the script.
+    const executablePath = process.env.SCREENSHOT_CHROMIUM_PATH || undefined;
+    browser = await chromium.launch({ executablePath });
+
     const page = await browser.newPage({ viewport: { width: 1000, height: 700 } });
     const shots = [];
 
@@ -142,8 +156,8 @@ async function generateForPackage(pkgDir) {
 
     console.log(`Wrote ${path.relative(process.cwd(), outPath)} (${shots.length} stories)`);
   } finally {
-    await browser.close();
-    server.close();
+    await browser?.close();
+    server?.close();
   }
 }
 
