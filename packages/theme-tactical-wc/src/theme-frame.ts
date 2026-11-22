@@ -1,38 +1,43 @@
 import { svg } from "lit";
 
 /**
- * Notch-cut panel frame shared by every panel-like component (Card, Stat,
- * ProgressBar, RadialGauge). A CSS `clip-path` can cut a div's fill/content
- * to this same notched octagon, but `clip-path` also clips away anything
- * drawn with `border`/`box-shadow` on that div — there's no way to stroke a
- * glowing outline along a clipped non-rectangular edge with plain CSS. The
- * SVG `<path>` below is overlaid on top of (and unaffected by) the clipped
- * div, and is what actually draws that outline.
+ * Two-corner chamfer frame shared by every panel-like component (Card, Stat).
+ * Matches the HUD reference: only the top-left and bottom-right corners are
+ * cut at 45°, the other two stay sharp, and the cut is a FIXED pixel size —
+ * not a percentage of the panel — so it doesn't distort into a stretched
+ * diagonal on wide/short panels the way a percentage-based cut would.
  *
- * `FRAME_NOTCH` must match the percentage used in each component's own
- * `clip-path: polygon(...)` (see `frameClipPath()`) so the stroke and the
- * clipped fill line up exactly.
+ * A plain CSS `border` on the host, combined with `clip-path: frameClipPath()`
+ * removing the two chamfered corners' triangles, already draws correctly
+ * along every straight edge and both sharp corners — `clip-path` only cuts
+ * geometry, it doesn't add new border pixels along the freshly exposed
+ * diagonal edges. Those two small diagonal accents are the one thing the
+ * plain border can't draw, so that's the only part rendered as SVG here,
+ * each a small fixed-size (not stretched) square so the line is never
+ * distorted.
  */
-export const FRAME_NOTCH = 12;
+export const FRAME_NOTCH = 16;
 
-function framePath(notch: number): string {
-  const n = notch;
-  const f = 100 - n;
-  return `M ${n},0 L ${f},0 L 100,${n} L 100,${f} L ${f},100 L ${n},100 L 0,${f} L 0,${n} Z`;
+/** The matching `clip-path` value for a panel's own fill/border. */
+export function frameClipPath(notch: number = FRAME_NOTCH): string {
+  const n = `${notch}px`;
+  return `polygon(${n} 0, 100% 0, 100% calc(100% - ${n}), calc(100% - ${n}) 100%, 0 100%, 0 ${n})`;
 }
 
-/** Renders the glowing notched-outline overlay. Place inside a `relative` host. */
-export function themeFrame(notch: number = FRAME_NOTCH) {
+function cornerAccent(notch: number, corner: "top-left" | "bottom-right") {
+  const placement = corner === "top-left" ? "top: 0; left: 0;" : "bottom: 0; right: 0;";
   return svg`
     <svg
-      class="pointer-events-none absolute inset-0 block h-full w-full"
-      viewBox="0 0 100 100"
-      preserveAspectRatio="none"
+      class="pointer-events-none absolute block"
+      style="${placement} width: ${notch}px; height: ${notch}px;"
+      viewBox="0 0 ${notch} ${notch}"
       aria-hidden="true"
     >
-      <path
-        d=${framePath(notch)}
-        fill="none"
+      <line
+        x1="0"
+        y1=${notch}
+        x2=${notch}
+        y2="0"
         stroke="var(--color-brand-500)"
         stroke-width="1.5"
         vector-effect="non-scaling-stroke"
@@ -42,9 +47,7 @@ export function themeFrame(notch: number = FRAME_NOTCH) {
   `;
 }
 
-/** The matching `clip-path` value for a notched panel's own fill/background. */
-export function frameClipPath(notch: number = FRAME_NOTCH): string {
-  const n = notch;
-  const f = 100 - n;
-  return `polygon(${n}% 0, ${f}% 0, 100% ${n}%, 100% ${f}%, ${f}% 100%, ${n}% 100%, 0 ${f}%, 0 ${n}%)`;
+/** Renders the glowing chamfer accents. Place inside a `relative` host that also sets `clip-path: frameClipPath()` and its own `border`. */
+export function themeFrame(notch: number = FRAME_NOTCH) {
+  return svg`${cornerAccent(notch, "top-left")}${cornerAccent(notch, "bottom-right")}`;
 }
