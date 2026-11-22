@@ -21,3 +21,4 @@ export { ThemeSkeletonText } from "./theme-skeleton-text.js";
 export { ThemeStat } from "./theme-stat.js";
 export { ThemeProgress } from "./theme-progress.js";
 export { ThemeGauge } from "./theme-gauge.js";
+export { ThemeViewfinder } from "./theme-viewfinder.js";

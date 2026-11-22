@@ -34,3 +34,5 @@ export { ThemeProgress } from "./ThemeProgress.js";
 export type { ThemeProgressProps } from "./ThemeProgress.js";
 export { ThemeGauge } from "./ThemeGauge.js";
 export type { ThemeGaugeProps } from "./ThemeGauge.js";
+export { ThemeViewfinder } from "./ThemeViewfinder.js";
+export type { ThemeViewfinderProps } from "./ThemeViewfinder.js";

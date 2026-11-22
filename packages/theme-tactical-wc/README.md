@@ -2,9 +2,10 @@
 
 Dark/light HUD-inspired component theme, built as framework-agnostic Web
 Components with [Lit](https://lit.dev). Cyan glow accents, resizable SVG
-panel frames with tab-and-chevron accents, and a data-display set (stat
-readout, segmented progress bar, radial gauge) on top of the repo's baseline
-component set.
+panel frames (a tab-and-chevron style on Card/Stat, a rounded
+tab-notch-and-bracket style on Viewfinder), and a data-display set
+(stat readout, segmented progress bar, radial gauge) on top of the repo's
+baseline component set.
 
 ![Component gallery for @tkottke90/theme-tactical-wc](./docs/screenshot.png)
 
@@ -24,6 +25,8 @@ import "@tkottke90/theme-tactical-wc";
   <theme-progress label="Signal" value="65"></theme-progress>
   <theme-gauge label="Power" value="72"></theme-gauge>
 </theme-card>
+
+<theme-viewfinder heading="Target lock">Locked on contact 07.</theme-viewfinder>
 ```
 
 `lit` is a peer dependency so every theme package in this repo shares a
@@ -36,7 +39,7 @@ the OS/browser `prefers-color-scheme` setting automatically whenever nothing
 overrides it. To override that explicitly, set `data-theme="light"` or
 `data-theme="dark"` **directly on each `theme-*` element** you want to
 override, e.g. `<theme-card data-theme="light">` — see the "Light" stories
-on Card/Stat/Gauge in Storybook for a live example.
+on Card/Stat/Gauge/Viewfinder in Storybook for a live example.
 
 This per-element requirement (rather than one attribute on `<html>`) is a
 Shadow DOM constraint, not a choice: a `data-theme` attribute set on an
