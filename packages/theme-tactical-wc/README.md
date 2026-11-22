@@ -3,7 +3,7 @@
 Dark/light HUD-inspired component theme, built as framework-agnostic Web
 Components with [Lit](https://lit.dev). Cyan glow accents, resizable SVG
 panel frames (a tab-and-chevron style on Card/Stat, a rounded
-uneven-corner-plus-bracket style on Viewfinder), and a data-display set
+tab-notch-and-bracket style on Viewfinder), and a data-display set
 (stat readout, segmented progress bar, radial gauge) on top of the repo's
 baseline component set.
 

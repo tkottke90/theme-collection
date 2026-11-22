@@ -3,7 +3,7 @@
 Dark/light HUD-inspired component theme, built with
 [Preact](https://preactjs.com) (React-API compatible). Cyan glow accents,
 resizable SVG panel frames (a tab-and-chevron style on Card/Stat, a rounded
-uneven-corner-plus-bracket style on Viewfinder), and a data-display set
+tab-notch-and-bracket style on Viewfinder), and a data-display set
 (stat readout, segmented progress bar, radial gauge) on top of the repo's
 baseline component set. Swap `preact` for `react` in this package's own
 dependencies if you specifically need React instead of Preact.

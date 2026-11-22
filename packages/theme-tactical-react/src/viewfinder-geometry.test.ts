@@ -14,30 +14,36 @@ describe("computeViewfinderFrame", () => {
 
   it("produces four bracket path segments at normal sizes", () => {
     const geometry = computeViewfinderFrame(400, 240);
-    // Each bracket is its own "M...L...L..." subpath; four brackets means four "M"s.
+    // Each bracket is its own "M...L...L" subpath; four brackets means four "M"s.
     expect(geometry?.bracketsD.match(/M/g)?.length).toBe(4);
   });
 
-  it("degrades without crossing geometry on a very small panel", () => {
+  it("produces a closed outer path and a closed inner path", () => {
+    const geometry = computeViewfinderFrame(400, 240);
+    expect(geometry?.outerD.trim().endsWith("Z")).toBe(true);
+    expect(geometry?.innerD.trim().endsWith("Z")).toBe(true);
+  });
+
+  it("degrades without throwing on a very small panel", () => {
     const geometry = computeViewfinderFrame(40, 40);
     expect(geometry).not.toBeNull();
     expect(geometry?.outerD).toContain("M");
     expect(geometry?.bracketsD.match(/M/g)?.length).toBe(4);
   });
 
-  it("drops the tab notch when there's no room for it", () => {
-    const geometry = computeViewfinderFrame(18, 18);
-    // With radii eating nearly the whole width, the notch (which steps to a
-    // negative y to poke above the panel) should be skipped entirely rather
-    // than collide with the corner arcs.
-    expect(geometry?.outerD).not.toMatch(/-\d/);
+  it("clamps the inner rect to non-negative size on a tiny panel", () => {
+    // di = step + 7 = 13 by default, so anything under ~26px in either
+    // dimension would otherwise go negative.
+    const geometry = computeViewfinderFrame(20, 20);
+    expect(geometry).not.toBeNull();
+    expect(geometry?.innerD).not.toMatch(/-\d/);
   });
 
   it("accepts custom options", () => {
     const geometry = computeViewfinderFrame(400, 240, {
-      radius: { tl: 4, tr: 4, br: 4, bl: 4 },
-      bracketArm: 10,
-      bracketMargin: 8,
+      radius: 4,
+      step: 4,
+      bracketInset: 12,
     });
     expect(geometry).not.toBeNull();
   });
