@@ -27,7 +27,17 @@ Stop and ask the user for anything missing here. Never guess these:
 
 - **Description** for `package.json`.
 - **Component list** — which components to build on top of the tokens.
-  Default when not specified: `button`, `card`, `input`.
+  Default when not specified: the full CONTRIBUTING.md "Minimum component
+  set" (Button, Input, Card, Typography scale, Link, Container, Item, Field,
+  Detail, Blockquote, Skeleton) — that's the floor for a package that's
+  actually ready for a PR, not just a 3-component smoke test. A smaller
+  explicit list (e.g. "just button, card, input") is fine when the user asks
+  for a quick preview instead of a finished package.
+- **Bonus components** — when the image contains pieces that are clearly
+  domain-specific rather than generic UI atoms (a game tile, a board socket,
+  a gauge, a transport control), ask whether to add them as additional
+  custom elements alongside the minimum set. Don't invent these unprompted,
+  and don't let them replace the minimum set.
 - Any explicit design values the user already knows (hex codes, font names,
   spacing unit) — these override anything read from the image.
 
@@ -45,13 +55,13 @@ Stop and ask the user for anything missing here. Never guess these:
    notes override what's in the image) and build a short component inventory
    by surface role before you touch tokens:
 
-   | Role | Question | Examples |
-   |---|---|---|
-   | Background | What's behind everything? | Page background, app shell |
-   | Container | What holds content? | Card, panel, list row |
-   | Raised item | What sits on top? | Popup, tooltip, dropdown |
-   | Control | What gets pressed? | Buttons, tabs, toggles, inputs |
-   | Accent | What decorates edges/corners? | Dividers, badges, focus rings |
+   | Role        | Question                      | Examples                       |
+   | ----------- | ----------------------------- | ------------------------------ |
+   | Background  | What's behind everything?     | Page background, app shell     |
+   | Container   | What holds content?           | Card, panel, list row          |
+   | Raised item | What sits on top?             | Popup, tooltip, dropdown       |
+   | Control     | What gets pressed?            | Buttons, tabs, toggles, inputs |
+   | Accent      | What decorates edges/corners? | Dividers, badges, focus rings  |
 
    For each role present in the image, note shape (rectangle, rounded,
    cut corners), edge treatment (outline weight, double rules), surface
@@ -103,10 +113,55 @@ Stop and ask the user for anything missing here. Never guess these:
    the one the starter ships with.
 
 4. **Replace the starter's example components** with real implementations
-   of the requested component list (default `button`, `card`, `input`),
-   built on the tokens from step 3 — not hardcoded values. This is
-   CONTRIBUTING.md step 3 ("Replace the example styles/components with the
-   real theme").
+   of the requested component list, built on the tokens from step 3 — not
+   hardcoded values. This is CONTRIBUTING.md step 3 ("Replace the example
+   styles/components with the real theme").
+
+   **Map the image's own surfaces onto the generic component set** instead
+   of reskinning each starter component with new colors and calling it done.
+   Use the component inventory from step 2 to decide, e.g.:
+
+   | Generic component        | Maps to, if the image has one                                                                                 |
+   | ------------------------ | ------------------------------------------------------------------------------------------------------------- |
+   | Card / Container         | The image's panel/frame treatment (border, cut, texture)                                                      |
+   | Item                     | A row or tile treatment from a list/tray in the image                                                         |
+   | Detail                   | A collapsible panel in the same frame treatment                                                               |
+   | Blockquote (10 variants) | The image's semantic-color-coded callouts, if any, else the palette's accent colors applied to the same frame |
+   | Skeleton                 | The image's own muted/placeholder tone, shimmering between its two closest neutral tokens                     |
+
+   A component that only swaps `bg-brand-50` for `bg-brand-500` across the
+   starter's existing rectangular markup is not "real" if the image's actual
+   containers have cut corners, hexagonal sockets, rings, or bevels — that's
+   a token pass, not a style port. Build the real shape.
+
+   **Technique ladder for shapes Tailwind's utility classes can't express.**
+   Try these in order and stop at the first one that works; higher rungs are
+   hand-written CSS/SVG, not Tailwind classes:
+
+   1. **Tailwind tokens, incl. `--background-image-*`**: flat colors, fonts,
+      radius, shadow — and Tailwind v4's `--background-image-*` namespace in
+      `themes/<name>/theme.css` for a repeatable texture or a data-URI SVG
+      background (e.g. `--background-image-carbon: linear-gradient(...)`,
+      `--background-image-brackets: url("data:image/svg+xml,...")`),
+      which compiles to a plain `bg-carbon` / `bg-brackets` utility class.
+   2. **A shared hand-written CSS module** for a shape 2+ components need
+      (cut-corner panels, hexagon sockets): one `css` tagged-template export
+      other components import, not copy-pasted per file. `theme-tactical-wc`
+      already does this (`hud-frame-controller.ts` + `hud-frame-svg.ts`) —
+      follow that precedent rather than inventing a new pattern.
+   3. **Per-component hand-written `css`** for a shape only one component
+      needs: `clip-path: polygon(...)` for cut corners (two layered
+      pseudo-elements — one for the border color, one inset by the border
+      width for the fill — since `clip-path` removes a regular CSS border),
+      `conic-gradient` + `mask` for rings/gauges, `transform: skewX(...)`
+      for slanted elements.
+
+   **Whichever rung you're on, colors and fonts still come from the
+   compiled tokens** (`var(--color-brand-500)`, `var(--font-sans)`), never
+   a hex literal or font name copied straight from the image into
+   component CSS — that's what step 3 is for. Hand-written CSS is for
+   shape and layout Tailwind can't reach, not an excuse to bypass the
+   token pipeline.
 
 5. **Tests and stories** (CONTRIBUTING.md step 5): write at least one
    Storybook story and one Jest test per component. Don't skip this even
@@ -127,8 +182,9 @@ Stop and ask the user for anything missing here. Never guess these:
    issue, don't weaken a check to get it green.
 
 7. **Summarize for the user**: which values were read directly from the
-   image/inputs vs. estimated, which components were built, and confirm
-   all checks in step 6 passed.
+   image/inputs vs. estimated, which components were built (minimum set
+   plus any bonus components), which technique-ladder rung each non-trivial
+   shape used, and confirm all checks in step 6 passed.
 
 ## Guardrails
 
@@ -140,3 +196,8 @@ Stop and ask the user for anything missing here. Never guess these:
   required input in step 0.
 - Don't commit build output (`dist/`, `storybook-static/`) — same as every
   other package in this repo.
+- Hand-written CSS for a shape Tailwind can't express (step 4's technique
+  ladder, rungs 2–3) still reads colors and fonts from `var(--color-*)` /
+  `var(--font-*)` tokens, never a literal hex code or font name — the same
+  "no hand-copied token values" rule from `AGENTS.md` applies whether the
+  CSS comes from a Tailwind class or a hand-written rule.
