@@ -53,6 +53,25 @@ export const closed = (pts: readonly Point[]) => "M" + pts.map(pt).join(" L") + 
 /** Open polyline path. */
 export const line = (...pts: Point[]) => "M" + pts.map(pt).join(" L");
 
+/**
+ * Closed polygon path with every corner rounded by up to `r` (a quadratic
+ * curve through the original vertex), clamped to half of each adjacent edge.
+ */
+export function roundedPolygon(pts: readonly Point[], r: number): string {
+  const n = pts.length;
+  const parts = pts.map((p, i) => {
+    const prev = pts[(i - 1 + n) % n]!;
+    const next = pts[(i + 1) % n]!;
+    const lin = Math.hypot(p[0] - prev[0], p[1] - prev[1]) || 1;
+    const lout = Math.hypot(next[0] - p[0], next[1] - p[1]) || 1;
+    const rr = Math.min(r, lin / 2, lout / 2);
+    const a: Point = [p[0] + ((prev[0] - p[0]) * rr) / lin, p[1] + ((prev[1] - p[1]) * rr) / lin];
+    const b: Point = [p[0] + ((next[0] - p[0]) * rr) / lout, p[1] + ((next[1] - p[1]) * rr) / lout];
+    return `${i ? "L" : "M"}${pt(a)} Q${pt(p)} ${pt(b)}`;
+  });
+  return parts.join(" ") + " Z";
+}
+
 /** Rounded rectangle path; `r` is clamped to fit. */
 export function roundedRect(x: number, y: number, w: number, h: number, r: number): string {
   const rr = Math.max(0, Math.min(r, w / 2, h / 2));
