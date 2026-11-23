@@ -1,0 +1,117 @@
+/**
+ * Geometry for the machine-plate frame shared by Card, Container, Detail and
+ * Blockquote: a faceted plate (large chamfers top-left / bottom-right, small
+ * ones on the other two corners) sitting on a dark core, with a seam notch in
+ * the top edge where the core and a wire show through.
+ */
+export interface PlateOptions {
+  /** Large chamfer (top-left, bottom-right), px. */
+  cut?: number;
+  /** Small chamfer (top-right, bottom-left), px. */
+  smallCut?: number;
+  /** How far the hard core drop sits below/right of the plate, px. */
+  drop?: number;
+  /** Inset of the bevel groove from the plate edge, px. */
+  groove?: number;
+  /** Whether to cut the seam notch into the top edge. */
+  notch?: boolean;
+}
+
+export interface PlateGeometry {
+  viewBox: string;
+  /** The plate itself (light shell), including the seam notch. */
+  plateD: string;
+  /** Un-notched plate outline, drawn underneath so the notch shows core. */
+  underD: string;
+  /** Un-notched plate outline shifted by `drop` — the hard core shadow. */
+  dropD: string;
+  /** Bevel groove inset from the plate edge. */
+  grooveD: string;
+  /** Glowing seam along the top-left chamfer. */
+  glowD: string;
+  /** Short wire running through the notch (empty when there's no notch). */
+  wireD: string;
+}
+
+const K = Math.SQRT2 - 1;
+
+function r(n: number): number {
+  return Math.round(n * 100) / 100;
+}
+
+function poly(points: Array<[number, number]>): string {
+  return `M${points.map(([x, y]) => `${r(x)} ${r(y)}`).join(" L")} Z`;
+}
+
+/** Chamfered rectangle from (x0,y0) to (x1,y1). */
+function chamferPoints(
+  x0: number,
+  y0: number,
+  x1: number,
+  y1: number,
+  cut: number,
+  small: number,
+): Array<[number, number]> {
+  return [
+    [x0 + cut, y0],
+    [x1 - small, y0],
+    [x1, y0 + small],
+    [x1, y1 - cut],
+    [x1 - cut, y1],
+    [x0 + small, y1],
+    [x0, y1 - small],
+    [x0, y0 + cut],
+  ];
+}
+
+export function computePlate(
+  width: number,
+  height: number,
+  options: PlateOptions = {},
+): PlateGeometry | null {
+  if (width <= 0 || height <= 0) return null;
+
+  const { drop = 5, groove = 6, notch = true } = options;
+  // Never let a chamfer eat more than a third of the shorter side.
+  const limit = Math.min(width, height) / 3;
+  const cut = Math.min(options.cut ?? 18, limit);
+  const small = Math.min(options.smallCut ?? 6, limit);
+
+  const outline = chamferPoints(0, 0, width, height, cut, small);
+
+  // Seam notch: a shallow trapezoid bitten out of the top edge, right of centre.
+  const notchDepth = 5;
+  const notchWidth = 44;
+  const notchEnd = width - small - 18;
+  const notchStart = notchEnd - notchWidth;
+  const hasNotch = notch && notchStart > cut + 24;
+
+  const platePoints: Array<[number, number]> = hasNotch
+    ? [
+        [cut, 0],
+        [notchStart, 0],
+        [notchStart + notchDepth, notchDepth],
+        [notchEnd - notchDepth, notchDepth],
+        [notchEnd, 0],
+        ...outline.slice(1),
+      ]
+    : outline;
+
+  const g = Math.min(groove, limit / 2);
+  const grooveD =
+    g > 0
+      ? poly(chamferPoints(g, g, width - g, height - g, cut + g * K - g, small + g * K - g))
+      : "";
+
+  const dropD = poly(outline.map(([x, y]): [number, number] => [x + drop, y + drop]));
+
+  return {
+    viewBox: `0 0 ${r(width)} ${r(height)}`,
+    plateD: poly(platePoints),
+    underD: poly(outline),
+    dropD,
+    grooveD,
+    glowD: `M0 ${r(cut)} L${r(cut)} 0`,
+    wireD: hasNotch ? `M${r(notchStart + 2)} 2.5 H${r(notchEnd - 2)}` : "",
+  };
+}

@@ -1,0 +1,99 @@
+/*
+ * Zero Dawn — machine plate over dark core, with hand-painted tribal accents.
+ *
+ * `@theme static` (not plain `@theme`) because most of these tokens are only
+ * reached from hand-written SVG attributes / `css` blocks in the WC package,
+ * which Tailwind's content scan doesn't treat as utility usage — plain
+ * `@theme` would silently drop them from the compiled output.
+ *
+ * Provenance notes: "read" = pixel-sampled from the reference images,
+ * "est." = estimated, "adj." = shifted within its hue to pass WCAG AA.
+ */
+@theme static {
+  /* Page: dusk steel behind everything (est., between the read core and cool plate). */
+  --color-bg: #262b3a;
+
+  /* Machine plates — the light shell. */
+  --color-plate-50: #e4e1db; /* est. sunlit highlight */
+  --color-plate-100: #c4c1bc; /* read: sunlit armour plate */
+  --color-plate-300: #81827e; /* read: plate mid-tone */
+  --color-plate-500: #505866; /* read: shaded cool armour */
+  --color-plate-700: #343a4a; /* est. steel plate surface */
+  --color-plate-800: #2b3040; /* est. */
+  --color-plate-ink-muted: #4b4f5c; /* est. muted text on a light plate */
+
+  /* Inner core — the dark machinery showing through seams. */
+  --color-core: #191b30; /* read: blue-black internals */
+  --color-core-warm: #292927; /* read: warm-black internals */
+  --color-core-deep: #0e0f1a; /* est. hard drop under plates */
+
+  /* Machine glow (cyan seams / focus). Read as #547584 through atmospheric haze,
+     brightened to an emissive cyan (est.) — the read value fails 3:1 on bg. */
+  --color-brand-50: #e3f7fb;
+  --color-brand-100: #bdebf5;
+  --color-brand-300: #7fd3e6;
+  --color-brand-500: #3fb8d4;
+  --color-brand-600: #2795b0;
+  --color-brand-900: #0f4655;
+
+  /* Cable / wire amber. */
+  --color-wire: #ad8350; /* read */
+  --color-wire-300: #c1a179; /* adj. lighter for text on steel */
+
+  /* World / atmosphere. */
+  --color-haze: #fcd4be; /* read: sunset haze */
+  --color-sky: #656578; /* read: dusk slate sky */
+  --color-rust: #7f5938; /* read: rust earth */
+  --color-band: #7898a6; /* read: art-book steel-blue band */
+  --color-band-lilac: #83869c; /* read: art-book lilac band */
+
+  /* Tribal paint (glyph sheet). */
+  --color-tribe-red: #84212b; /* read */
+  --color-tribe-orange: #b66950; /* read */
+  --color-tribe-ochre: #e5d76d; /* read */
+  --color-tribe-moss: #4b7321; /* read */
+  --color-tribe-teal: #1a7771; /* read */
+  --color-tribe-cobalt: #4768a6; /* read */
+  --color-tribe-violet: #83268e; /* read */
+  --color-paint: #e9e8e6; /* read: off-white brush stroke */
+
+  /* Text. */
+  --color-text: #e4e1db;
+  --color-text-muted: #a2a5ad; /* adj. from #9a9da6 for 4.5:1 on steel */
+
+  /* Blockquote semantics — painted chips, label ink chosen per fill for AA. */
+  --color-info-500: #4768a6; /* tribe cobalt */
+  --color-info-ink: #e9e8e6;
+  --color-tip-500: #19736d; /* adj. from tribe teal #1a7771 */
+  --color-tip-ink: #e9e8e6;
+  --color-question-500: #83268e; /* tribe violet */
+  --color-question-ink: #e9e8e6;
+  --color-success-500: #4b7321; /* tribe moss */
+  --color-success-ink: #e9e8e6;
+  --color-warning-500: #e5d76d; /* tribe ochre */
+  --color-warning-ink: #191b30;
+  --color-failure-500: #985540; /* adj. from tribe orange #b66950 */
+  --color-failure-ink: #e9e8e6;
+  --color-danger-500: #84212b; /* tribe red */
+  --color-danger-ink: #e9e8e6;
+  --color-bug-500: #ad8350; /* wire amber */
+  --color-bug-ink: #191b30;
+  --color-example-500: #3fb8d4; /* machine cyan */
+  --color-example-ink: #191b30;
+  --color-quote-500: #c4c1bc; /* plate */
+  --color-quote-ink: #191b30;
+
+  --color-skeleton-base: #343a4a;
+  --color-skeleton-highlight: #505866;
+
+  /* Fonts (est. — the art book's faces aren't identifiable; these are
+     close-in-spirit Google Fonts). */
+  --font-sans: "Saira", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Crimson Pro", Georgia, "Times New Roman", serif;
+
+  /* Plates are faceted, never rounded. */
+  --radius-theme: 0;
+
+  /* Art-book triangle lattice, as a repeatable background. */
+  --background-image-tri-grid: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='69.28'%3E%3Cpath d='M0 0H40M0 34.64H40M0 0L40 69.28M20 0L40 34.64M0 34.64L20 69.28M40 0L0 69.28M20 0L0 34.64M40 34.64L20 69.28' stroke='%23e4e1db' stroke-opacity='.06' fill='none'/%3E%3C/svg%3E");
+}
