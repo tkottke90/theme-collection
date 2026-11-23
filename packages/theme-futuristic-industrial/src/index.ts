@@ -30,3 +30,5 @@ export { ThemeChevronRule } from "./theme-chevron-rule.js";
 export type { ChevronDirection } from "./chevron-geometry.js";
 export { ThemeStripeBand } from "./theme-stripe-band.js";
 export { ThemeBracketRail } from "./theme-bracket-rail.js";
+export { ThemeBracketTag } from "./theme-bracket-tag.js";
+export type { BracketTagVariant } from "./theme-bracket-tag.js";
