@@ -1,0 +1,134 @@
+/*
+ * Design tokens for the "Field Journal" theme: an explorer's leather-bound
+ * field journal lying open on a green table. See the style guide this theme
+ * was built from for the full rationale (four surface layers: table →
+ * leather book → parchment page → hand-placed items).
+ *
+ * The first block below fills the repo's baseline token schema (the same
+ * names every `@tkottke90/theme-*` package's components expect — compare
+ * themes/theme-starter/theme.css and themes/tactical/theme.css). The second
+ * block adds this theme's own literal tokens (leather, parchment, ink,
+ * category colors, grain textures) that the baseline schema has no slot
+ * for — needed by the field-journal-specific components (book, page,
+ * ribbon, quest card, taped figure, …), whose gradients/clip-paths/SVG
+ * filters are hand-written CSS rather than Tailwind utility classes (the
+ * same reasoning `theme-tactical-wc`'s HUD frame SVGs already use — see
+ * that package's `hud-frame-svg.ts`). Every hex value lives only here, once;
+ * components reference it with `var(--…)`, per
+ * docs/adr/0001-theme-token-architecture.md.
+ */
+@theme {
+  /* ---- Baseline schema ---- */
+  --color-bg: #1d3a28;
+  --color-surface: #efe1c1;
+  --color-surface-alt: #f6ebd1;
+  --color-border: #d6c299;
+
+  --color-brand-50: #f3e3de;
+  --color-brand-100: #e3bdb2;
+  --color-brand-500: #a5453a;
+  --color-brand-600: #823830;
+  --color-brand-900: #3f1a15;
+
+  --color-neutral-50: #f6ebd1;
+  --color-neutral-100: #e2d1ab;
+  --color-neutral-300: #d6c299;
+  --color-neutral-500: #c6b084;
+  --color-neutral-900: #4a3423;
+
+  --color-text: #4a3423;
+  --color-text-muted: #7a6048;
+
+  /* Semantic colors for the 10 blockquote variants. Several reuse this
+     theme's category colors (see "Category colors" below), the same way
+     theme-tactical-wc's theme.css aliases its own semantic slots. */
+  --color-info-500: #4f6c8c;
+  --color-tip-500: #5f7d47;
+  --color-question-500: #6c5b88;
+  --color-success-500: #4a6536;
+  --color-warning-500: #7a5a36;
+  --color-failure-500: #8a3b2e;
+  --color-danger-500: #a5453a;
+  --color-bug-500: #b48a5c;
+  --color-example-500: #b6773f;
+  --color-quote-500: #7a6048;
+
+  /* The ink colors themselves, not a parchment tone — a skeleton this
+     close in color to the page it sits on (paper/card) reads as "barely
+     there" instead of "text is about to appear here". */
+  --color-skeleton-base: var(--ink);
+  --color-skeleton-highlight: var(--ink-soft);
+
+  --font-sans: "EB Garamond", Georgia, serif;
+  --font-title: "IM Fell English SC", "IM Fell English", Georgia, serif;
+  --font-head: "IM Fell English", Georgia, serif;
+  --font-hand: "Caveat", "Segoe Print", cursive;
+
+  --radius-theme: 0.1875rem;
+  --radius-theme-sm: 0.125rem;
+  --radius-book: 1.125rem;
+  --radius-tab: 0.375rem;
+
+  --shadow-card: 0 2px 4px rgba(80, 50, 20, 0.18);
+  --shadow-taped: 0 3px 8px rgba(70, 45, 20, 0.3);
+  --shadow-book: 0 30px 60px rgba(0, 0, 0, 0.55), 0 8px 18px rgba(0, 0, 0, 0.35);
+
+  /* theme-journal-page's inner content padding (any 1-4 value CSS
+     `padding` shorthand). Defaults to clearing the 38px corner flourishes
+     (inset 12px, so they reach 50px in) with real breathing room on every
+     side — override per-instance with `style="--page-padding: …"` on a
+     <theme-journal-page>, or here, for a lighter/heavier margin. */
+  --page-padding: 68px 66px 74px;
+
+  /* ---- Field-journal literals (table, leather, paper, ink) ---- */
+  --table: #1d3a28;
+  --table-dark: #0e2217;
+  --table-highlight: #2f5039;
+
+  --leather: #5a3720;
+  --leather-dark: #34200f;
+  --leather-highlight: #75492c;
+  --stitch: rgba(232, 200, 150, 0.45);
+
+  --paper: #efe1c1;
+  --paper-edge-0: #e2d1ab;
+  --paper-edge-1: #d5c296;
+  --paper-edge-2: #c6b084;
+  --card: #f6ebd1;
+  --card-line: #d6c299;
+
+  --ink: #4a3423;
+  --ink-soft: #7a6048;
+  --ink-faint: rgba(110, 78, 45, 0.38);
+
+  /* ---- Category colors ----
+     One color per section, used for its tab, its pennants and its ribbons.
+     The "-dark" variants are this theme's fix for the §9 contrast failures
+     (light text on tan/orange/green, and green status text on cream cards):
+     they're deliberately darker than the base swatch and are what every
+     component actually uses behind light text or as status-text color —
+     the plain --tan/--orange/--green stay as the literal style-guide
+     swatches for any future non-text use. See this package's README for the
+     measured/estimated split. */
+  --red: #a5453a;
+  --blue: #4f6c8c;
+  --tan: #b48a5c;
+  --tan-dark: #7a5a36;
+  --green: #5f7d47;
+  --green-dark: #4a6536;
+  --purple: #6c5b88;
+  --orange: #b6773f;
+  --orange-dark: #8a5226;
+
+  --favorite: #c79a35;
+  --text-on-dark: #f6e9cf;
+  --tape: rgba(226, 208, 165, 0.78);
+  --taped-border: #f8f0dc;
+
+  /* Fine noise texture as a data-URI SVG. Layer it over any colour:
+     `background: var(--grain), <gradient>;`. */
+  --grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .38 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  /* Lighter grain for light surfaces (cards, labels) — regular --grain
+     turns cream surfaces grey. */
+  --grain-soft: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .35  0 0 0 0 .24  0 0 0 0 .12  0 0 0 .12 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}

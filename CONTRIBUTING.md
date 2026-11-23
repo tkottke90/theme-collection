@@ -120,7 +120,11 @@ This renders every Storybook story for the package headlessly (via
 make sure it's linked from the package's `README.md` (see the starter
 packages for the exact markdown). The screenshot script uses a headless
 Chromium browser; run `npx playwright install chromium` once after
-`npm install` if you haven't already.
+`npm install` if you haven't already. If your environment instead ships a
+browser preinstalled at a fixed path (some sandboxes/CI images do this
+rather than using Playwright's own managed install), point the script at
+it with `SCREENSHOT_CHROMIUM_PATH=/path/to/chromium npm run screenshot -w
+<package-name>` instead of running `playwright install`.
 
 ## Package conventions
 

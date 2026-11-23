@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@tkottke90/theme-field-journal-wc — full demo</title>
+
+    <!--
+  This page exercises every component the package ships, wired up as a
+  real consumer would use them (import the built package, listen for
+  journal-tab-change, swap which pair of <theme-journal-page>s is
+  slotted). It imports the real dist/ build, not a bundler-assisted copy
+  — run `npm run build` in this package first, then open this file (or
+  serve the package root so the relative ../dist path resolves).
+
+  Lit is resolved here via an import map pointing at a CDN, standing in
+  for the `lit` peerDependency a real app's own bundler would supply.
+-->
+    <script type="importmap">
+      {
+        "imports": {
+          "lit": "https://cdn.jsdelivr.net/npm/lit@3.2.1/+esm",
+          "lit/decorators.js": "https://cdn.jsdelivr.net/npm/lit@3.2.1/decorators.js/+esm",
+          "lit/static-html.js": "https://cdn.jsdelivr.net/npm/lit@3.2.1/static-html.js/+esm"
+        }
+      }
+    </script>
+    <script type="module" src="../dist/index.mjs"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&family=EB+Garamond:wght@400;500;600&family=Caveat:wght@500&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /*
+   * Everything a theme-* element needs is scoped inside its own shadow
+   * root. These few page-chrome values (table backdrop, section heading
+   * style) are literal copies of themes/field-journal/theme.css's table
+   * tokens, inlined here the same way any consuming app would — the
+   * package has no public, document-level stylesheet to import from.
+   */
+      :root {
+        --table: #1d3a28;
+        --table-dark: #0e2217;
+        --table-highlight: #2f5039;
+        --ink: #4a3423;
+        --ink-soft: #7a6048;
+        --card: #f6ebd1;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        padding: 56px 72px 90px 164px;
+        font-family: "EB Garamond", Georgia, serif;
+        color: var(--ink);
+        background: radial-gradient(
+          ellipse at 50% 35%,
+          var(--table-highlight) 0%,
+          var(--table) 45%,
+          var(--table-dark) 100%
+        );
+      }
+      .demo-heading {
+        max-width: 960px;
+        margin: 0 auto 28px;
+        text-align: center;
+        color: var(--card);
+        font-family: "IM Fell English SC", Georgia, serif;
+      }
+      .demo-heading p {
+        font-family: "EB Garamond", Georgia, serif;
+        color: #cdbf9e;
+        font-size: 14px;
+      }
+      .section-label {
+        display: block;
+        margin: 0 0 10px;
+        font-family: "IM Fell English SC", Georgia, serif;
+        font-size: 13px;
+        letter-spacing: 0.08em;
+        color: var(--ink-soft);
+      }
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+      }
+      .stack {
+        display: grid;
+        gap: 16px;
+      }
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+      .sketch {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="demo-heading">
+      <h1 style="font-weight: 400; font-size: 28px; margin: 0 0 4px">
+        @tkottke90/theme-field-journal-wc
+      </h1>
+      <p>
+        Every component in the package, wired up as a real book — click a tab to switch sections.
+      </p>
+    </div>
+
+    <theme-journal-book id="book" selected="quests">
+      <!-- ============== Quests (red) — quest cards, progress, ribbon ============== -->
+      <theme-journal-page data-pair="quests" data-side="left" side="left">
+        <theme-heading level="1" style="text-align: center; display: block"
+          >Field Journal</theme-heading
+        >
+        <theme-divider></theme-divider>
+        <theme-text
+          variant="caption"
+          style="text-align: center; display: block; margin-bottom: 20px"
+          >The Lakeside Region</theme-text
+        >
+        <theme-taped
+          tilt="l"
+          caption="Lakeside Bridge"
+          style="display: block; max-width: 280px; margin: 0 auto"
+        >
+          <svg
+            class="sketch"
+            viewBox="0 0 220 130"
+            role="img"
+            aria-label="Sketch of a lakeside bridge"
+          >
+            <rect width="220" height="130" fill="#dfe6da" />
+            <path d="M0 62 C40 30 80 44 110 34 C150 22 180 40 220 30 V130 H0Z" fill="#a9b996" />
+            <path d="M0 76 C50 60 100 72 140 62 C170 56 200 64 220 60 V130 H0Z" fill="#8ea57a" />
+            <rect y="96" width="220" height="34" fill="#9cc2cc" />
+            <path
+              d="M14 66 H206 V98 H190 A80 24 0 0 0 30 98 H14Z"
+              fill="#bfae90"
+              stroke="#6b5a45"
+              stroke-width="1.2"
+            />
+          </svg>
+        </theme-taped>
+      </theme-journal-page>
+      <theme-journal-page data-pair="quests" data-side="right" side="right">
+        <theme-ribbon color="red">Active Quests</theme-ribbon>
+        <div style="margin-bottom: 18px">
+          <theme-progress label="Overall progress" value="42"></theme-progress>
+        </div>
+        <div class="stack">
+          <theme-quest-card
+            heading="The Lost Parcel"
+            location="Lakeside Village"
+            description="A villager's parcel went missing on its way to the far dock. Find it and return it to its owner."
+            color="red"
+            icon="parcel"
+            favorite
+          ></theme-quest-card>
+          <theme-quest-card
+            heading="A Light in the Woods"
+            location="Whisperwood"
+            description="Strange lights have been seen in the forest at night. Investigate and discover the truth."
+            color="blue"
+            icon="lantern"
+          ></theme-quest-card>
+        </div>
+      </theme-journal-page>
+
+      <!-- ============== Places (blue) — notes, blockquote, link ============== -->
+      <theme-journal-page data-pair="places" data-side="left" side="left">
+        <theme-ribbon color="blue">The Lakeside Region</theme-ribbon>
+        <theme-notes heading="Local notes">
+          The people here are friendly, and the lake is said to shimmer most brightly at dawn.
+        </theme-notes>
+      </theme-journal-page>
+      <theme-journal-page data-pair="places" data-side="right" side="right">
+        <theme-heading level="2">Lakeside Village</theme-heading>
+        <theme-text variant="body">
+          A modest fishing village at the lake's southern shore. The dock trades mostly in river
+          pike and reed-woven baskets.
+        </theme-text>
+        <theme-blockquote type="tip"
+          >Ask the ferryman about the old lighthouse — he knows every rumor on the
+          water.</theme-blockquote
+        >
+        <p style="margin-top: 14px">
+          <theme-link href="#">Read the full survey of the region</theme-link>
+        </p>
+      </theme-journal-page>
+
+      <!-- ============== People (tan) — container/item, field/input/select/textarea, buttons ============== -->
+      <theme-journal-page data-pair="people" data-side="left" side="left">
+        <theme-ribbon color="tan">Notable People</theme-ribbon>
+        <theme-container as="ul">
+          <theme-item>Old Maren, the ferryman — knows every rumor on the water.</theme-item>
+          <theme-item>Captain Soren, harbor master — short-tempered, fair-minded.</theme-item>
+          <theme-item>Little Tam, the ranger's apprentice — asks too many questions.</theme-item>
+        </theme-container>
+      </theme-journal-page>
+      <theme-journal-page data-pair="people" data-side="right" side="right">
+        <theme-heading level="2">Add a Contact</theme-heading>
+        <div class="stack" style="margin-top: 12px">
+          <theme-field label="Name">
+            <theme-input type="text" placeholder="Their name"></theme-input>
+          </theme-field>
+          <theme-field label="Role">
+            <theme-select>
+              <option>Villager</option>
+              <option>Merchant</option>
+              <option>Ranger</option>
+            </theme-select>
+          </theme-field>
+          <theme-field label="Notes">
+            <theme-textarea rows="3" placeholder="What do you know about them?"></theme-textarea>
+          </theme-field>
+          <div class="row">
+            <theme-button variant="primary" label="Save contact"></theme-button>
+            <theme-button variant="secondary" label="Cancel"></theme-button>
+            <theme-button variant="ghost" label="Clear"></theme-button>
+            <theme-button variant="primary" label="Disabled" disabled></theme-button>
+          </div>
+        </div>
+      </theme-journal-page>
+
+      <!-- ============== Creatures (green) — quest card, detail, blockquote ============== -->
+      <theme-journal-page data-pair="creatures" data-side="left" side="left">
+        <theme-ribbon color="green">Creature Log</theme-ribbon>
+        <theme-quest-card
+          heading="Three Rare Mushrooms"
+          location="Misty Grove"
+          description="A travelling chef needs three rare mushrooms for a special dish."
+          color="green"
+          icon="mushroom"
+          status="done"
+        ></theme-quest-card>
+        <theme-blockquote type="danger" style="margin-top: 14px"
+          >Do not approach the Emberhead cluster without gloves — the spores
+          sting.</theme-blockquote
+        >
+      </theme-journal-page>
+      <theme-journal-page data-pair="creatures" data-side="right" side="right">
+        <theme-heading level="2">Field Guide</theme-heading>
+        <theme-detail summary="What is an Azure Cap?">
+          <theme-text variant="body">
+            A pale blue mushroom found only near still water. Harmless, and prized for its faint
+            sweetness when dried.
+          </theme-text>
+        </theme-detail>
+        <theme-blockquote type="success" style="margin-top: 10px"
+          >Safe to forage, and sells well at the Collection stall.</theme-blockquote
+        >
+      </theme-journal-page>
+
+      <!-- ============== Notes (purple) — divider, taped, skeleton ============== -->
+      <theme-journal-page data-pair="notes" data-side="left" side="left">
+        <theme-ribbon color="purple">Field Notes</theme-ribbon>
+        <theme-taped
+          tilt="r"
+          caption="A pressed leaf"
+          style="display: block; max-width: 220px; margin: 0 auto"
+        >
+          <svg
+            class="sketch"
+            viewBox="0 0 160 120"
+            role="img"
+            aria-label="Sketch of a pressed leaf"
+          >
+            <rect width="160" height="120" fill="#f3ecd6" />
+            <path
+              d="M80 10 C110 30 120 70 80 110 C40 70 50 30 80 10Z"
+              fill="#8aa868"
+              stroke="#5f7d47"
+              stroke-width="2"
+            />
+            <path d="M80 15 V105" stroke="#5f7d47" stroke-width="1.5" />
+          </svg>
+        </theme-taped>
+        <theme-notes heading="Still to transcribe" style="margin-top: 14px">
+          The symbols on the old stone near Whisperwood don't match anything in the usual reference
+          books — worth a second look.
+        </theme-notes>
+      </theme-journal-page>
+      <theme-journal-page data-pair="notes" data-side="right" side="right">
+        <theme-heading level="2">Loading…</theme-heading>
+        <theme-skeleton-heading width="70%" style="margin-top: 10px"></theme-skeleton-heading>
+        <theme-skeleton-text width="100%"></theme-skeleton-text>
+        <theme-skeleton-text width="92%"></theme-skeleton-text>
+        <theme-skeleton-text width="60%"></theme-skeleton-text>
+        <theme-text variant="caption" style="display: block; margin-top: 16px"
+          >(a page not yet copied over from the field notebook)</theme-text
+        >
+      </theme-journal-page>
+
+      <!-- ============== Collection (orange) — card, blockquote variants ============== -->
+      <theme-journal-page data-pair="collection" data-side="left" side="left">
+        <theme-ribbon color="orange">Collection</theme-ribbon>
+        <div class="grid-2">
+          <theme-card heading="Pressed Flora">A small book of dried flowers and leaves.</theme-card>
+          <theme-card heading="River Stones"
+            >Smooth stones collected along the lakeshore.</theme-card
+          >
+          <theme-card heading="Old Coins">Three coins of a mint no one recognizes.</theme-card>
+          <theme-card heading="Feathers">Marked by color and the bird they came from.</theme-card>
+        </div>
+      </theme-journal-page>
+      <theme-journal-page data-pair="collection" data-side="right" side="right">
+        <theme-heading level="2">Margin Notes</theme-heading>
+        <div class="stack" style="margin-top: 10px">
+          <theme-blockquote type="info"
+            >Collection items only count once logged on this page.</theme-blockquote
+          >
+          <theme-blockquote type="question"
+            >Is the third coin actually foreign, or just old?</theme-blockquote
+          >
+          <theme-blockquote type="warning"
+            >The feather box is getting crowded — needs a second one.</theme-blockquote
+          >
+          <theme-blockquote type="example"
+            >E.g.: a Whisperwood owl feather, logged last spring.</theme-blockquote
+          >
+          <theme-blockquote type="quote"
+            >"Collect what you can carry, not what you can find." — Old Maren</theme-blockquote
+          >
+        </div>
+      </theme-journal-page>
+    </theme-journal-book>
+
+    <script type="module">
+      const TABS = [
+        { id: "quests", label: "Quests", color: "red", icon: "quest" },
+        { id: "places", label: "Places", color: "blue", icon: "pin" },
+        { id: "people", label: "People", color: "tan", icon: "person" },
+        { id: "creatures", label: "Creatures", color: "green", icon: "paw" },
+        { id: "notes", label: "Notes", color: "purple", icon: "feather" },
+        { id: "collection", label: "Collection", color: "orange", icon: "bag" },
+      ];
+
+      const book = document.getElementById("book");
+      book.tabs = TABS;
+
+      function showTab(id) {
+        document.querySelectorAll("theme-journal-page[data-pair]").forEach((page) => {
+          page.removeAttribute("slot");
+        });
+        document
+          .querySelector(`theme-journal-page[data-pair="${id}"][data-side="left"]`)
+          ?.setAttribute("slot", "left");
+        document
+          .querySelector(`theme-journal-page[data-pair="${id}"][data-side="right"]`)
+          ?.setAttribute("slot", "right");
+        book.selected = id;
+      }
+
+      book.addEventListener("journal-tab-change", (event) => showTab(event.detail.id));
+      showTab(book.selected);
+    </script>
+  </body>
+</html>
