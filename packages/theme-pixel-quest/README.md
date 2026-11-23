@@ -1,19 +1,25 @@
-# @tkottke90/theme-starter-wc
+# @tkottke90/theme-pixel-quest
 
-Starter / reference template for a component-library theme built as
-framework-agnostic Web Components with [Lit](https://lit.dev). Works in any
-project regardless of framework.
+Pixel-art RPG stat-sheet theme built as framework-agnostic Web Components
+with [Lit](https://lit.dev). Parchment background, pixel-stepped rounded
+corners, and a dark-green/gold palette lifted from a pixel-art poster.
 
-![Component gallery for @tkottke90/theme-starter-wc](./docs/screenshot.png)
+Covers CONTRIBUTING.md's full minimum component set (Button, Input, Card,
+Typography, Link, Container, Item, Field, Detail, Blockquote, Skeleton),
+plus bonus components: `theme-stat-meter` (the source image's repeated
+stat-bar widget) and `theme-page-frame` (the source's own whole-page
+border).
+
+![Component gallery for @tkottke90/theme-pixel-quest](./docs/screenshot.png)
 
 ## Usage
 
 ```
-npm install @tkottke90/theme-starter-wc lit
+npm install @tkottke90/theme-pixel-quest lit
 ```
 
 ```js
-import "@tkottke90/theme-starter-wc";
+import "@tkottke90/theme-pixel-quest";
 ```
 
 ```html
