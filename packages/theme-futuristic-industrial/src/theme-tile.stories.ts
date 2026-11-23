@@ -17,7 +17,7 @@ const meta: Meta = {
       <theme-tile>
         <theme-heading level="4">Locked</theme-heading>
       </theme-tile>
-      <theme-tile .hatched=${false}>
+      <theme-tile plain>
         <theme-heading level="4">Open</theme-heading>
       </theme-tile>
     </div>

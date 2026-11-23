@@ -7,8 +7,8 @@ import { computeTile } from "./tile-geometry.js";
 
 /**
  * A dark tile for an icon, a short status ("LOCKED") or a number, from the
- * reference sheet's rounded tile with a hatched corner. `hatched` (on by
- * default) cuts light stripes into the bottom-right corner to flag it.
+ * reference sheet's rounded tile with a hatched corner: light stripes cut
+ * into the bottom-right corner. Set `plain` to drop them.
  * Slotted text switches to light colors, as in `theme-casing`.
  */
 @customElement("theme-tile")
@@ -26,7 +26,8 @@ export class ThemeTile extends LitElement {
     `,
   ];
 
-  @property({ type: Boolean, reflect: true }) hatched = true;
+  /** Drops the hatched corner. (An attribute, so it can be set from plain HTML.) */
+  @property({ type: Boolean, reflect: true }) plain = false;
 
   private frame = new ResizeFrameController(this, computeTile);
 
@@ -42,7 +43,7 @@ export class ThemeTile extends LitElement {
           <defs><clipPath id="tile-body"><path d=${g?.bodyD ?? ""} /></clipPath></defs>
           <path d=${g?.bodyD ?? ""} fill="var(--color-neutral-900)" />
           ${
-            this.hatched
+            !this.plain
               ? svg`<path d=${g?.hatchD ?? ""} fill="var(--color-neutral-50)" clip-path="url(#tile-body)" />`
               : null
           }
