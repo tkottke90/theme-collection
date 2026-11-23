@@ -50,6 +50,17 @@ Stop and ask the user for anything missing here. Never guess these:
    `storybook`, and `build-storybook` scripts untouched — do not add,
    remove, or rewrite them.
 
+   **Immediately rename every Storybook story title.** The starter's story
+   files all carry a stale `title:` prefix (`Theme/Starter WC/...` or
+   `Theme/Starter CSS/...`) that silently rides along into the copy — it's
+   not something you'll notice by looking at the component code. Do this
+   now, not at the end:
+
+   ```
+   grep -rln "Starter" stories/ src/ 2>/dev/null | xargs sed -i 's#Theme/Starter [A-Za-z]*#Theme/<Name>#g'
+   grep -rn "Starter" stories/ src/ 2>/dev/null   # must return nothing
+   ```
+
 2. **Read the image closely before extracting anything.** Work out what the
    user wants captured (the style, not necessarily the exact screen — their
    notes override what's in the image) and build a short component inventory
@@ -73,6 +84,16 @@ Stop and ask the user for anything missing here. Never guess these:
    when it's a drop shadow). Zoom in mentally on edges and corners before
    deciding border-radius/shadow values, and state your reading in plain
    words in the summary so the user can correct it quickly if it's wrong.
+
+   **Surface every bonus-component candidate now, not after delivery.** Go
+   back through the inventory table you just built and flag any row that
+   doesn't map onto a CONTRIBUTING.md minimum-set component (a sidebar, a
+   game tile, a gauge, a transport control) as a bonus-component candidate.
+   List these explicitly when you present the read-back and ask once,
+   whether or not the user's request mentioned them — recognizing the
+   surface during sampling and then staying quiet about it is the failure
+   mode to avoid. Don't wait for the user to notice it's missing after
+   you've already delivered the package.
 
    **Sample colors from the image instead of eyeballing them.** If the image
    is a file on disk, use Python (PIL) to read actual pixel values from each
@@ -112,7 +133,32 @@ Stop and ask the user for anything missing here. Never guess these:
    for `theme-starter-react`). Don't invent a new tokens mechanism — use
    the one the starter ships with.
 
-4. **Replace the starter's example components** with real implementations
+4. **Check contrast before building components.** A color's being "read
+   directly" from the image or carefully "estimated" doesn't mean it's
+   usable as text — sampled mid-tone brand colors and pastel accents
+   routinely fail WCAG AA. For every text/background pairing your token set
+   implies (body text on surface, each semantic/blockquote color on its
+   fill, a button's label on its fill, nav-link text on its surface), check
+   the contrast ratio and require 4.5:1 for normal text or 3:1 for large/
+   bold text and non-text indicators (borders, icons):
+
+   ```python
+   def lum(h):
+       c = [int(h.lstrip('#')[i:i+2], 16) / 255 for i in (0, 2, 4)]
+       c = [x / 12.92 if x <= .03928 else ((x + .055) / 1.055) ** 2.4 for x in c]
+       return .2126 * c[0] + .7152 * c[1] + .0722 * c[2]
+   def ratio(a, b):
+       a, b = lum(a), lum(b); return (max(a, b) + .05) / (min(a, b) + .05)
+   ```
+
+   Fix a failure by shifting the color darker or lighter **within the same
+   hue** — never by changing which color it is — and say in the final
+   summary which tokens were adjusted this way and what they were sampled
+   or estimated as originally. This applies to tokens the image's own
+   design fails at too (a low-contrast nav label in the source is still a
+   bug once it's in a token, not a faithful reproduction worth preserving).
+
+5. **Replace the starter's example components** with real implementations
    of the requested component list, built on the tokens from step 3 — not
    hardcoded values. This is CONTRIBUTING.md step 3 ("Replace the example
    styles/components with the real theme").
@@ -163,11 +209,11 @@ Stop and ask the user for anything missing here. Never guess these:
    shape and layout Tailwind can't reach, not an excuse to bypass the
    token pipeline.
 
-5. **Tests and stories** (CONTRIBUTING.md step 5): write at least one
+6. **Tests and stories** (CONTRIBUTING.md step 5): write at least one
    Storybook story and one Jest test per component. Don't skip this even
    if the component is simple.
 
-6. **Run the required checks** scoped to the new package, per
+7. **Run the required checks** scoped to the new package, per
    `AGENTS.md` ("Before considering a change done"):
 
    ```
@@ -181,10 +227,30 @@ Stop and ask the user for anything missing here. Never guess these:
    A change isn't finished if any of these fail — fix the underlying
    issue, don't weaken a check to get it green.
 
-7. **Summarize for the user**: which values were read directly from the
-   image/inputs vs. estimated, which components were built (minimum set
-   plus any bonus components), which technique-ladder rung each non-trivial
-   shape used, and confirm all checks in step 6 passed.
+   **Verify every declared token survived compilation.** A Tailwind v4
+   `@theme` token that nothing references gets silently dropped from the
+   compiled CSS — it won't error, it'll just resolve to nothing at runtime.
+   After building, grep the compiled output for each token name declared in
+   `theme.css`:
+
+   ```
+   grep -q -- "--color-your-token" packages/theme-<name>/dist/index.css && echo found || echo MISSING
+   ```
+
+   A token that didn't survive is either dead (nothing uses it — delete
+   it from `theme.css`) or genuinely needed by hand-written CSS that only
+   reaches it through a plain `var(...)` with no matching Tailwind utility
+   class anywhere in the content-scanned files (the common case for a WC
+   package's rung-2/3 hand-written `css` blocks, which Tailwind's content
+   scan doesn't parse as real CSS). In that case switch `@theme {}` to
+   `@theme static {}` in `theme.css` to force full emission, rather than
+   leaving a token that looks wired up but silently isn't.
+
+8. **Summarize for the user**: which values were read directly from the
+   image/inputs vs. estimated, which contrast fixes were applied and why,
+   which components were built (minimum set plus any bonus components),
+   which technique-ladder rung each non-trivial shape used, and confirm all
+   checks in step 7 passed.
 
 ## Guardrails
 
@@ -196,7 +262,7 @@ Stop and ask the user for anything missing here. Never guess these:
   required input in step 0.
 - Don't commit build output (`dist/`, `storybook-static/`) — same as every
   other package in this repo.
-- Hand-written CSS for a shape Tailwind can't express (step 4's technique
+- Hand-written CSS for a shape Tailwind can't express (step 5's technique
   ladder, rungs 2–3) still reads colors and fonts from `var(--color-*)` /
   `var(--font-*)` tokens, never a literal hex code or font name — the same
   "no hand-copied token values" rule from `AGENTS.md` applies whether the
