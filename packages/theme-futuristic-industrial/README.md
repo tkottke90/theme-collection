@@ -43,6 +43,19 @@ than a single reskinned shape:
   chamfered (top-right/bottom-left) with the stripe on the bottom-left cut,
   so it doesn't read as a smaller Card.
 
+**Hazard Container** uses a separate frame (`hazard-frame-geometry.ts`)
+rebuilt from the reference sheet's hazard-stripe bar: an orange band with
+charcoal diagonal stripes inset from both edges, chamfered at the top-right
+and bottom-left like the bar's ends. Stripe spacing, width, margin and lean
+are the bar's measured proportions scaled to the band thickness, and the
+stripes are one continuous pattern, so they run around the corners instead of
+restarting on each edge. Use it for restricted or high-attention areas, not
+everyday grouping.
+
+```html
+<theme-hazard-container>Restricted zone. Authorised personnel only.</theme-hazard-container>
+```
+
 ## Local development
 
 ```

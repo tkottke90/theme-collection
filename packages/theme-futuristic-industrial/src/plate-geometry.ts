@@ -17,7 +17,7 @@ export type Corner = "tl" | "tr" | "br" | "bl";
 
 const ALL_CORNERS: Corner[] = ["tl", "tr", "br", "bl"];
 
-interface Outline {
+export interface Outline {
   /** Outline points, clockwise, starting at the top edge. */
   pts: Point[];
   /** For each chamfered corner, the index pair of its two outline points. */
@@ -31,7 +31,12 @@ interface Outline {
  * the result is a valid clockwise polygon for `inset()` regardless of which
  * corners are cut.
  */
-function outline(w: number, h: number, cut: number, cutCorners: ReadonlySet<Corner>): Outline {
+export function outline(
+  w: number,
+  h: number,
+  cut: number,
+  cutCorners: ReadonlySet<Corner>,
+): Outline {
   const pts: Point[] = [];
   const cutIndex: Outline["cutIndex"] = {};
 
@@ -59,7 +64,7 @@ function outline(w: number, h: number, cut: number, cutCorners: ReadonlySet<Corn
  * `inset()`, just not shared across packages (see that file's own note on
  * why these geometry modules are duplicated rather than imported).
  */
-function inset(pts: Point[], d: number): Point[] {
+export function inset(pts: Point[], d: number): Point[] {
   const n = pts.length;
   const normal = (a: Point, b: Point): Point => {
     const dx = b[0] - a[0];
@@ -76,7 +81,7 @@ function inset(pts: Point[], d: number): Point[] {
 }
 
 const fmt = ([x, y]: Point) => `${+x.toFixed(2)},${+y.toFixed(2)}`;
-const closed = (pts: Point[]) => "M" + pts.map(fmt).join(" L") + " Z";
+export const closed = (pts: Point[]) => "M" + pts.map(fmt).join(" L") + " Z";
 
 const RIVET_POS: Record<Corner, (w: number, h: number, m: number) => Point> = {
   tl: (_w, _h, m) => [m, m],

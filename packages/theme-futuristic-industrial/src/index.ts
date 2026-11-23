@@ -19,3 +19,4 @@ export type { BlockquoteType } from "./theme-blockquote.js";
 export { ThemeSkeletonHeading } from "./theme-skeleton-heading.js";
 export { ThemeSkeletonText } from "./theme-skeleton-text.js";
 export { ThemePlate } from "./theme-plate.js";
+export { ThemeHazardContainer } from "./theme-hazard-container.js";
