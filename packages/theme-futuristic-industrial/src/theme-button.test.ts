@@ -47,4 +47,26 @@ describe("theme-button", () => {
 
     el.remove();
   });
+
+  it("forwards accessible-label to the inner button", async () => {
+    const el = document.createElement("theme-button") as ThemeButton;
+    el.label = "▲";
+    el.setAttribute("accessible-label", "Lift up");
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    expect(el.shadowRoot?.querySelector("button")?.getAttribute("aria-label")).toBe("Lift up");
+
+    el.remove();
+  });
+
+  it("leaves aria-label off when no accessible-label is set", async () => {
+    const el = document.createElement("theme-button") as ThemeButton;
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    expect(el.shadowRoot?.querySelector("button")?.hasAttribute("aria-label")).toBe(false);
+
+    el.remove();
+  });
 });
