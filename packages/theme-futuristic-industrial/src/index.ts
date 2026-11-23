@@ -32,3 +32,4 @@ export { ThemeStripeBand } from "./theme-stripe-band.js";
 export { ThemeBracketRail } from "./theme-bracket-rail.js";
 export { ThemeBracketTag } from "./theme-bracket-tag.js";
 export type { BracketTagVariant } from "./theme-bracket-tag.js";
+export { ThemeRegistrationFrame } from "./theme-registration-frame.js";
