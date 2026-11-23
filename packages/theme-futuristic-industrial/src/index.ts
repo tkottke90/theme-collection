@@ -28,3 +28,4 @@ export { ThemeSegmentedRule } from "./theme-segmented-rule.js";
 export type { SegmentedRuleOrientation } from "./theme-segmented-rule.js";
 export { ThemeChevronRule } from "./theme-chevron-rule.js";
 export type { ChevronDirection } from "./chevron-geometry.js";
+export { ThemeStripeBand } from "./theme-stripe-band.js";
