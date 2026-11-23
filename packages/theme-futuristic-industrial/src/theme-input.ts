@@ -24,7 +24,7 @@ export class ThemeInput extends LitElement {
     const isBoxType = this.type === "checkbox" || this.type === "radio";
     const classes = isBoxType
       ? "accent-brand-500"
-      : "rounded-theme border border-neutral-300 px-3 py-2 [font:inherit] text-neutral-900 focus:outline focus:outline-2 focus:outline-brand-500 focus:outline-offset-1";
+      : "rounded-theme border border-neutral-300 bg-neutral-50 px-3 py-2 [font:inherit] text-neutral-900 focus:outline focus:outline-2 focus:outline-brand-500 focus:outline-offset-1";
 
     return html`<input
       type=${this.type}

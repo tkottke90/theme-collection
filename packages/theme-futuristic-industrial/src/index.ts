@@ -20,3 +20,4 @@ export { ThemeSkeletonHeading } from "./theme-skeleton-heading.js";
 export { ThemeSkeletonText } from "./theme-skeleton-text.js";
 export { ThemePlate } from "./theme-plate.js";
 export { ThemeHazardContainer } from "./theme-hazard-container.js";
+export { ThemeCasing } from "./theme-casing.js";

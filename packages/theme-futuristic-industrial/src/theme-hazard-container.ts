@@ -2,6 +2,7 @@ import { LitElement, css } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { html as staticHtml, literal, type StaticValue } from "lit/static-html.js";
 import { themeStyles } from "./generated/theme-styles.js";
+import { lightSurface } from "./surfaces.js";
 import { HazardFrameController } from "./hazard-frame-controller.js";
 import { renderHazardFrame } from "./hazard-frame-svg.js";
 import type { ThemeContainerTag } from "./theme-container.js";
@@ -22,6 +23,7 @@ const TAGS: Record<ThemeContainerTag, StaticValue> = {
 export class ThemeHazardContainer extends LitElement {
   static styles = [
     themeStyles,
+    lightSurface,
     css`
       :host {
         display: block;

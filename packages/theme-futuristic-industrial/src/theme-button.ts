@@ -5,8 +5,9 @@ import { themeStyles } from "./generated/theme-styles.js";
 const VARIANT_CLASSES: Record<"primary" | "secondary" | "ghost", string> = {
   primary: "chamfer bg-brand-500 text-neutral-900 hover:bg-brand-600",
   secondary:
-    "rounded-theme bg-transparent text-brand-700 border border-brand-700 hover:bg-brand-50",
-  ghost: "rounded-theme bg-transparent text-brand-700 hover:bg-brand-50",
+    "rounded-theme bg-transparent text-link border border-current hover:bg-[color-mix(in_srgb,currentColor_10%,transparent)]",
+  ghost:
+    "rounded-theme bg-transparent text-link hover:bg-[color-mix(in_srgb,currentColor_10%,transparent)]",
 };
 
 @customElement("theme-button")

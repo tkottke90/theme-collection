@@ -48,7 +48,8 @@ export class ResizeFrameController<TGeometry> implements ReactiveController {
     this.resizeObserver = undefined;
   }
 
-  private measure(): void {
+  /** Recomputes `geometry`; call it when something other than size changes the shape. */
+  measure(): void {
     this.geometry = this.compute(this.host.offsetWidth, this.host.offsetHeight);
     this.host.requestUpdate();
   }

@@ -26,7 +26,7 @@ export class ThemeItem extends LitElement {
 
   render() {
     const tag = TAGS[this.as] ?? TAGS.li;
-    return staticHtml`<${tag} class="relative pl-4 py-2 border-b border-neutral-100 text-neutral-900 last:border-b-0 before:absolute before:inset-y-0.5 before:left-0 before:w-1.5 before:bg-hazard"><slot></slot></${tag}>`;
+    return staticHtml`<${tag} class="relative pl-4 py-2 border-b border-neutral-100 text-fg last:border-b-0 before:absolute before:inset-y-0.5 before:left-0 before:w-1.5 before:bg-hazard"><slot></slot></${tag}>`;
   }
 }
 

@@ -22,7 +22,7 @@ export class ThemeTextarea extends LitElement {
       rows=${this.rows}
       .value=${this.value}
       placeholder=${this.placeholder}
-      class="rounded-theme border border-neutral-300 px-3 py-2 [font:inherit] text-neutral-900 focus:outline focus:outline-2 focus:outline-brand-500 focus:outline-offset-1"
+      class="rounded-theme border border-neutral-300 bg-neutral-50 px-3 py-2 [font:inherit] text-neutral-900 focus:outline focus:outline-2 focus:outline-brand-500 focus:outline-offset-1"
     ></textarea>`;
   }
 }

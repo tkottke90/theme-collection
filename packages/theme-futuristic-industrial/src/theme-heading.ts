@@ -25,7 +25,7 @@ export class ThemeHeading extends LitElement {
 
   render() {
     const tag = TAGS[this.level] ?? TAGS[1];
-    return staticHtml`<${tag} class="font-sans text-neutral-900"><slot></slot></${tag}>`;
+    return staticHtml`<${tag} class="font-sans text-fg"><slot></slot></${tag}>`;
   }
 }
 

@@ -16,7 +16,7 @@ export class ThemeLink extends LitElement {
   @property({ type: String }) href = "#";
 
   render() {
-    return html`<a href=${this.href} class="font-sans text-brand-700 underline hover:text-brand-900"
+    return html`<a href=${this.href} class="font-sans text-link underline hover:text-link-hover"
       ><slot></slot
     ></a>`;
   }

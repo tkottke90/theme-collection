@@ -27,8 +27,8 @@ export class ThemeText extends LitElement {
     const tag = TAGS[this.variant] ?? TAGS.body;
     const classes =
       this.variant === "caption"
-        ? "font-sans block text-neutral-500 text-[0.8125rem]"
-        : "font-sans m-0 text-neutral-900";
+        ? "font-sans block text-fg-muted text-[0.8125rem]"
+        : "font-sans m-0 text-fg";
     return staticHtml`<${tag} class=${classes}><slot></slot></${tag}>`;
   }
 }

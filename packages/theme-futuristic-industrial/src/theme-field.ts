@@ -19,9 +19,7 @@ export class ThemeField extends LitElement {
   render() {
     return html`
       <div class="field font-sans flex flex-col gap-1.5">
-        <label
-          for=${this.for}
-          class="font-semibold text-neutral-900 text-sm tracking-wide uppercase"
+        <label for=${this.for} class="font-semibold text-fg text-sm tracking-wide uppercase"
           >${this.label}</label
         >
         <slot></slot>

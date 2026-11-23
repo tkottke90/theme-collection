@@ -1,4 +1,5 @@
-import { closed, inset, outline, type Corner } from "./plate-geometry.js";
+import { closed, inset } from "./path-utils.js";
+import { outline, type Corner } from "./plate-geometry.js";
 
 /**
  * Proportions of the reference sheet's hazard-stripe bar, measured in pixels
@@ -13,6 +14,25 @@ const SOURCE_MARGIN = 10;
 
 /** Stripe lean: 42px of horizontal travel over the 47px stripe height. */
 export const HAZARD_SKEW_DEG = 41.8;
+
+export interface HazardStripeScale {
+  /** Distance between stripe starts, px. */
+  pitch: number;
+  /** Horizontal width of one stripe, px. */
+  stripeWidth: number;
+  /** Orange margin between the band's edge and the stripes, px. */
+  margin: number;
+}
+
+/** The source bar's stripe proportions scaled to a band `thickness` px tall. */
+export function hazardStripeScale(thickness: number): HazardStripeScale {
+  const s = thickness / SOURCE_HEIGHT;
+  return {
+    pitch: +(SOURCE_PITCH * s).toFixed(2),
+    stripeWidth: +(SOURCE_STRIPE_WIDTH * s).toFixed(2),
+    margin: SOURCE_MARGIN * s,
+  };
+}
 
 export interface HazardFrameOptions {
   /** Width of the striped band, px. Default 18. */
@@ -56,19 +76,11 @@ export function computeHazardFrame(
   const cutCorners = new Set<Corner>(options.cutCorners ?? ["tr", "bl"]);
   const { pts } = outline(w, h, cut, cutCorners);
 
-  const scale = t / SOURCE_HEIGHT;
-  const margin = SOURCE_MARGIN * scale;
+  const { pitch, stripeWidth, margin } = hazardStripeScale(t);
 
   const innerD = closed(inset(pts, t));
   const bandD = `${closed(pts)} ${innerD}`;
   const stripeD = `${closed(inset(pts, margin))} ${closed(inset(pts, t - margin))}`;
 
-  return {
-    viewBox: `0 0 ${w} ${h}`,
-    bandD,
-    stripeD,
-    innerD,
-    pitch: +(SOURCE_PITCH * scale).toFixed(2),
-    stripeWidth: +(SOURCE_STRIPE_WIDTH * scale).toFixed(2),
-  };
+  return { viewBox: `0 0 ${w} ${h}`, bandD, stripeD, innerD, pitch, stripeWidth };
 }

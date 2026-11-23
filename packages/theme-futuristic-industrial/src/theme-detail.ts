@@ -1,11 +1,13 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { themeStyles } from "./generated/theme-styles.js";
+import { lightSurface } from "./surfaces.js";
 
 @customElement("theme-detail")
 export class ThemeDetail extends LitElement {
   static styles = [
     themeStyles,
+    lightSurface,
     css`
       :host {
         display: block;

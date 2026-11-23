@@ -12,7 +12,8 @@
  * component three visually distinct borders from one tested shape.
  */
 
-export type Point = readonly [number, number];
+import { closed, inset, type Point } from "./path-utils.js";
+
 export type Corner = "tl" | "tr" | "br" | "bl";
 
 const ALL_CORNERS: Corner[] = ["tl", "tr", "br", "bl"];
@@ -57,31 +58,6 @@ export function outline(
 
   return { pts, cutIndex };
 }
-
-/**
- * Shifts every vertex inward by `d`, keeping each edge parallel to the
- * original (a miter offset) — identical approach to `hud-geometry.ts`'s
- * `inset()`, just not shared across packages (see that file's own note on
- * why these geometry modules are duplicated rather than imported).
- */
-export function inset(pts: Point[], d: number): Point[] {
-  const n = pts.length;
-  const normal = (a: Point, b: Point): Point => {
-    const dx = b[0] - a[0];
-    const dy = b[1] - a[1];
-    const len = Math.hypot(dx, dy);
-    return [-dy / len, dx / len];
-  };
-  return pts.map((p, i) => {
-    const n1 = normal(pts[(i - 1 + n) % n] as Point, p);
-    const n2 = normal(p, pts[(i + 1) % n] as Point);
-    const f = d / (1 + n1[0] * n2[0] + n1[1] * n2[1]);
-    return [p[0] + (n1[0] + n2[0]) * f, p[1] + (n1[1] + n2[1]) * f] as Point;
-  });
-}
-
-const fmt = ([x, y]: Point) => `${+x.toFixed(2)},${+y.toFixed(2)}`;
-export const closed = (pts: Point[]) => "M" + pts.map(fmt).join(" L") + " Z";
 
 const RIVET_POS: Record<Corner, (w: number, h: number, m: number) => Point> = {
   tl: (_w, _h, m) => [m, m],

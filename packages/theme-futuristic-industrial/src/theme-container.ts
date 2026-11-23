@@ -2,6 +2,7 @@ import { LitElement, css } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { html as staticHtml, literal, type StaticValue } from "lit/static-html.js";
 import { themeStyles } from "./generated/theme-styles.js";
+import { lightSurface } from "./surfaces.js";
 import { PlateFrameController } from "./plate-frame-controller.js";
 import { renderPlateFrame } from "./plate-frame-svg.js";
 
@@ -22,6 +23,7 @@ const TAGS: Record<ThemeContainerTag, StaticValue> = {
 export class ThemeContainer extends LitElement {
   static styles = [
     themeStyles,
+    lightSurface,
     css`
       :host {
         display: block;

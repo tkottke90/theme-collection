@@ -1,6 +1,7 @@
 import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { themeStyles } from "./generated/theme-styles.js";
+import { lightSurface } from "./surfaces.js";
 
 export type BlockquoteType =
   | "info"
@@ -55,7 +56,7 @@ const ACCENT_TEXT_CLASSES: Record<BlockquoteType, string> = {
 
 @customElement("theme-blockquote")
 export class ThemeBlockquote extends LitElement {
-  static styles = [themeStyles];
+  static styles = [themeStyles, lightSurface];
 
   @property({ type: String, reflect: true }) type: BlockquoteType = "info";
 

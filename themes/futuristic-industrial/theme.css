@@ -4,8 +4,16 @@
   --color-neutral-50: #eff2f7;
   --color-neutral-100: #dde1e8;
   --color-neutral-300: #aab0ba;
-  --color-neutral-500: #71757d;
+  --color-neutral-500: #676b72;
   --color-neutral-900: #3d3e41;
+
+  /* Text roles. Each reads an optional --theme-* override first, so a dark
+     surface (theme-casing) can switch slotted text to light values; light
+     surfaces reset the overrides back to these defaults. */
+  --color-fg: var(--theme-fg, var(--color-neutral-900));
+  --color-fg-muted: var(--theme-fg-muted, var(--color-neutral-500));
+  --color-link: var(--theme-link, var(--color-brand-700));
+  --color-link-hover: var(--theme-link-hover, var(--color-brand-900));
 
   /* Brand orange sampled directly from the sheet's stripe/accent fills.
      600/700 are the same hue darkened (never re-hued) so brand text/links
