@@ -1,0 +1,52 @@
+@theme static {
+  --color-bg: #e8cfa0;
+  --color-bg-alt: #d1c38f;
+
+  --color-panel: #1d3c24;
+  --color-panel-border: #141a06;
+  --color-panel-border-gold: #a89d64;
+  --color-panel-text: #e8d9ab;
+
+  --color-progress-fill: #4a9640;
+  --color-progress-track: #3c3429;
+
+  --color-border: #6a6639;
+
+  --color-brand-50: #e7f2e3;
+  --color-brand-100: #c3ddba;
+  --color-brand-500: #4a9640;
+  --color-brand-600: #2a5c26;
+  --color-brand-900: #1d3c24;
+
+  --color-neutral-50: #f5ead2;
+  --color-neutral-100: #e8cfa0;
+  --color-neutral-300: #c9b588;
+  --color-neutral-500: #8c7a54;
+  --color-neutral-900: #241a0a;
+
+  --color-info-500: #2c4e68;
+  --color-tip-500: #425c28;
+  --color-question-500: #553d6e;
+  --color-success-500: var(--color-brand-600);
+  --color-warning-500: #6e5418;
+  --color-failure-500: var(--color-danger-500);
+  --color-danger-500: #7e3326;
+  --color-bug-500: #8a3d5c;
+  --color-example-500: #605024;
+  --color-quote-500: var(--color-text-muted);
+
+  --color-text: #241a0a;
+  --color-text-muted: #5a4a32;
+
+  --color-skeleton-base: #ddc69a;
+  --color-skeleton-highlight: #f0e0bc;
+
+  --font-pixel: "Pixelify Sans", "Press Start 2P", ui-monospace, monospace;
+  --font-slab: "Courier Prime", ui-monospace, monospace;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --radius-theme: 0px;
+  --pixel-step: 6px;
+
+  --shadow-theme: 3px 3px 0 var(--color-panel-border);
+}

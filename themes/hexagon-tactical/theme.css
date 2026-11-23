@@ -1,0 +1,66 @@
+@theme static {
+  --color-bg: #0d0d0d;
+  --color-void: #0d0d0d;
+  --color-surface: #151515;
+  --color-surface-raised: #1c1c1c;
+  --color-surface-alt: #2a2a2a;
+  --color-border: #4a4a4a;
+  --color-border-hi: #6a6a6a;
+  --color-border-lo: #2a2a2a;
+
+  --color-brand-400: #c8ec70;
+  --color-brand-500: #a3ce42;
+  --color-brand-600: #5f8420;
+  --color-brand-900: #1d2a06;
+
+  --color-chip: #3b3c41;
+  --color-chip-ring: #8d9096;
+  --color-chip-blue: #3d4262;
+  --color-chip-ring-blue: #6f78c4;
+  --color-chip-rust: #5a2b1f;
+  --color-chip-ring-rust: #d36a42;
+
+  --color-neutral-50: #f4f4f4;
+  --color-neutral-100: #d4d4d4;
+  --color-neutral-300: #8a8a8a;
+  --color-neutral-500: #55585a;
+  --color-neutral-900: #151515;
+
+  --color-info-500: var(--color-chip-ring-blue);
+  --color-tip-500: #2dd4bf;
+  --color-question-500: #a78bfa;
+  --color-success-500: var(--color-brand-500);
+  --color-warning-500: #f59e0b;
+  --color-failure-500: var(--color-danger-500);
+  --color-danger-500: #e0573c;
+  --color-danger-btn: #a12a22;
+  --color-bug-500: #f472b6;
+  --color-example-500: var(--color-chip-ring-rust);
+  --color-quote-500: var(--color-text-muted);
+
+  --color-text: #e4e4e4;
+  --color-text-muted: #9a9a9a;
+
+  --color-skeleton-base: #1c1c1c;
+  --color-skeleton-highlight: #2a2a2a;
+
+  --font-sans: "Chakra Petch", "Rajdhani", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Share Tech Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --radius-theme: 0.3125rem;
+  --radius-theme-sm: 0.25rem;
+
+  --shadow-glow: 0 0 0 1px var(--color-brand-600), 0 0 16px 0 rgb(163 206 66 / 0.35);
+
+  --background-image-carbon:
+    linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px,
+    linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0,
+    linear-gradient(27deg, #232323 5px, transparent 5px) 0 10px,
+    linear-gradient(207deg, #232323 5px, transparent 5px) 10px 5px,
+    linear-gradient(90deg, #1b1b1b 10px, transparent 10px),
+    linear-gradient(#1d1d1d 25%, #1a1a1a 25% 50%, transparent 50% 75%, #242424 75%);
+
+  --background-image-brackets: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'><g fill='none' stroke='%235a5c60' stroke-width='3'><path d='M1.5 14 V1.5 H14'/><svg x='100%25' overflow='visible'><path d='M-1.5 14 V1.5 H-14'/></svg><svg y='100%25' overflow='visible'><path d='M1.5 -14 V-1.5 H14'/></svg><svg x='100%25' y='100%25' overflow='visible'><path d='M-1.5 -14 V-1.5 H-14'/></svg></g></svg>");
+
+  --background-image-socket: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 35'><path d='M10 1.5 H30 L38.5 17.5 L30 33.5 H10 L1.5 17.5Z' fill='%23161616' stroke='%23292929' stroke-width='2'/></svg>");
+}
