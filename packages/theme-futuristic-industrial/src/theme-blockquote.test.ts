@@ -24,4 +24,35 @@ describe("theme-blockquote", () => {
 
     el.remove();
   });
+
+  it("renders warning and danger as tags whose colors pass on the plate", async () => {
+    for (const [type, plate, fg] of [
+      ["warning", "bg-caution-500", "text-neutral-900"],
+      ["danger", "bg-danger-500", "text-neutral-50"],
+    ] as const) {
+      const el = document.createElement("theme-blockquote") as ThemeBlockquote;
+      el.type = type;
+      document.body.appendChild(el);
+      await el.updateComplete;
+
+      const quote = el.shadowRoot!.querySelector("blockquote")!;
+      expect(quote.className).toContain(plate);
+      expect(quote.className).toContain(fg);
+      expect(quote.className).not.toContain("border-l-4");
+      expect(quote.getAttribute("style")).toContain("--theme-link:");
+
+      el.remove();
+    }
+  });
+
+  it("keeps the tinted, left-ruled treatment for the other variants", async () => {
+    const el = document.createElement("theme-blockquote") as ThemeBlockquote;
+    el.type = "tip";
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    expect(el.shadowRoot!.querySelector("blockquote")!.className).toContain("border-l-4");
+
+    el.remove();
+  });
 });

@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit";
 import "./theme-blockquote.js";
+import "./theme-link.js";
+import "./theme-text.js";
 
 const meta: Meta = {
   title: "Theme/Futuristic Industrial/Blockquote",
@@ -22,3 +24,23 @@ export const Danger: Story = { args: { type: "danger" } };
 export const Bug: Story = { args: { type: "bug" } };
 export const Example: Story = { args: { type: "example" } };
 export const Quote: Story = { args: { type: "quote" } };
+
+/** Slotted text and links switch to colors that pass on each tag's plate. */
+export const TagsWithContent: Story = {
+  render: () => html`
+    <div style="display:grid;gap:16px">
+      <theme-blockquote type="warning">
+        <theme-text>Restrict unescorted access beyond Bay 4.</theme-text>
+        <theme-text variant="caption"
+          >Issued 04:12 · <theme-link href="#">directive</theme-link></theme-text
+        >
+      </theme-blockquote>
+      <theme-blockquote type="danger">
+        <theme-text>Containment breach protocol is armed.</theme-text>
+        <theme-text variant="caption"
+          >Override needs Level 3 · <theme-link href="#">protocol</theme-link></theme-text
+        >
+      </theme-blockquote>
+    </div>
+  `,
+};

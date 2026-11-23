@@ -25,18 +25,17 @@
   --color-brand-700: #98590c;
   --color-brand-900: #4a2c08;
 
-  /* Caution-tag yellow sampled directly from the CAUTION/BIOHAZARD badges;
-     used as a fill/accent, not as text. */
+  /* Caution-tag yellow sampled directly from the CAUTION/BIOHAZARD badges.
+     It's the warning Blockquote's plate, with ink text on it (6.86:1). */
   --color-caution-500: #f6cb13;
 
-  /* Semantic set: warning reuses the sheet's own caution hue, darkened for
-     text use the same way brand-500 was; the rest are estimated to fit the
-     same hazard-tag family while each clearing 4.5:1 on the background. */
+  /* Semantic set, estimated to fit the same hazard-tag family while each
+     clearing 4.5:1 on the background. Warning has no token of its own: it is
+     the caution plate above. */
   --color-info-500: #1d6fb8;
   --color-tip-500: #0a6e61;
   --color-question-500: #6b3fa0;
   --color-success-500: #1f7a3d;
-  --color-warning-500: #8a6300;
   --color-failure-500: #b23a2e;
   --color-danger-500: #8c1f1f;
   --color-bug-500: #a02463;
