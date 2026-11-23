@@ -10,6 +10,7 @@ export function hazardPattern(
   pitch: number,
   stripeWidth: number,
   fill = "var(--color-neutral-900)",
+  skew = HAZARD_SKEW_DEG,
 ) {
   return svg`
     <pattern
@@ -17,7 +18,7 @@ export function hazardPattern(
       patternUnits="userSpaceOnUse"
       width=${pitch}
       height=${pitch}
-      patternTransform="skewX(${HAZARD_SKEW_DEG})"
+      patternTransform="skewX(${skew})"
     >
       <rect width=${stripeWidth} height=${pitch} fill=${fill} />
     </pattern>

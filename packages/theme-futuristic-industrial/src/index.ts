@@ -22,3 +22,4 @@ export { ThemePlate } from "./theme-plate.js";
 export { ThemeHazardContainer } from "./theme-hazard-container.js";
 export { ThemeCasing } from "./theme-casing.js";
 export { ThemeTabPanel } from "./theme-tab-panel.js";
+export { ThemeConduitPanel } from "./theme-conduit-panel.js";
