@@ -69,6 +69,12 @@ keeps dark-on-light text.
 
 ## Accessibility notes
 
+- `theme-field` names the control slotted into it with its label (via
+  `accessible-label` on `theme-input`/`theme-textarea`/`theme-select`, or
+  `aria-label` on a bare native control), and clicking the label focuses it.
+  A plain `for`/`id` link can't do this: the label sits in the field's shadow
+  root and can't reach a control outside it. Use `for` only to pick which
+  control is labelled when a field holds more than one.
 - Icon-only buttons: set `accessible-label` on `theme-button`. An `aria-label`
   on the host doesn't reach the inner `<button>`.
 - Decorative frames and bands are `aria-hidden`. The rules
