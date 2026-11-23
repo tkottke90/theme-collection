@@ -1,0 +1,66 @@
+@theme static {
+  /* Light hazard-tag background + charcoal "stencil ink" — both sampled
+     directly from the reference sheet. */
+  --color-neutral-50: #eff2f7;
+  --color-neutral-100: #dde1e8;
+  --color-neutral-300: #aab0ba;
+  --color-neutral-500: #71757d;
+  --color-neutral-900: #3d3e41;
+
+  /* Brand orange sampled directly from the sheet's stripe/accent fills.
+     600/700 are the same hue darkened (never re-hued) so brand text/links
+     clear 4.5:1 on the light background — the sampled 500 only clears 3:1,
+     fine for fills and bordered icons but not for body-sized text. */
+  --color-brand-50: #fdf1df;
+  --color-brand-500: #ed9528;
+  --color-brand-600: #c77510;
+  --color-brand-700: #98590c;
+  --color-brand-900: #4a2c08;
+
+  /* Caution-tag yellow sampled directly from the CAUTION/BIOHAZARD badges;
+     used as a fill/accent, not as text. */
+  --color-caution-500: #f6cb13;
+
+  /* Semantic set: warning reuses the sheet's own caution hue, darkened for
+     text use the same way brand-500 was; the rest are estimated to fit the
+     same hazard-tag family while each clearing 4.5:1 on the background. */
+  --color-info-500: #1d6fb8;
+  --color-tip-500: #0a6e61;
+  --color-question-500: #6b3fa0;
+  --color-success-500: #1f7a3d;
+  --color-warning-500: #8a6300;
+  --color-failure-500: #b23a2e;
+  --color-danger-500: #8c1f1f;
+  --color-bug-500: #a02463;
+  --color-example-500: #3a4a9f;
+  --color-quote-500: #5b5f66;
+
+  --color-skeleton-base: #dde1e8;
+  --color-skeleton-highlight: #f4f6f9;
+
+  /* Mono-sized display font, as requested, with system monospace fallbacks
+     since this repo doesn't load webfonts for any theme (see other themes'
+     theme.css files — Chakra Petch, EB Garamond etc. are named without a
+     font loader and fall back the same way). */
+  --font-sans:
+    "JetBrains Mono", "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas,
+    "Liberation Mono", monospace;
+  --font-mono:
+    "JetBrains Mono", "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas,
+    "Liberation Mono", monospace;
+
+  /* The sheet's corners are square or chamfered, never rounded — radius-theme
+     only shows up on small controls (inputs, buttons' non-clipped corners). */
+  --radius-theme: 0.125rem;
+  --radius-theme-sm: 0.0625rem;
+
+  --shadow-plate: 0 2px 6px rgb(61 62 65 / 0.18);
+
+  /* Rung-1 hazard-stripe utility (bg-hazard) for small accents that don't
+     need a resizable SVG frame — e.g. Item's left edge. */
+  --background-image-hazard: repeating-linear-gradient(
+    45deg,
+    var(--color-brand-500) 0 6px,
+    var(--color-neutral-900) 6px 12px
+  );
+}
