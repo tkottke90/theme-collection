@@ -4,7 +4,7 @@ import { html as staticHtml, literal, type StaticValue } from "lit/static-html.j
 import { themeStyles } from "./generated/theme-styles.js";
 import { lightSurface } from "./surfaces.js";
 import { HazardFrameController } from "./hazard-frame-controller.js";
-import { renderHazardFrame } from "./hazard-frame-svg.js";
+import { renderHazardFrame, type HazardVariant } from "./hazard-frame-svg.js";
 import type { ThemeContainerTag } from "./theme-container.js";
 
 const TAGS: Record<ThemeContainerTag, StaticValue> = {
@@ -17,7 +17,8 @@ const TAGS: Record<ThemeContainerTag, StaticValue> = {
  * Same role as `theme-container`, framed in the reference sheet's hazard tape
  * instead of a plate: an orange band with charcoal diagonal stripes, chamfered
  * at the top-right and bottom-left like the source bar's ends. For restricted
- * or high-attention areas rather than everyday grouping.
+ * or high-attention areas rather than everyday grouping; `variant="light"` is
+ * the quieter tape for areas that need marking but not alarm.
  */
 @customElement("theme-hazard-container")
 export class ThemeHazardContainer extends LitElement {
@@ -34,14 +35,16 @@ export class ThemeHazardContainer extends LitElement {
   ];
 
   @property({ type: String }) as: ThemeContainerTag = "div";
+  /** `dark`: charcoal stripes on orange. `light`: orange stripes on a light band. */
+  @property({ type: String, reflect: true }) variant: HazardVariant = "dark";
 
   private frame = new HazardFrameController(this);
 
   render() {
     const tag = TAGS[this.as] ?? TAGS.div;
     return staticHtml`
-      ${renderHazardFrame(this.frame.geometry)}
-      <${tag} class="relative font-sans text-neutral-900 p-8 m-0"><slot></slot></${tag}>
+      ${renderHazardFrame(this.frame.geometry, this.variant)}
+      <${tag} class="relative font-sans text-fg p-8 m-0"><slot></slot></${tag}>
     `;
   }
 }

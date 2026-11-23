@@ -34,9 +34,37 @@ export function hazardPattern(
  * The stripes are a `userSpaceOnUse` pattern, so they run continuously around
  * corners instead of restarting on each edge. The pattern is defined per
  * instance because shadow DOM scopes `url(#id)` references.
+ *
+ * `light` swaps to the sheet's lighter tape (the vertical column at its right
+ * edge): orange stripes and edge lines on a light band. It uses brand-600, not
+ * the sampled brand-500, because brand-500 is only 2.1:1 on the background and
+ * a border needs 3:1.
  */
-export function renderHazardFrame(geometry: HazardFrameGeometry | null) {
+export type HazardVariant = "dark" | "light";
+
+export function renderHazardFrame(
+  geometry: HazardFrameGeometry | null,
+  variant: HazardVariant = "dark",
+) {
   const viewBox = geometry?.viewBox ?? "0 0 1 1";
+  const pitch = geometry?.pitch ?? 1;
+  const stripeWidth = geometry?.stripeWidth ?? 0;
+
+  if (variant === "light") {
+    return svg`
+      <svg
+        class="pointer-events-none absolute inset-0 block h-full w-full"
+        viewBox=${viewBox}
+        aria-hidden="true"
+      >
+        <defs>${hazardPattern("hazard-stripes", pitch, stripeWidth, "var(--color-brand-600)")}</defs>
+        <path d=${geometry?.innerD ?? ""} fill="var(--color-neutral-50)" />
+        <path d=${geometry?.bandD ?? ""} fill="var(--color-neutral-50)" fill-rule="evenodd" />
+        <path d=${geometry?.bandD ?? ""} fill="url(#hazard-stripes)" fill-rule="evenodd" />
+        <path d=${geometry?.edgesD ?? ""} fill="none" stroke="var(--color-brand-600)" stroke-width="1.5" />
+      </svg>
+    `;
+  }
 
   return svg`
     <svg
@@ -44,9 +72,7 @@ export function renderHazardFrame(geometry: HazardFrameGeometry | null) {
       viewBox=${viewBox}
       aria-hidden="true"
     >
-      <defs>
-        ${hazardPattern("hazard-stripes", geometry?.pitch ?? 1, geometry?.stripeWidth ?? 0)}
-      </defs>
+      <defs>${hazardPattern("hazard-stripes", pitch, stripeWidth)}</defs>
       <path d=${geometry?.innerD ?? ""} fill="var(--color-neutral-50)" />
       <path d=${geometry?.bandD ?? ""} fill="var(--color-brand-500)" fill-rule="evenodd" />
       <path d=${geometry?.stripeD ?? ""} fill="url(#hazard-stripes)" fill-rule="evenodd" />

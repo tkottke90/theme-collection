@@ -17,6 +17,14 @@ type Story = StoryObj;
 
 export const Default: Story = {};
 
+export const Light: Story = {
+  render: () => html`
+    <theme-hazard-container variant="light">
+      Maintenance in progress. Keep clear of the lift shaft.
+    </theme-hazard-container>
+  `,
+};
+
 export const AsList: Story = {
   render: () => html`
     <theme-hazard-container as="ul">

@@ -24,6 +24,24 @@ describe("theme-hazard-container", () => {
     el.remove();
   });
 
+  it("defaults to the dark tape and reflects the variant", async () => {
+    const el = document.createElement("theme-hazard-container") as ThemeHazardContainer;
+    document.body.appendChild(el);
+    await el.updateComplete;
+    const stripeFill = () =>
+      el.shadowRoot?.querySelector("pattern#hazard-stripes rect")?.getAttribute("fill");
+
+    expect(el.getAttribute("variant")).toBe("dark");
+    expect(stripeFill()).toBe("var(--color-neutral-900)");
+
+    el.variant = "light";
+    await el.updateComplete;
+    expect(el.getAttribute("variant")).toBe("light");
+    expect(stripeFill()).toBe("var(--color-brand-600)");
+
+    el.remove();
+  });
+
   it("renders the frame overlay and a slot for content", async () => {
     const el = document.createElement("theme-hazard-container") as ThemeHazardContainer;
     el.textContent = "Restricted";

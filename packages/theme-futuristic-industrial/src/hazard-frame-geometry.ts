@@ -51,6 +51,8 @@ export interface HazardFrameGeometry {
   stripeD: string;
   /** The content window inside the band. */
   innerD: string;
+  /** Both edges of the band, each pulled in half of a 1.5px stroke so neither is clipped. */
+  edgesD: string;
   /** Distance between stripe starts, px. */
   pitch: number;
   /** Horizontal width of one stripe, px. */
@@ -81,6 +83,7 @@ export function computeHazardFrame(
   const innerD = closed(inset(pts, t));
   const bandD = `${closed(pts)} ${innerD}`;
   const stripeD = `${closed(inset(pts, margin))} ${closed(inset(pts, t - margin))}`;
+  const edgesD = `${closed(inset(pts, 0.75))} ${closed(inset(pts, t - 0.75))}`;
 
-  return { viewBox: `0 0 ${w} ${h}`, bandD, stripeD, innerD, pitch, stripeWidth };
+  return { viewBox: `0 0 ${w} ${h}`, bandD, stripeD, innerD, edgesD, pitch, stripeWidth };
 }
