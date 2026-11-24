@@ -1,5 +1,6 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
+import { ifDefined } from "lit/directives/if-defined.js";
 import { themeStyles } from "./generated/theme-styles.js";
 
 const VARIANT_CLASSES: Record<"primary" | "secondary" | "ghost", string> = {
@@ -95,9 +96,18 @@ export class ThemeButton extends LitElement {
   @property({ type: String }) label = "Click me";
   @property({ type: String, reflect: true }) variant: "primary" | "secondary" | "ghost" = "primary";
   @property({ type: Boolean, reflect: true }) disabled = false;
+  /**
+   * Accessible name, forwarded to the inner `<button>` — an `aria-label` left
+   * on the host never reaches it. Needed for icon-only buttons.
+   */
+  @property({ type: String, attribute: "accessible-label" }) accessibleLabel?: string;
 
   render() {
-    return html`<button ?disabled=${this.disabled} class="btn ${VARIANT_CLASSES[this.variant]}">
+    return html`<button
+      aria-label=${ifDefined(this.accessibleLabel)}
+      ?disabled=${this.disabled}
+      class="btn ${VARIANT_CLASSES[this.variant]}"
+    >
       <slot>${this.label}</slot>
     </button>`;
   }

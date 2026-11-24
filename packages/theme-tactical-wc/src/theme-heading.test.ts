@@ -23,4 +23,19 @@ describe("theme-heading", () => {
 
     el.remove();
   });
+
+  it("gives each level a distinct size class", async () => {
+    const sizes = new Set<string>();
+    for (const level of [1, 2, 3, 4] as const) {
+      const el = document.createElement("theme-heading") as ThemeHeading;
+      el.level = level;
+      document.body.appendChild(el);
+      await el.updateComplete;
+      const cls = el.shadowRoot?.querySelector(`h${level}`)?.className ?? "";
+      sizes.add(cls.match(/\btext-(xs|sm|base|lg|\d?xl)\b/)?.[0] ?? "");
+      el.remove();
+    }
+    expect(sizes.size).toBe(4);
+    expect(sizes.has("")).toBe(false);
+  });
 });

@@ -1,5 +1,6 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
+import { ifDefined } from "lit/directives/if-defined.js";
 import { themeStyles } from "./generated/theme-styles.js";
 import { pixelFrameStyles, pixelFrameShapes, pixelFrameShapeStyle } from "./pixel-frame.js";
 
@@ -59,13 +60,23 @@ export class ThemeButton extends LitElement {
   @property({ type: String }) label = "Click me";
   @property({ type: String, reflect: true }) variant: "primary" | "secondary" | "ghost" = "primary";
   @property({ type: Boolean, reflect: true }) disabled = false;
+  /**
+   * Accessible name, forwarded to the inner `<button>` — an `aria-label` left
+   * on the host never reaches it. Needed for icon-only buttons.
+   */
+  @property({ type: String, attribute: "accessible-label" }) accessibleLabel?: string;
 
   render() {
     const isBadge = this.variant === "primary";
     const frameClass = `pixel-frame ${isBadge ? "badge" : ""} ${this.variant}`;
     const shapeStyleValue = pixelFrameShapeStyle(isBadge ? BADGE_SHAPE : FRAME_SHAPE);
 
-    return html`<button ?disabled=${this.disabled} class=${frameClass} style=${shapeStyleValue}>
+    return html`<button
+      aria-label=${ifDefined(this.accessibleLabel)}
+      ?disabled=${this.disabled}
+      class=${frameClass}
+      style=${shapeStyleValue}
+    >
       <span class="pixel-frame__fill"><slot>${this.label}</slot></span>
     </button>`;
   }
