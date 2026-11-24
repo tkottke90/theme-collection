@@ -1,6 +1,6 @@
 import "./theme-disc.js";
 import type { ThemeDisc } from "./theme-disc.js";
-import { DISH_SIDES, PEAK_COUNT, SEGMENT_COUNT } from "./disc-variants.js";
+import { DISH_SIDES, PEAK_COUNT, SEGMENT_COUNT, discVariantStyles } from "./disc-variants.js";
 
 describe("theme-disc", () => {
   it("is an indeterminate progressbar with no value", async () => {
@@ -97,5 +97,12 @@ describe("theme-disc", () => {
     expect(el.shadowRoot?.querySelector(".arc-spin, .core-pulse")).toBeNull();
 
     el.remove();
+  });
+
+  it("pulses the dish core in brightness and glow only, never scale", () => {
+    const keyframes = discVariantStyles.cssText.match(/@keyframes zd-core-pulse[^@]*/)?.[0] ?? "";
+    expect(keyframes).toContain("opacity");
+    expect(keyframes).toContain("drop-shadow");
+    expect(keyframes).not.toMatch(/transform|scale/);
   });
 });

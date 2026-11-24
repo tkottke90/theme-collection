@@ -351,19 +351,21 @@ export const discVariantStyles = css`
       transform: rotate(360deg);
     }
   }
+  /* The core breathes in brightness only: no scaling. The CSS filter takes
+     over from the static SVG glow while animating (one drop-shadow at each
+     keyframe so the radius interpolates smoothly). */
   .core-pulse {
-    transform-origin: 60px 60px;
     animation: zd-core-pulse ${DISH_PERIOD}s ease-in-out infinite;
   }
   @keyframes zd-core-pulse {
     0%,
     100% {
-      transform: scale(0.745);
       opacity: 0.55;
+      filter: drop-shadow(0 0 1px var(--color-brand-500));
     }
     50% {
-      transform: scale(1.105);
       opacity: 1;
+      filter: drop-shadow(0 0 7px var(--color-brand-500));
     }
   }
   .pulse {
