@@ -1,21 +1,21 @@
-import "./theme-plate-stack.js";
-import type { ThemePlateStack } from "./theme-plate-stack.js";
+import "./theme-progress.js";
+import type { ThemeProgress } from "./theme-progress.js";
 
-async function make(props: Partial<ThemePlateStack> & { variant?: string } = {}) {
-  const el = document.createElement("theme-plate-stack") as ThemePlateStack;
+async function make(props: Partial<ThemeProgress> & { variant?: string } = {}) {
+  const el = document.createElement("theme-progress") as ThemeProgress;
   Object.assign(el, props);
   document.body.appendChild(el);
   await el.updateComplete;
   return el;
 }
 
-function fillRatio(el: ThemePlateStack, channelSelector: string) {
+function fillRatio(el: ThemeProgress, channelSelector: string) {
   const channel = Number(el.shadowRoot?.querySelector(channelSelector)?.getAttribute("width"));
   const fill = Number(el.shadowRoot?.querySelector(".fill")?.getAttribute("width"));
   return fill / channel;
 }
 
-describe("theme-plate-stack", () => {
+describe("theme-progress", () => {
   it("defaults to the raised channel", async () => {
     const el = await make({ value: 30 });
     expect(el.getAttribute("variant")).toBe("raised");
@@ -36,7 +36,7 @@ describe("theme-plate-stack", () => {
       variant: "recessed",
       value: 40,
       segments: 5,
-    } as Partial<ThemePlateStack>);
+    } as Partial<ThemeProgress>);
     const root = el.shadowRoot;
     expect(root?.querySelector(".plate")).toBeNull();
     expect(root?.querySelector(".drop")).toBeNull();

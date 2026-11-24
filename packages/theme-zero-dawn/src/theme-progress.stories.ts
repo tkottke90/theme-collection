@@ -1,19 +1,19 @@
 import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit";
-import "./theme-plate-stack.js";
+import "./theme-progress.js";
 import "./theme-card.js";
 import "./theme-container.js";
 
 const meta: Meta = {
-  title: "Theme/Zero Dawn/Plate Stack",
+  title: "Theme/Zero Dawn/Progress",
   render: (args) =>
     html`<div style="max-width: 24rem">
-      <theme-plate-stack
+      <theme-progress
         value=${args["value"]}
         segments=${args["segments"]}
         label=${args["label"]}
         variant=${args["variant"]}
-      ></theme-plate-stack>
+      ></theme-progress>
     </div>`,
   args: { value: 60, segments: 10, label: "Armour", variant: "raised" },
   argTypes: { variant: { control: "select", options: ["raised", "recessed"] } },
@@ -31,7 +31,7 @@ export const Recessed: Story = {
   render: () =>
     html`<div style="max-width: 24rem">
       <theme-card heading="Armour">
-        <theme-plate-stack variant="recessed" value="60" label="Plating"></theme-plate-stack>
+        <theme-progress variant="recessed" value="60" label="Plating"></theme-progress>
       </theme-card>
     </div>`,
 };
@@ -44,14 +44,14 @@ export const Pairings: Story = {
     >
       <theme-container>
         <div style="display: flex; flex-direction: column; gap: 1.5rem">
-          <theme-plate-stack variant="raised" value="70" label="Raised"></theme-plate-stack>
-          <theme-plate-stack variant="raised" value="25" label="Raised"></theme-plate-stack>
+          <theme-progress variant="raised" value="70" label="Raised"></theme-progress>
+          <theme-progress variant="raised" value="25" label="Raised"></theme-progress>
         </div>
       </theme-container>
       <theme-card heading="On a light plate">
         <div style="display: flex; flex-direction: column; gap: 1.5rem">
-          <theme-plate-stack variant="recessed" value="70" label="Recessed"></theme-plate-stack>
-          <theme-plate-stack variant="recessed" value="25" label="Recessed"></theme-plate-stack>
+          <theme-progress variant="recessed" value="70" label="Recessed"></theme-progress>
+          <theme-progress variant="recessed" value="25" label="Recessed"></theme-progress>
         </div>
       </theme-card>
     </div>`,

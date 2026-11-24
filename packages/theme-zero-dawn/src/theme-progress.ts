@@ -1,7 +1,7 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { themeStyles } from "./generated/theme-styles.js";
-import { renderRaised, renderRecessed } from "./plate-stack-variants.js";
+import { renderRaised, renderRecessed } from "./progress-variants.js";
 import { ResizeFrameController } from "./resize-frame-controller.js";
 
 /**
@@ -9,8 +9,11 @@ import { ResizeFrameController } from "./resize-frame-controller.js";
  *   dark steel containers.
  * - `recessed`: the channel cut straight into the surface, glowing from
  *   inside. Pairs with light plates (Card).
+ *
+ * Always the consumer's explicit choice: the bar deliberately doesn't infer
+ * a variant from the surface it's placed on.
  */
-export type PlateStackVariant = "raised" | "recessed";
+export type ProgressVariant = "raised" | "recessed";
 
 /** Used until the host has been measured (and in jsdom, which can't measure). */
 const FALLBACK_WIDTH = 240;
@@ -19,8 +22,8 @@ const FALLBACK_WIDTH = 240;
  * Progress bar: a glowing cyan channel split into `segments` by seam ticks.
  * Stretches to its container's width. `variant` picks raised or recessed.
  */
-@customElement("theme-plate-stack")
-export class ThemePlateStack extends LitElement {
+@customElement("theme-progress")
+export class ThemeProgress extends LitElement {
   static styles = [
     themeStyles,
     css`
@@ -34,7 +37,7 @@ export class ThemePlateStack extends LitElement {
   @property({ type: Number }) max = 100;
   @property({ type: Number }) segments = 10;
   @property({ type: String }) label = "";
-  @property({ type: String, reflect: true }) variant: PlateStackVariant = "raised";
+  @property({ type: String, reflect: true }) variant: ProgressVariant = "raised";
 
   /** Host width in px. */
   private size = new ResizeFrameController<number>(this, (w) => (w > 0 ? w : null));
@@ -74,7 +77,7 @@ export class ThemePlateStack extends LitElement {
         aria-valuenow=${this.value}
       >
         <defs>
-          <filter id="zd-stack-glow" x="-20%" y="-200%" width="140%" height="500%">
+          <filter id="zd-progress-glow" x="-20%" y="-200%" width="140%" height="500%">
             <feGaussianBlur stdDeviation="1.5" result="b" />
             <feMerge>
               <feMergeNode in="b" />
@@ -90,6 +93,6 @@ export class ThemePlateStack extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    "theme-plate-stack": ThemePlateStack;
+    "theme-progress": ThemeProgress;
   }
 }

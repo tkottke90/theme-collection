@@ -3,17 +3,17 @@ import { renderBevel } from "./plate-frame-svg.js";
 import { computePlate, type PlateGeometry } from "./plate-geometry.js";
 
 /**
- * The faces of `theme-plate-stack`: a glowing cyan channel, either on a
+ * The faces of `theme-progress`: a glowing cyan channel, either on a
  * raised steel plate or cut straight into the surface. Each renders at a
  * measured width `w` (px) and returns its own height, so the bar stretches
  * to its container without distorting bevels.
  */
-export interface StackFace {
+export interface ProgressFace {
   height: number;
   content: SVGTemplateResult;
 }
 
-const GLOW = "url(#zd-stack-glow)";
+const GLOW = "url(#zd-progress-glow)";
 
 /**
  * The lit part shared by both faces: the cyan fill on the channel floor, a
@@ -56,7 +56,7 @@ const RAISED_DEPTH = 6;
  * as a recess: top and left walls dark, bottom and right walls catching the
  * light.
  */
-export function renderRaised(w: number, pct: number, segments: number): StackFace {
+export function renderRaised(w: number, pct: number, segments: number): ProgressFace {
   const g = computePlate(w, RAISED_H, { cut: 8, smallCut: 0, groove: 3, drop: 3, notch: false });
   const x0 = RAISED_INSET;
   const x1 = w - RAISED_INSET;
@@ -102,7 +102,7 @@ function invert(g: PlateGeometry): PlateGeometry {
  * sits on the slot floor and its glow spills up the walls (but never out onto
  * the surface), so on a light panel the light reads as coming from inside it.
  */
-export function renderRecessed(w: number, pct: number, segments: number): StackFace {
+export function renderRecessed(w: number, pct: number, segments: number): ProgressFace {
   const g = computePlate(w, RECESSED_H, {
     cut: 5,
     smallCut: 0,

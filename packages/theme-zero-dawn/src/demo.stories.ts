@@ -68,12 +68,12 @@ function machineCard(m: Machine) {
       </div>
     </div>
     <div style="margin: 1rem 0 1.25rem">
-      <theme-plate-stack
+      <theme-progress
         variant="recessed"
         value=${m.armour}
         segments="10"
         label="Armour"
-      ></theme-plate-stack>
+      ></theme-progress>
     </div>
     <theme-button variant="primary" label="Track"></theme-button>
   </theme-card>`;
@@ -166,12 +166,12 @@ export const demoPage = () => html`
               <theme-disc label="Syncing"></theme-disc>
             </div>
             <div style="margin-top: 1.5rem">
-              <theme-plate-stack
+              <theme-progress
                 variant="raised"
                 value="48"
                 segments="8"
                 label="Expedition supplies"
-              ></theme-plate-stack>
+              ></theme-progress>
             </div>
           </theme-container>
           <theme-container as="ul">
