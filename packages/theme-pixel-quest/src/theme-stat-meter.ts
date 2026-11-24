@@ -1,5 +1,6 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
+import { ifDefined } from "lit/directives/if-defined.js";
 import { themeStyles } from "./generated/theme-styles.js";
 import { pixelFrameStyles, pixelFrameShapes, pixelFrameShapeStyle } from "./pixel-frame.js";
 
@@ -21,6 +22,10 @@ const BAR_SHAPE_STYLE = pixelFrameShapeStyle(BAR_SHAPE);
  * plain rectangle rather than its own stepped shape — at this scale (its
  * own width is usually under the 3px step except at very low values) a
  * second nested notch wouldn't read as intentional, just blurry.
+ *
+ * The bar is a `role="meter"` named by `label`, so assistive technology
+ * announces e.g. "Strength, meter, 7 of 10"; the visual "7/10" readout is
+ * hidden from it to avoid reading the value twice.
  */
 @customElement("theme-stat-meter")
 export class ThemeStatMeter extends LitElement {
@@ -106,14 +111,22 @@ export class ThemeStatMeter extends LitElement {
         <span class="label">${this.label}</span>
         ${this.sublabel ? html`<span class="sublabel">${this.sublabel}</span>` : null}
       </span>
-      <span class="bar-wrap">
+      <span
+        class="bar-wrap"
+        role="meter"
+        aria-label=${ifDefined(this.label || undefined)}
+        aria-valuemin="0"
+        aria-valuemax=${this.max}
+        aria-valuenow=${Math.max(0, Math.min(this.max, this.value))}
+        aria-valuetext=${`${this.value} of ${this.max}`}
+      >
         <span class="pixel-frame" style=${BAR_SHAPE_STYLE}>
           <span class="pixel-frame__fill">
             <span class="bar-fill" style="width: ${pct}%"></span>
           </span>
         </span>
       </span>
-      <span class="value">${this.value}/${this.max}</span>
+      <span class="value" aria-hidden="true">${this.value}/${this.max}</span>
     `;
   }
 }

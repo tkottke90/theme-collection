@@ -1,6 +1,9 @@
 import { compileThemeModule, SKELETON_SHIMMER_CSS } from "../../../scripts/compile-theme.mjs";
+import { syncWcCore } from "../../../scripts/wc-core.mjs";
 
-export function generateThemeStyles() {
+/** Writes src/generated/: the compiled theme styles and the shared WC base classes. */
+export function generate() {
+  syncWcCore();
   compileThemeModule({
     themeDir: "../../themes/pixel-quest",
     contentGlobs: ["./src/*.ts"],
@@ -10,5 +13,5 @@ export function generateThemeStyles() {
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
-  generateThemeStyles();
+  generate();
 }

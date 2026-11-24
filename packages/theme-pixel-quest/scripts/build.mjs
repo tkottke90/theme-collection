@@ -1,5 +1,10 @@
 import { buildPackage } from "../../../scripts/esbuild-base.mjs";
-import { generateThemeStyles } from "./generate-theme-styles.mjs";
+import { generateTokensCss } from "../../../scripts/generate-tokens-css.mjs";
+import { generate } from "./generate.mjs";
 
-generateThemeStyles();
+generate();
 await buildPackage({ entryPoints: ["src/index.ts"], external: ["lit"] });
+generateTokensCss({
+  themeDir: "../../themes/pixel-quest",
+  packageName: "@tkottke90/theme-pixel-quest",
+});

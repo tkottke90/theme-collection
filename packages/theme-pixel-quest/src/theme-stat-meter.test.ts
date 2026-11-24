@@ -43,4 +43,21 @@ describe("theme-stat-meter", () => {
 
     el.remove();
   });
+
+  it("exposes the bar as a labelled meter", async () => {
+    const el = document.createElement("theme-stat-meter") as ThemeStatMeter;
+    el.label = "Strength";
+    el.value = 7;
+    el.max = 10;
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const meter = el.shadowRoot?.querySelector('[role="meter"]');
+    expect(meter?.getAttribute("aria-label")).toBe("Strength");
+    expect(meter?.getAttribute("aria-valuenow")).toBe("7");
+    expect(meter?.getAttribute("aria-valuemax")).toBe("10");
+    expect(meter?.getAttribute("aria-valuetext")).toBe("7 of 10");
+
+    el.remove();
+  });
 });
