@@ -21,21 +21,22 @@ interface ToneStyle {
   gridOpacity: number;
   groove: string;
   /**
-   * Recess the panel inside the groove with an inset shadow, so the rim
-   * between the plate edge and the groove (the fillet) reads as raised.
+   * Shade the bevel band (plate edge to groove) as flat facets sloping away
+   * from the viewer: facets toward the top-left light lighten, facets away
+   * from it darken. Hard facets, no blur — the plates are cut, not rounded.
    */
-  inset: boolean;
+  bevel: boolean;
 }
 
 const TONES: Record<PlateTone, ToneStyle> = {
-  // Elevated light plates (Card) stay clean: no lattice, recessed inner panel.
+  // Elevated light plates (Card) stay clean: no lattice, faceted bevel rim.
   light: {
     from: "var(--color-plate-50)",
     to: "var(--color-plate-100)",
     grid: null,
     gridOpacity: 0,
     groove: "var(--color-plate-300)",
-    inset: true,
+    bevel: true,
   },
   steel: {
     from: "var(--color-plate-700)",
@@ -43,15 +44,26 @@ const TONES: Record<PlateTone, ToneStyle> = {
     grid: "var(--color-plate-50)",
     gridOpacity: 0.05,
     groove: "var(--color-plate-500)",
-    inset: false,
+    bevel: false,
   },
 };
+
+/**
+ * One bevel facet, shaded flat by how it faces the light: lit facets get a
+ * paint-white wash, facets turned away get the core colour, darker the
+ * further they turn.
+ */
+function renderFacet(d: string, light: number) {
+  return light > 0.01
+    ? svg`<path class="facet lit" d=${d} fill="var(--color-paint)" fill-opacity=${(0.6 * light).toFixed(3)} />`
+    : svg`<path class="facet shade" d=${d} fill="var(--color-core)" fill-opacity=${(0.12 + 0.38 * -light).toFixed(3)} />`;
+}
 
 /**
  * Renders the plate frame as an absolutely-positioned SVG overlay behind the
  * host's content. Host needs `position: relative; isolation: isolate`.
  *
- * IDs (`zd-fill`, `zd-grid`, `zd-inset`, `zd-glow`) are fixed: each instance lives in its
+ * IDs (`zd-fill`, `zd-grid`, `zd-clip`, `zd-glow`) are fixed: each instance lives in its
  * own shadow root, which scopes them, so they never collide.
  */
 export function renderPlateFrame(geometry: PlateGeometry | null, tone: PlateTone = "light") {
@@ -84,20 +96,7 @@ export function renderPlateFrame(geometry: PlateGeometry | null, tone: PlateTone
               </pattern>`
             : null
         }
-        ${
-          t.inset
-            ? svg`<filter id="zd-inset" x="-5%" y="-5%" width="110%" height="110%">
-                <feComponentTransfer in="SourceAlpha" result="outside">
-                  <feFuncA type="table" tableValues="1 0" />
-                </feComponentTransfer>
-                <feGaussianBlur in="outside" stdDeviation="3" />
-                <feOffset dx="3" dy="3.5" result="spread" />
-                <feFlood style="flood-color: var(--color-core); flood-opacity: 0.65" />
-                <feComposite in2="spread" operator="in" />
-                <feComposite in2="SourceAlpha" operator="in" />
-              </filter>`
-            : null
-        }
+        ${t.bevel && g ? svg`<clipPath id="zd-clip"><path d=${g.plateD} /></clipPath>` : null}
         <filter id="zd-glow" x="-50%" y="-50%" width="200%" height="200%">
           <feGaussianBlur stdDeviation="2" result="blur" />
           <feMerge>
@@ -114,8 +113,10 @@ export function renderPlateFrame(geometry: PlateGeometry | null, tone: PlateTone
             <path d=${g.plateD} fill="url(#zd-fill)" />
             ${t.grid ? svg`<path class="grid" d=${g.plateD} fill="url(#zd-grid)" />` : null}
             ${
-              t.inset
-                ? svg`<path class="inset" d=${g.grooveD} fill="black" filter="url(#zd-inset)" />`
+              t.bevel
+                ? svg`<g class="bevel" clip-path="url(#zd-clip)">
+                    ${g.bevel.map((f) => renderFacet(f.d, f.light))}
+                  </g>`
                 : null
             }
             <path d=${g.grooveD} fill="none" stroke=${t.groove} stroke-width="1" />

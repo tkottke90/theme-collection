@@ -35,4 +35,17 @@ describe("computePlate", () => {
     const g = computePlate(300, 30, { cut: 40 });
     expect(g?.glowD).toBe("M0 10 L10 0");
   });
+
+  it("builds one bevel facet per edge, lit toward the top-left", () => {
+    const g = computePlate(300, 120);
+    const light = g?.bevel.map((f) => f.light) ?? [];
+    expect(light).toHaveLength(8);
+    // Order: top, top-right chamfer, right, bottom-right chamfer, bottom,
+    // bottom-left chamfer, left, top-left chamfer.
+    expect(light[0]).toBeCloseTo(Math.SQRT1_2);
+    expect(light[1]).toBeCloseTo(0);
+    expect(light[2]).toBeCloseTo(-Math.SQRT1_2);
+    expect(light[3]).toBeCloseTo(-1);
+    expect(light[7]).toBeCloseTo(1);
+  });
 });

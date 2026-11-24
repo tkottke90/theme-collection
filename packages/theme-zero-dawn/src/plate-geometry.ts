@@ -11,7 +11,7 @@ export interface PlateOptions {
   smallCut?: number;
   /** How far the hard core drop sits below/right of the plate, px. */
   drop?: number;
-  /** Inset of the bevel groove from the plate edge, px. */
+  /** Width of the bevel band (plate edge to groove), px. */
   groove?: number;
   /** Whether to cut the seam notch into the top edge. */
   notch?: boolean;
@@ -25,8 +25,14 @@ export interface PlateGeometry {
   underD: string;
   /** Un-notched plate outline shifted by `drop` — the hard core shadow. */
   dropD: string;
-  /** Bevel groove inset from the plate edge. */
+  /** Crease where the bevel meets the flat top, inset from the plate edge. */
   grooveD: string;
+  /**
+   * The bevel band between the plate edge and the groove, as one flat facet
+   * per edge/chamfer. `light` is how squarely the facet faces a top-left light
+   * (1 = straight at it, -1 = straight away), for flat per-facet shading.
+   */
+  bevel: Array<{ d: string; light: number }>;
   /** Glowing seam along the top-left chamfer. */
   glowD: string;
   /** Short wire running through the notch (empty when there's no notch). */
@@ -34,6 +40,9 @@ export interface PlateGeometry {
 }
 
 const K = Math.SQRT2 - 1;
+
+/** Unit vector pointing toward the light (top-left, screen coordinates). */
+const LIGHT: [number, number] = [-Math.SQRT1_2, -Math.SQRT1_2];
 
 function r(n: number): number {
   return Math.round(n * 100) / 100;
@@ -71,7 +80,7 @@ export function computePlate(
 ): PlateGeometry | null {
   if (width <= 0 || height <= 0) return null;
 
-  const { drop = 5, groove = 6, notch = true } = options;
+  const { drop = 5, groove = 7, notch = true } = options;
   // Never let a chamfer eat more than a third of the shorter side.
   const limit = Math.min(width, height) / 3;
   const cut = Math.min(options.cut ?? 18, limit);
@@ -98,10 +107,23 @@ export function computePlate(
     : outline;
 
   const g = Math.min(groove, limit / 2);
-  const grooveD =
-    g > 0
-      ? poly(chamferPoints(g, g, width - g, height - g, cut + g * K - g, small + g * K - g))
-      : "";
+  const groovePoints =
+    g > 0 ? chamferPoints(g, g, width - g, height - g, cut + g * K - g, small + g * K - g) : [];
+  const grooveD = g > 0 ? poly(groovePoints) : "";
+
+  // One quad per outline edge: outer edge → matching groove edge. Points run
+  // clockwise in screen space, so an edge (dx, dy) has outward normal (dy, -dx).
+  const bevel = groovePoints.map((inner0, i) => {
+    const j = (i + 1) % outline.length;
+    const outer0 = outline[i] as [number, number];
+    const outer1 = outline[j] as [number, number];
+    const inner1 = groovePoints[j] as [number, number];
+    const dx = outer1[0] - outer0[0];
+    const dy = outer1[1] - outer0[1];
+    const len = Math.hypot(dx, dy) || 1;
+    const light = (dy / len) * LIGHT[0] + (-dx / len) * LIGHT[1];
+    return { d: poly([outer0, outer1, inner1, inner0]), light: Math.round(light * 1000) / 1000 };
+  });
 
   const dropD = poly(outline.map(([x, y]): [number, number] => [x + drop, y + drop]));
 
@@ -111,6 +133,7 @@ export function computePlate(
     underD: poly(outline),
     dropD,
     grooveD,
+    bevel,
     glowD: `M0 ${r(cut)} L${r(cut)} 0`,
     wireD: hasNotch ? `M${r(notchStart + 2)} 2.5 H${r(notchEnd - 2)}` : "",
   };
