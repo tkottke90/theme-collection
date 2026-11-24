@@ -18,7 +18,15 @@ points at it and adds agent-specific guardrails.
   from here via `scripts/compile-theme.mjs`, never hand-copied into the
   package. See `CONTRIBUTING.md`'s "`themes/` vs `packages/`" and
   `docs/adr/` for why.
-- `scripts/` — shared build helpers (`esbuild-base.mjs`, `compile-theme.mjs`).
+- `shared/` — internal code packages share, never published.
+  `shared/wc-core` (a private workspace) holds the Web Component form and
+  field base classes; WC packages get a build-time copy in
+  `src/generated/core/`, never an import (`docs/adr/0002-shared-wc-core.md`).
+  Change behaviour there, not in a package's generated copy.
+  `shared/storybook` holds the story-intro decorators.
+- `scripts/` — shared build helpers (`esbuild-base.mjs`, `compile-theme.mjs`,
+  `wc-core.mjs`, `generate-tokens-css.mjs`, `screenshot.mjs`,
+  `check-package-standard.mjs`).
   Package-level `scripts/build.mjs` files should stay thin wrappers around them.
 - Root `tsconfig.base.json`, `eslint.config.mjs`, `.prettierrc.json`,
   `jest.config.base.cjs` — the single source of truth for TS/lint/format/test
@@ -35,6 +43,11 @@ points at it and adds agent-specific guardrails.
 3. Every package keeps the `build`, `test`, `lint`, `storybook`, and
    `build-storybook` npm scripts — the Eleventy site and CI both assume they
    exist.
+4. Every package meets `CONTRIBUTING.md`'s "Package standard" (README and
+   AGENTS.md from the starter templates, an intro on every story, a demo
+   story, form-ready controls). `npm run lint` enforces most of it. Don't
+   add a package to `PENDING` in `scripts/check-package-standard.mjs` to get
+   past it; that list only shrinks.
 
 ## Before considering a change done
 
@@ -54,7 +67,7 @@ checks CI enforces (`Test`, `Lint`, `Style`, `Build Site`).
 ## Guardrails
 
 - Don't commit build output (`dist/`, `storybook-static/`, `_site/`,
-  `packages/theme-starter-wc/src/generated/`) — all gitignored on purpose.
+  `packages/*/src/generated/`) — all gitignored on purpose.
 - Don't hand-copy token values into a WC/React package's own source (a
   `tokens.ts`, an inline hex, a duplicated custom property). Styling is
   compiled from `themes/<name>/theme.css` via `scripts/compile-theme.mjs` —

@@ -10,6 +10,9 @@ tooling (TypeScript, ESLint, Prettier, Jest, esbuild).
 packages/      every published theme package (@tkottke90/theme-*)
 themes/        shared design tokens per theme (themes/<name>/theme.css) —
                not an npm workspace, not published on its own; see below
+shared/        internal code shared by packages, never published:
+               wc-core/ (Web Component base classes, a private workspace) and
+               storybook/ (the story-intro decorators)
 apps/site      the Eleventy site that showcases the repo + each package's Storybook
 scripts/       shared build helpers used by package build scripts
 docs/adr/      architecture decision records
@@ -56,6 +59,8 @@ Steps:
    have.
 5. Write at least one Storybook story and one Jest test (component
    packages) before opening a PR.
+6. Meet the package standard below. The starter already does, so keep its
+   pieces and fill them in for your theme.
 
 The component tech (Web Components vs Preact/React vs CSS-only) is a
 **per-package choice** — pick whichever fits that theme.
@@ -65,12 +70,52 @@ theme's shared `themes/<name>/theme.css`, not bespoke per-component CSS or
 inline-style objects — see `docs/adr/0001-theme-token-architecture.md`.
 Web Components keep Shadow DOM and get their compiled styles embedded via
 a generated `src/generated/theme-styles.ts` (see `theme-starter-wc`'s
-`scripts/generate-theme-styles.mjs`); React ships a real `dist/theme.css`
+`scripts/generate.mjs`); React ships a real `dist/theme.css`
 consumers import separately (see `theme-starter-react`'s `scripts/build.mjs`).
 A `:host { display: ...; }` rule (and, where a form control relies on
 `font: inherit`, `font-family`) is the one piece of CSS Tailwind genuinely
 can't express for Shadow DOM components — keep it as a small hand-written
 `css` block alongside the generated styles, nothing more.
+
+### Package standard
+
+Every package ships the same documentation and Storybook shape, so the site,
+the README galleries and agents building with a theme can rely on it. The
+three starters meet it; copy them.
+
+- [ ] **README.md** following the starter's template, linking
+      `./docs/screenshot.png`.
+- [ ] **AGENTS.md** following the starter's template: a style guide for
+      agents (and people) building UI that matches the theme, plus usage.
+      Listed in `package.json` `files` so it ships with the package.
+- [ ] **An intro on every story.** Each stories file's `meta` sets
+      `parameters.intro` (`tag`, `title`, and 1–2 paragraphs on how the
+      component was designed). The package's `.storybook/preview` renders
+      it with the shared decorator for its renderer from
+      `shared/storybook/` (`intro-lit.ts`, `intro-preact.ts` or
+      `intro-html.ts`), supplying only the theme's backdrop and text
+      components.
+- [ ] **A demo story**: a stories file titled `.../Demo`, with
+      `intro: null`, composing a full page from only the package's own
+      components, including a working form.
+- [ ] **Form-ready controls.** Inputs, selects and textareas submit under
+      `name`, reset with their form, follow `<fieldset disabled>`, and get
+      their accessible name from a label. Web Component packages get this
+      from `FormControlElement` and `FieldElement` in `shared/wc-core`
+      (copied into `src/generated/core/` by the package's
+      `scripts/generate.mjs`; see `docs/adr/0002-shared-wc-core.md`) and
+      name controls with `aria-label`. Preact and CSS packages use native
+      elements and `<label for>`.
+- [ ] **Web Component packages** export `./tokens.css` (the theme's tokens
+      on `:root`, for consumers' own elements), written at build time by
+      `scripts/generate-tokens-css.mjs`.
+
+`npm run lint` runs `scripts/check-package-standard.mjs`, which fails when a
+package lacks AGENTS.md (or omits it from `files`), lacks a screenshot linked
+from its README, has no demo story, or has a stories `meta` without an
+`intro`. Packages not yet migrated are listed in its `PENDING` set, each
+tracked by an issue under #19; remove a package from that list when you
+migrate it.
 
 ### Minimum component set
 
@@ -116,7 +161,11 @@ npm run screenshot -w <package-name>
 
 This renders every Storybook story for the package headlessly (via
 [Playwright](https://playwright.dev)) and writes one composite PNG to
-`packages/<package-name>/docs/screenshot.png`. Commit the updated PNG and
+`packages/<package-name>/docs/screenshot.png`: the demo story full-width at
+the top, then one section per component with its intro once, followed by
+its stories two to a row. The script asks the intro decorator for this
+through the story URL (`screenshot=1`, `intro=only|hide`; see
+`shared/storybook/intro.ts`). Look at the PNG before committing it. Commit the updated PNG and
 make sure it's linked from the package's `README.md` (see the starter
 packages for the exact markdown). The screenshot script uses a headless
 Chromium browser; run `npx playwright install chromium` once after
@@ -124,7 +173,10 @@ Chromium browser; run `npx playwright install chromium` once after
 browser preinstalled at a fixed path (some sandboxes/CI images do this
 rather than using Playwright's own managed install), point the script at
 it with `SCREENSHOT_CHROMIUM_PATH=/path/to/chromium npm run screenshot -w
-<package-name>` instead of running `playwright install`.
+<package-name>` instead of running `playwright install`. In Claude Code's
+cloud environment that's `SCREENSHOT_CHROMIUM_PATH=/opt/pw-browsers/chromium`:
+the repo's pinned Playwright expects a browser build that isn't installed
+there.
 
 ## Package conventions
 

@@ -127,11 +127,12 @@ Stop and ask the user for anything missing here. Never guess these:
    materially change the component implementation (e.g. which of two colors
    is primary); otherwise make the call and list it as an assumption.
 
-3. **Apply tokens** to the copied starter in whatever form that starter
-   already uses for tokens (CSS custom properties for `theme-starter-css`,
-   Lit base styles/CSS vars for `theme-starter-wc`, a theme/tokens module
-   for `theme-starter-react`). Don't invent a new tokens mechanism — use
-   the one the starter ships with.
+3. **Apply tokens** in a new `themes/<name>/theme.css` (a Tailwind v4
+   `@theme {}` block, copied from `themes/theme-starter/theme.css`) and
+   point the copied starter's build at it (`themeDir` in its
+   `scripts/generate.mjs` or `scripts/build.mjs`, or the `@import` in a CSS
+   package's `src/index.css`). Never put token values in the package
+   itself; see `docs/adr/0001-theme-token-architecture.md`.
 
 4. **Check contrast before building components.** A color's being "read
    directly" from the image or carefully "estimated" doesn't mean it's
@@ -209,9 +210,30 @@ Stop and ask the user for anything missing here. Never guess these:
    shape and layout Tailwind can't reach, not an excuse to bypass the
    token pipeline.
 
-6. **Tests and stories** (CONTRIBUTING.md step 5): write at least one
-   Storybook story and one Jest test per component. Don't skip this even
-   if the component is simple.
+6. **Meet the package standard** (CONTRIBUTING.md, "Package standard").
+   The starter you copied already meets it, so keep each piece and fill it
+   in for the new theme rather than deleting it:
+   - **Stories and tests**: at least one Storybook story and one Jest test
+     per component (CSS-only packages: stories only). Don't skip this even
+     if the component is simple.
+   - **An intro on every story**: each stories file's `meta` sets
+     `parameters.intro` (`tag`, `title`, 1–2 paragraphs on how the
+     component was designed for this theme). Replace the starter's
+     template intros; don't leave its "describe here..." guidance in.
+   - **A demo story**: a stories file titled `.../Demo` (with
+     `intro: null`) composing a full page from only this package's
+     components, including a working form.
+   - **Form-ready controls**: WC packages keep the shared
+     `FormControlElement`/`FieldElement` bases from `src/generated/core/`
+     (see `docs/adr/0002-shared-wc-core.md`) and name controls with
+     `aria-label`; Preact and CSS packages keep the native form wiring the
+     starter has.
+   - **README.md and AGENTS.md**: rewrite both from the starter's
+     templates for this theme. AGENTS.md is the style guide for agents
+     building UI with the package, and stays in `package.json` `files`.
+   - **Screenshot**: regenerate `docs/screenshot.png` (see CONTRIBUTING.md,
+     "Screenshots for style changes") and view it to check the demo and
+     each component's intro and stories render.
 
 7. **Run the required checks** scoped to the new package, per
    `AGENTS.md` ("Before considering a change done"):
@@ -222,7 +244,12 @@ Stop and ask the user for anything missing here. Never guess these:
    npm run test -w packages/theme-<name>
    npm run build -w packages/theme-<name>
    npm run build-storybook -w packages/theme-<name>
+   npm run screenshot -w packages/theme-<name>
    ```
+
+   `npm run lint` also runs `scripts/check-package-standard.mjs`, which
+   fails if the package lacks AGENTS.md, its screenshot or README link, a
+   demo story, or an intro on any story.
 
    A change isn't finished if any of these fail — fix the underlying
    issue, don't weaken a check to get it green.
@@ -250,7 +277,7 @@ Stop and ask the user for anything missing here. Never guess these:
    image/inputs vs. estimated, which contrast fixes were applied and why,
    which components were built (minimum set plus any bonus components),
    which technique-ladder rung each non-trivial shape used, and confirm all
-   checks in step 7 passed.
+   checks in step 7 passed and the package meets the standard from step 6.
 
 ## Guardrails
 
