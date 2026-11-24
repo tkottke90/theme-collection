@@ -62,6 +62,19 @@ Theme-specific extras:
 | `theme-circuit`  | Symmetric circuit-trace backdrop for heroes and empty states; `glow` lights the traces                                                                                                   |
 | `theme-progress` | Progress bar: a glowing cyan channel. `variant="raised"` (steel plate, for dark containers) or `"recessed"` (cut into the surface, for light cards); `value`, `max`, `segments`, `label` |
 
+### Progress colour
+
+`theme-progress` takes its colour from `--zd-progress-fill`, which defaults to
+the theme's machine cyan. Set it on a bar to recolour that bar alone; the fill,
+its glow, the leading edge and the recessed variant's wall tint all follow:
+
+```html
+<theme-progress value="35" style="--zd-progress-fill: var(--color-tribe-ochre)"></theme-progress>
+```
+
+Pick a colour with at least 3:1 contrast against the empty channel
+(`--color-core-deep`), or a nearly empty bar becomes hard to read.
+
 ### Forms
 
 `theme-input`, `theme-select` and `theme-textarea` are form-associated custom

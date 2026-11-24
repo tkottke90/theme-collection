@@ -19,8 +19,12 @@ export type ProgressVariant = "raised" | "recessed";
 const FALLBACK_WIDTH = 240;
 
 /**
- * Progress bar: a glowing cyan channel split into `segments` by seam ticks.
+ * Progress bar: a glowing channel split into `segments` by seam ticks.
  * Stretches to its container's width. `variant` picks raised or recessed.
+ *
+ * @cssprop --zd-progress-fill - Colour of the fill, its glow, leading edge and
+ *   (recessed) wall tint. Defaults to the theme's machine cyan. Choose one with
+ *   at least 3:1 contrast against the empty channel (`--color-core-deep`).
  */
 @customElement("theme-progress")
 export class ThemeProgress extends LitElement {
@@ -29,6 +33,23 @@ export class ThemeProgress extends LitElement {
     css`
       :host {
         display: block;
+        /*
+         * The bar's light. Override --zd-progress-fill on the element to
+         * recolour one bar; everything lit derives from it. Unset, it is the
+         * theme's machine cyan.
+         */
+        --zd-progress-light: var(--zd-progress-fill, var(--color-brand-500));
+      }
+      .fill {
+        fill: var(--zd-progress-light);
+      }
+      /* The leading edge: the fill lifted most of the way to paint-white. */
+      .edge {
+        fill: color-mix(in srgb, var(--zd-progress-light) 35%, var(--color-paint));
+      }
+      /* Recessed only: the glow tinting the slot's walls. */
+      .spill {
+        fill: var(--zd-progress-light);
       }
     `,
   ];

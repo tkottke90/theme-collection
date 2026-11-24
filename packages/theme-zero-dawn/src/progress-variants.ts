@@ -16,8 +16,9 @@ export interface ProgressFace {
 const GLOW = "url(#zd-progress-glow)";
 
 /**
- * The lit part shared by both faces: the cyan fill on the channel floor, a
- * bright leading edge, and seam ticks splitting the floor into `segments`.
+ * The lit part shared by both faces: the fill on the channel floor, a bright
+ * leading edge, and seam ticks splitting the floor into `segments`. Colours
+ * come from `theme-progress`'s stylesheet (`--zd-progress-fill`), not here.
  */
 function renderFill(
   x0: number,
@@ -33,10 +34,10 @@ function renderFill(
     return svg`<line class="tick" x1=${x} y1=${y0} x2=${x} y2=${y0 + depth} stroke="var(--color-core-deep)" stroke-width="1.5" />`;
   });
   return svg`
-    <rect class="fill" x=${x0} y=${y0} width=${fill} height=${depth} fill="var(--color-brand-500)" filter=${GLOW} />
+    <rect class="fill" x=${x0} y=${y0} width=${fill} height=${depth} filter=${GLOW} />
     ${
       pct > 0 && pct < 1
-        ? svg`<rect x=${x0 + fill - 2} y=${y0} width="2" height=${depth} fill="var(--color-brand-100)" />`
+        ? svg`<rect class="edge" x=${x0 + fill - 2} y=${y0} width="2" height=${depth} />`
         : null
     }
     ${ticks}
@@ -129,7 +130,7 @@ export function renderRecessed(w: number, pct: number, segments: number): Progre
             <path class="floor" d=${g.grooveD} fill="var(--color-core-deep)" />
             <g clip-path="url(#zd-rc-slot)">
               <g clip-path="url(#zd-rc-floor)">${renderFill(x0, RECESSED_WALL, len, depth, pct, segments)}</g>
-              <rect class="spill" x=${x0} y="0" width=${len * pct} height=${RECESSED_H} fill="var(--color-brand-500)" fill-opacity="0.18" />
+              <rect class="spill" x=${x0} y="0" width=${len * pct} height=${RECESSED_H} fill-opacity="0.18" />
             </g>
           `
           : null

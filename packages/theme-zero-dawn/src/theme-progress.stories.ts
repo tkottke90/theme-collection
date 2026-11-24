@@ -66,3 +66,27 @@ export const Pairings: Story = {
       </theme-card>
     </div>`,
 };
+
+/**
+ * One variable recolours a bar: set --zd-progress-fill on the element. The
+ * fill, glow, leading edge and recessed wall tint all follow it.
+ */
+export const CustomFill: Story = {
+  render: () =>
+    html`<div style="max-width: 24rem; display: flex; flex-direction: column; gap: 1.5rem">
+      <theme-progress value="70" label="Default"></theme-progress>
+      <theme-progress
+        value="35"
+        label="Ochre"
+        style="--zd-progress-fill: var(--color-tribe-ochre)"
+      ></theme-progress>
+      <theme-card heading="On a light plate">
+        <theme-progress
+          variant="recessed"
+          value="55"
+          label="Ochre, recessed"
+          style="--zd-progress-fill: var(--color-tribe-ochre)"
+        ></theme-progress>
+      </theme-card>
+    </div>`,
+};

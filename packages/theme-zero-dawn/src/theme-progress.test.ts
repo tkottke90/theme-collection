@@ -64,4 +64,23 @@ describe("theme-progress", () => {
     expect(el.shadowRoot?.textContent).toContain("100%");
     el.remove();
   });
+
+  it("colours every lit part from --zd-progress-fill, falling back to the theme cyan", async () => {
+    const css = (
+      customElements.get("theme-progress") as unknown as { styles: { cssText: string }[] }
+    ).styles
+      .map((st) => st.cssText)
+      .join("\n");
+    expect(css).toContain("--zd-progress-light: var(--zd-progress-fill, var(--color-brand-500))");
+    for (const part of [".fill", ".edge", ".spill"]) {
+      expect(css).toMatch(new RegExp(`\\${part}\\s*\\{[^}]*--zd-progress-light`));
+    }
+
+    // The SVG parts carry no colour of their own, so the stylesheet decides.
+    const el = await make({ variant: "recessed", value: 50 } as Partial<ThemeProgress>);
+    for (const part of [".fill", ".edge", ".spill"]) {
+      expect(el.shadowRoot?.querySelector(part)?.hasAttribute("fill")).toBe(false);
+    }
+    el.remove();
+  });
 });
