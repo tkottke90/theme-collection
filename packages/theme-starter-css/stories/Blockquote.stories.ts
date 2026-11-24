@@ -2,6 +2,16 @@ import type { Meta, StoryObj } from "@storybook/html";
 
 const meta: Meta = {
   title: "Theme/Starter CSS/Blockquote",
+  parameters: {
+    intro: {
+      tag: ".theme-blockquote",
+      title: "Blockquote",
+      description: [
+        "A callout for asides: a coloured left rule, a faint tint of the same colour behind the text, and a bold label. Ten modifier classes (theme-blockquote--info through --quote) each set one accent custom property, so every type is the same shape in a different status colour.",
+        "When you copy the starter, say how your theme marks a callout (a rule, an icon, a frame) and how its ten status colours were picked, including the contrast they hold against the tinted background.",
+      ],
+    },
+  },
 };
 export default meta;
 

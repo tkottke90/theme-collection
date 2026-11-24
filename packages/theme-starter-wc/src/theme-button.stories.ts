@@ -4,6 +4,16 @@ import "./theme-button.js";
 
 const meta: Meta = {
   title: "Theme/Starter WC/Button",
+  parameters: {
+    intro: {
+      tag: "theme-button",
+      title: "Button",
+      description: [
+        "The theme's action button. Primary is a solid brand-500 fill with white text, secondary is a brand outline, and ghost is text only; all three share the theme radius and dim to neutral when disabled.",
+        "Copying this starter? Describe what makes your button belong to the theme (shape, fill, edge, hover and pressed states) and when to reach for each variant.",
+      ],
+    },
+  },
   render: (args) =>
     html`<theme-button
       label=${args["label"]}

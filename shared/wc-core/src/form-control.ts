@@ -1,8 +1,22 @@
 import { LitElement, type PropertyValues } from "lit";
 import { property, state } from "lit/decorators.js";
 
+/** A label's text, skipping anything inside `control` (e.g. a wrapped select's options). */
+function textOutside(label: Node, control: Node): string {
+  let text = "";
+  const walker = document.createTreeWalker(label, NodeFilter.SHOW_TEXT);
+  for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+    if (!control.contains(node)) text += node.textContent ?? "";
+  }
+  return text.replace(/\s+/g, " ").trim();
+}
+
 /**
- * Base for the theme's form controls (Input, Select, Textarea).
+ * Base for every theme's form controls (Input, Select, Textarea).
+ *
+ * Shared by all Web Component packages: each one's build copies this file
+ * into its own `src/generated/core/` (see `scripts/wc-core.mjs`), so it's
+ * bundled into the package, never a runtime dependency.
  *
  * Each control wraps a native element inside its shadow root, which a
  * surrounding `<form>` can't see. Making the host a form-associated custom
@@ -18,16 +32,6 @@ import { property, state } from "lit/decorators.js";
  * `ElementInternals` is missing in some environments (e.g. jsdom); there the
  * control still renders and tracks its value, it just can't join a form.
  */
-/** A label's text, skipping anything inside `control` (e.g. a wrapped select's options). */
-function textOutside(label: Node, control: Node): string {
-  let text = "";
-  const walker = document.createTreeWalker(label, NodeFilter.SHOW_TEXT);
-  for (let node = walker.nextNode(); node; node = walker.nextNode()) {
-    if (!control.contains(node)) text += node.textContent ?? "";
-  }
-  return text.replace(/\s+/g, " ").trim();
-}
-
 export abstract class FormControlElement extends LitElement {
   static formAssociated = true;
 

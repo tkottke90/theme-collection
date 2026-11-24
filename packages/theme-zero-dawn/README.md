@@ -5,7 +5,7 @@ tribe" look: light, faceted armour plates sitting on dark machine cores,
 thin cyan seams, amber wiring, and hand-painted tribal glyphs. Nearly every
 surface is drawn in SVG.
 
-![Component gallery for @tkottke90/theme-zero-dawn](./docs/screenshot.png)
+![Demo page for @tkottke90/theme-zero-dawn](./docs/screenshot.png)
 
 ## Usage
 

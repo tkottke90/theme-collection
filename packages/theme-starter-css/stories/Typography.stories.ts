@@ -2,6 +2,16 @@ import type { Meta, StoryObj } from "@storybook/html";
 
 const meta: Meta = {
   title: "Theme/Starter CSS/Typography",
+  parameters: {
+    intro: {
+      tag: ".theme-heading, .theme-text",
+      title: "Typography",
+      description: [
+        "Headings use theme-heading with a level modifier (--h1 to --h4) and body copy uses theme-text, with a smaller, muted --caption modifier. The classes are independent of the element, so an h3 can look like an h2 when the outline needs it.",
+        "When you copy the starter, describe your type: the faces and why they pair, the scale, weights and spacing, and where the caption style is used.",
+      ],
+    },
+  },
 };
 export default meta;
 

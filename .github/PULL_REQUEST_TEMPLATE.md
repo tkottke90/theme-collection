@@ -28,6 +28,20 @@ doesn't apply to this theme.
       warning, failure, danger, bug, example, quote)
 - [ ] Skeleton — standalone per-typography-level placeholders
 
+## Package standard
+
+Only applicable when adding or migrating a theme package. See
+CONTRIBUTING.md, "Package standard"; `npm run lint` checks the first four.
+
+- [ ] `README.md` follows the starter template and links `docs/screenshot.png`
+- [ ] `AGENTS.md` follows the starter template and is in `package.json` `files`
+- [ ] Every stories `meta` has a `parameters.intro`
+- [ ] A `.../Demo` story composes a full page from the package's components
+- [ ] Form controls are form-ready (WC packages use the shared
+      `FormControlElement`/`FieldElement` and `aria-label`)
+- [ ] Removed the package from `PENDING` in
+      `scripts/check-package-standard.mjs` (migrations only)
+
 ## Screenshots
 
 - [ ] This PR touches a package's styles, and I regenerated and committed
@@ -41,6 +55,7 @@ doesn't apply to this theme.
 Ran from the repo root, all passing:
 
 - [ ] `npm run lint`
+- [ ] `npm run typecheck`
 - [ ] `npm run format:check`
 - [ ] `npm run test --workspaces --if-present`
 - [ ] `npm run build --workspaces --if-present`

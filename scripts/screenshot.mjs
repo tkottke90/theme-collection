@@ -18,13 +18,6 @@ const MIME_TYPES = {
   ".map": "application/json",
 };
 
-function escapeHtml(value) {
-  return String(value).replace(
-    /[&<>"']/g,
-    (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char],
-  );
-}
-
 function serveStatic(rootDir) {
   const resolvedRoot = path.resolve(rootDir);
   return createServer(async (req, res) => {
@@ -57,37 +50,21 @@ function listen(server) {
   });
 }
 
-function buildGalleryHtml(packageName, shots) {
-  const tiles = shots
-    .map(
-      (shot) => `<figure>
-        <img src="${shot.dataUrl}" alt="${escapeHtml(shot.title)} — ${escapeHtml(shot.name)}" />
-        <figcaption>${escapeHtml(shot.title)} — ${escapeHtml(shot.name)}</figcaption>
-      </figure>`,
-    )
-    .join("\n");
+/** A story is the package's full-page demo when its title's last segment is "Demo". */
+const isDemo = (entry) => /(^|\/)demo$/i.test(entry.title);
 
-  return `<!doctype html>
-<html>
-<head>
-<meta charset="utf-8" />
-<style>
-  body { margin: 0; padding: 24px; background: #ffffff; font-family: system-ui, sans-serif; }
-  h1 { font: 600 20px system-ui, sans-serif; margin: 0 0 16px; color: #1f2230; }
-  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-  figure { margin: 0; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;
-           display: flex; flex-direction: column; align-items: center; justify-content: center; }
-  figure img { max-width: 100%; }
-  figcaption { font-size: 12px; color: #6b7280; margin-top: 8px; text-align: center; }
-</style>
-</head>
-<body>
-  <h1>${escapeHtml(packageName)}</h1>
-  <div class="grid">${tiles}</div>
-</body>
-</html>`;
-}
+/**
+ * Width, in CSS pixels, the demo is rendered at. Close to README width
+ * (about 900px on GitHub), so the image shows near 1:1 and stays readable.
+ */
+const SHOT_WIDTH = 1000;
 
+/**
+ * Writes `docs/screenshot.png`: the package's demo story (the stories file
+ * titled ".../Demo"; see CONTRIBUTING.md's "Package standard"), captured
+ * at SHOT_WIDTH. One page composed from every component shows the theme
+ * better, and far smaller, than a tile per story.
+ */
 async function generateForPackage(pkgDir) {
   const staticDir = path.join(pkgDir, "storybook-static");
   const indexPath = path.join(staticDir, "index.json");
@@ -100,9 +77,14 @@ async function generateForPackage(pkgDir) {
   }
 
   const index = JSON.parse(await readFile(indexPath, "utf8"));
-  const stories = Object.values(index.entries ?? {}).filter((entry) => entry.type === "story");
-  if (stories.length === 0) {
-    console.warn(`No stories found in ${indexPath}, skipping ${pkgDir}.`);
+  const demo = Object.values(index.entries ?? {}).find(
+    (entry) => entry.type === "story" && isDemo(entry),
+  );
+  if (!demo) {
+    console.error(
+      `No demo story in ${pkgDir} (a stories file titled ".../Demo") — add one; see CONTRIBUTING.md, "Package standard".`,
+    );
+    process.exitCode = 1;
     return;
   }
 
@@ -121,40 +103,31 @@ async function generateForPackage(pkgDir) {
     // playwright install chromium` has been run (see CONTRIBUTING.md).
     // Some sandboxes/CI images instead ship a browser preinstalled at a
     // fixed, non-default path — point at it with this env var rather
-    // than editing the script.
+    // than editing the script (e.g. SCREENSHOT_CHROMIUM_PATH=/opt/pw-browsers/chromium
+    // in Claude Code's cloud environment).
     const executablePath = process.env.SCREENSHOT_CHROMIUM_PATH || undefined;
     browser = await chromium.launch({ executablePath });
+    const page = await browser.newPage({ viewport: { width: SHOT_WIDTH, height: 800 } });
 
-    const page = await browser.newPage({ viewport: { width: 1000, height: 700 } });
-    const shots = [];
-
-    for (const entry of stories) {
-      await page.goto(`http://127.0.0.1:${port}/iframe.html?id=${entry.id}&viewMode=story`, {
-        waitUntil: "networkidle",
-      });
-      const root = page.locator("#storybook-root");
-      await root.waitFor({ state: "visible", timeout: 10_000 });
-      const buffer = await root.screenshot();
-      shots.push({
-        id: entry.id,
-        title: entry.title,
-        name: entry.name,
-        dataUrl: `data:image/png;base64,${buffer.toString("base64")}`,
-      });
-    }
-
-    const pkgJson = JSON.parse(await readFile(path.join(pkgDir, "package.json"), "utf8"));
-    const galleryHtml = buildGalleryHtml(pkgJson.name ?? path.basename(pkgDir), shots);
-
-    const galleryPage = await browser.newPage();
-    await galleryPage.setContent(galleryHtml, { waitUntil: "networkidle" });
+    // `screenshot=1` tells the shared story decorator to drop its
+    // full-viewport min-height (see shared/storybook/intro.ts).
+    const params = new URLSearchParams({ id: demo.id, viewMode: "story", screenshot: "1" });
+    await page.goto(`http://127.0.0.1:${port}/iframe.html?${params}`, {
+      waitUntil: "networkidle",
+    });
+    const root = page.locator("#storybook-root");
+    await root.waitFor({ state: "visible", timeout: 10_000 });
+    // Storybook's default "padded" layout insets the root by 1rem; drop it
+    // so the capture is exactly SHOT_WIDTH wide.
+    await page.addStyleTag({ content: "body.sb-main-padded { padding: 0 !important; }" });
+    await page.evaluate(() => document.fonts.ready);
 
     const outDir = path.join(pkgDir, "docs");
     await mkdir(outDir, { recursive: true });
     const outPath = path.join(outDir, "screenshot.png");
-    await galleryPage.screenshot({ path: outPath, fullPage: true });
+    await root.screenshot({ path: outPath });
 
-    console.log(`Wrote ${path.relative(process.cwd(), outPath)} (${shots.length} stories)`);
+    console.log(`Wrote ${path.relative(process.cwd(), outPath)} (${demo.title})`);
   } finally {
     await browser?.close();
     server?.close();
