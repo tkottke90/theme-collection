@@ -23,4 +23,22 @@ describe("theme-heading", () => {
 
     el.remove();
   });
+
+  it("stacks the ornament under the text in a centred column for levels 1-2", async () => {
+    const el = document.createElement("theme-heading") as ThemeHeading;
+    el.level = 2;
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const ornament = el.shadowRoot?.querySelector(".ornament");
+    const column = ornament?.parentElement;
+    expect(column?.classList.contains("items-center")).toBe(true);
+    expect(column?.querySelector(".text slot")).not.toBeNull();
+
+    el.level = 3;
+    await el.updateComplete;
+    expect(el.shadowRoot?.querySelector(".ornament")).toBeNull();
+
+    el.remove();
+  });
 });
