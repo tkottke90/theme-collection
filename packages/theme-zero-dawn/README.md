@@ -65,15 +65,20 @@ Theme-specific extras:
 ### Progress colour
 
 `theme-progress` takes its colour from `--zd-progress-fill`, which defaults to
-the theme's machine cyan. Set it on a bar to recolour that bar alone; the fill,
-its glow, the leading edge and the recessed variant's wall tint all follow:
+the theme's machine cyan. Set it to **any colour** on a bar (or an ancestor) to
+recolour the fill, its glow, the leading edge and the recessed variant's wall
+tint:
 
 ```html
-<theme-progress value="35" style="--zd-progress-fill: var(--color-tribe-ochre)"></theme-progress>
+<theme-progress value="35" style="--zd-progress-fill: #84212b"></theme-progress>
 ```
 
-Pick a colour with at least 3:1 contrast against the empty channel
-(`--color-core-deep`), or a nearly empty bar becomes hard to read.
+Only the colour's hue is used. Lightness and chroma are locked (OKLCH 0.72 /
+0.12, the band the theme cyan sits in), so every hue holds 7.3–8.1:1 contrast
+against the empty channel and stays displayable. The flip side: deep or vivid
+colours are evened out (a dark red becomes a coral), and greys, which have no
+hue, come out a muted red. This uses CSS relative colour syntax (Chrome 119+,
+Firefox 128+, Safari 18+); older browsers use the colour exactly as given.
 
 ### Forms
 

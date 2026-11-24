@@ -13,6 +13,7 @@ const meta: Meta = {
       description: [
         "Progress is a glowing cyan channel divided into segments by seam ticks, in two variants. Raised puts the channel in a bevelled steel plate with its own drop shadow, for dark containers. Recessed has no plate at all: it is a slot cut into whatever surface it sits on.",
         "The recessed slot's walls are lit as the inside of a hole, the reverse of a raised edge: top and left in shadow, bottom and right catching the light. The fill glows from the slot's floor and tints its walls without spilling onto the surface, so on a light card the light seems to come from inside the plate. The variant is always set explicitly; the bar never guesses it from its surroundings.",
+        "Its colour takes only a hue. Set --zd-progress-fill to any colour and the bar keeps the hue but locks lightness and chroma to the band the theme cyan sits in, so every possible hue holds over 7:1 against the empty channel. The fill control above takes any colour to try it.",
       ],
     },
   },
@@ -23,10 +24,18 @@ const meta: Meta = {
         segments=${args["segments"]}
         label=${args["label"]}
         variant=${args["variant"]}
+        style=${args["fill"] ? `--zd-progress-fill: ${args["fill"]}` : ""}
       ></theme-progress>
     </div>`,
-  args: { value: 60, segments: 10, label: "Armour", variant: "raised" },
-  argTypes: { variant: { control: "select", options: ["raised", "recessed"] } },
+  args: { value: 60, segments: 10, label: "Armour", variant: "raised", fill: "" },
+  argTypes: {
+    variant: { control: "select", options: ["raised", "recessed"] },
+    fill: {
+      control: "color",
+      description:
+        "--zd-progress-fill. Pick any colour: the bar keeps its hue and locks lightness and chroma so it always contrasts with the channel.",
+    },
+  },
 };
 export default meta;
 
@@ -68,24 +77,32 @@ export const Pairings: Story = {
 };
 
 /**
- * One variable recolours a bar: set --zd-progress-fill on the element. The
- * fill, glow, leading edge and recessed wall tint all follow it.
+ * Any colour can go in; only its hue comes out. A dark red, a neon green and
+ * the tribe's moss all land at the same lightness and chroma as the cyan, so
+ * every bar keeps the same weight and contrast.
  */
 export const CustomFill: Story = {
   render: () =>
     html`<div style="max-width: 24rem; display: flex; flex-direction: column; gap: 1.5rem">
-      <theme-progress value="70" label="Default"></theme-progress>
-      <theme-progress
-        value="35"
-        label="Ochre"
-        style="--zd-progress-fill: var(--color-tribe-ochre)"
-      ></theme-progress>
+      ${[
+        ["Default (theme cyan)", ""],
+        ["#84212b (dark red)", "#84212b"],
+        ["#39ff14 (neon green)", "#39ff14"],
+        ["Tribe moss", "var(--color-tribe-moss)"],
+      ].map(
+        ([label, fill]) =>
+          html`<theme-progress
+            value="55"
+            label=${label}
+            style=${fill ? `--zd-progress-fill: ${fill}` : ""}
+          ></theme-progress>`,
+      )}
       <theme-card heading="On a light plate">
         <theme-progress
           variant="recessed"
           value="55"
-          label="Ochre, recessed"
-          style="--zd-progress-fill: var(--color-tribe-ochre)"
+          label="#84212b, recessed"
+          style="--zd-progress-fill: #84212b"
         ></theme-progress>
       </theme-card>
     </div>`,

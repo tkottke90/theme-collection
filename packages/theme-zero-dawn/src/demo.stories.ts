@@ -54,6 +54,110 @@ const SIGILS: Array<{ name: GlyphName; color: GlyphColor; label: string }> = [
   { name: "eye", color: "violet", label: "Seers" },
 ];
 
+/**
+ * Hue slider: drives --zd-progress-fill for every progress bar on the page.
+ * theme-progress keeps only the hue (lightness and chroma are locked to a
+ * contrast-safe band), so the slider can only ever produce readable bars.
+ * Its track is painted with exactly that band.
+ */
+const DEFAULT_HUE = 216; // the theme cyan's hue
+const BAND = Array.from({ length: 13 }, (_, i) => `oklch(0.72 0.12 ${i * 30})`).join(", ");
+
+const HUE_STYLES = html`<style>
+  .zd-hue {
+    margin-top: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .zd-hue-head {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-text);
+  }
+  .zd-hue-value {
+    color: var(--color-text-muted);
+  }
+  .zd-hue-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .zd-hue input[type="range"] {
+    flex: 1;
+    min-width: 0;
+    height: 1.25rem;
+    margin: 0;
+    background: transparent;
+    appearance: none;
+    cursor: pointer;
+  }
+  .zd-hue input[type="range"]::-webkit-slider-runnable-track {
+    height: 0.5rem;
+    background: linear-gradient(to right, ${BAND});
+    clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
+  }
+  .zd-hue input[type="range"]::-moz-range-track {
+    height: 0.5rem;
+    background: linear-gradient(to right, ${BAND});
+    clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
+  }
+  .zd-hue input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: -0.375rem;
+    border: 0;
+    clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+    background:
+      linear-gradient(var(--color-paint), var(--color-paint)) center / 40% 40% no-repeat,
+      var(--color-core-deep);
+  }
+  .zd-hue input[type="range"]::-moz-range-thumb {
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 0;
+    border-radius: 0;
+    clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+    background:
+      linear-gradient(var(--color-paint), var(--color-paint)) center / 40% 40% no-repeat,
+      var(--color-core-deep);
+  }
+  .zd-hue input[type="range"]:focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 4px;
+  }
+</style>`;
+
+function setHue(root: Element | null, hue: number | null) {
+  const demo = root?.closest(".zd-demo") as HTMLElement | null;
+  if (!demo) return;
+  const input = demo.querySelector<HTMLInputElement>("#zd-hue");
+  const output = demo.querySelector(".zd-hue-value");
+  const shown = hue ?? DEFAULT_HUE;
+  if (hue === null) demo.style.removeProperty("--zd-progress-fill");
+  else demo.style.setProperty("--zd-progress-fill", `oklch(0.72 0.12 ${hue})`);
+  if (input) {
+    input.value = String(shown);
+    input.setAttribute("aria-valuetext", `${shown} degrees`);
+  }
+  if (output) output.textContent = `${shown}°`;
+}
+
+function onHueInput(e: Event) {
+  const input = e.target as HTMLInputElement;
+  setHue(input, Number(input.value));
+}
+
+function onHueReset(e: Event) {
+  setHue(e.target as Element, null);
+}
+
 /** One dial face per relay: a live reading and one still coming in. */
 const TELEMETRY = [
   { variant: "dish", value: 64, reading: "Relay link", pending: "Syncing" },
@@ -87,7 +191,8 @@ function machineCard(m: Machine) {
 }
 
 export const demoPage = () => html`
-  <div style="max-width: 72rem; margin: 0 auto">
+  ${HUE_STYLES}
+  <div class="zd-demo" style="max-width: 72rem; margin: 0 auto">
     <theme-circuit glow style="--zd-circuit-min-height: 320px">
       <theme-text variant="caption">Survey log · Season of thaw</theme-text>
       <theme-heading level="1">Field guide to the machines</theme-heading>
@@ -179,6 +284,25 @@ export const demoPage = () => html`
                 segments="8"
                 label="Expedition supplies"
               ></theme-progress>
+            </div>
+            <div class="zd-hue">
+              <div class="zd-hue-head">
+                <label for="zd-hue">Channel hue</label>
+                <output for="zd-hue" class="zd-hue-value">${DEFAULT_HUE}°</output>
+              </div>
+              <div class="zd-hue-row">
+                <input
+                  id="zd-hue"
+                  type="range"
+                  min="0"
+                  max="360"
+                  step="1"
+                  .value=${String(DEFAULT_HUE)}
+                  aria-valuetext="${DEFAULT_HUE} degrees"
+                  @input=${onHueInput}
+                />
+                <theme-button variant="ghost" label="Reset" @click=${onHueReset}></theme-button>
+              </div>
             </div>
           </theme-container>
           <theme-container as="ul">

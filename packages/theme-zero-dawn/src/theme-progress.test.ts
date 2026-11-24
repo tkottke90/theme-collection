@@ -72,6 +72,11 @@ describe("theme-progress", () => {
       .map((st) => st.cssText)
       .join("\n");
     expect(css).toContain("--zd-progress-light: var(--zd-progress-fill, var(--color-brand-500))");
+    // Hue only: lightness and chroma are locked to the contrast-safe band.
+    expect(css).toMatch(/@supports \(color: oklch\(from red 0\.72 0\.12 h\)\)/);
+    expect(css).toMatch(
+      /oklch\(\s*from var\(--zd-progress-fill, var\(--color-brand-500\)\) 0\.72 0\.12 h\s*\)/,
+    );
     for (const part of [".fill", ".edge", ".spill"]) {
       expect(css).toMatch(new RegExp(`\\${part}\\s*\\{[^}]*--zd-progress-light`));
     }

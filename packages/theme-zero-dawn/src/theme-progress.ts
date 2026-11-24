@@ -22,9 +22,10 @@ const FALLBACK_WIDTH = 240;
  * Progress bar: a glowing channel split into `segments` by seam ticks.
  * Stretches to its container's width. `variant` picks raised or recessed.
  *
- * @cssprop --zd-progress-fill - Colour of the fill, its glow, leading edge and
- *   (recessed) wall tint. Defaults to the theme's machine cyan. Choose one with
- *   at least 3:1 contrast against the empty channel (`--color-core-deep`).
+ * @cssprop --zd-progress-fill - Any colour; the bar takes its hue for the fill,
+ *   glow, leading edge and (recessed) wall tint, at a fixed lightness and
+ *   chroma that always contrasts with the empty channel. Defaults to the
+ *   theme's machine cyan.
  */
 @customElement("theme-progress")
 export class ThemeProgress extends LitElement {
@@ -39,6 +40,21 @@ export class ThemeProgress extends LitElement {
          * theme's machine cyan.
          */
         --zd-progress-light: var(--zd-progress-fill, var(--color-brand-500));
+      }
+      /*
+       * Where relative colour syntax is supported, keep only the hue of the
+       * chosen colour and lock lightness and chroma to the band the theme cyan
+       * already sits in (oklch 0.728 0.112 216). Across the whole hue circle
+       * that holds 7.3–8.1:1 against the empty channel and stays inside sRGB,
+       * so any hue is safe. Greys have no hue and come out a muted red.
+       * Older browsers use the colour as given.
+       */
+      @supports (color: oklch(from red 0.72 0.12 h)) {
+        :host {
+          --zd-progress-light: oklch(
+            from var(--zd-progress-fill, var(--color-brand-500)) 0.72 0.12 h
+          );
+        }
       }
       .fill {
         fill: var(--zd-progress-light);
