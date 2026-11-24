@@ -358,11 +358,11 @@ export const discVariantStyles = css`
   @keyframes zd-core-pulse {
     0%,
     100% {
-      transform: scale(0.7);
+      transform: scale(0.745);
       opacity: 0.55;
     }
     50% {
-      transform: scale(1.15);
+      transform: scale(1.105);
       opacity: 1;
     }
   }
