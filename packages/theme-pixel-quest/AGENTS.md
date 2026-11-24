@@ -137,25 +137,23 @@ each ink actually sits on:
 | `--color-text`                                     | page/panel, well         | 11.3, 9.7 |
 | `--color-text-muted`                               | page/panel, well         | 5.6, 4.8  |
 | placeholder (`--color-text-muted`)                 | well                     | 4.8       |
-| `--color-brand-600` (links, secondary buttons)     | page/panel               | 5.2       |
+| `--color-brand-600` (links, secondary buttons)     | page/panel, well         | 5.8, 5.0  |
 | `--color-panel-text`                               | badge (`--color-panel`)  | 8.7       |
 | status labels (all ten `--color-<type>-500`)       | panel                    | 4.7–6.1   |
 | `--color-panel-border` (outlines)                  | page                     | 11.8      |
 | `--color-border` (item rules)                      | page                     | 3.9       |
 | `--color-progress-fill`                            | `--color-progress-track` | 3.3       |
 | `--color-text-muted` on a disabled button          | parchment                | 5.6       |
-| `--color-brand-600` focus ring (non-text, needs 3) | page/panel               | 5.2       |
+| `--color-brand-600` focus ring (non-text, needs 3) | page/panel               | 5.8       |
+| `--color-skeleton-base` (decorative)               | page/panel               | 1.5       |
 
 Known failures. Work around them rather than copying them:
 
-- **`--color-brand-600` as text on a well is 4.48:1**, just under AA for small
-  text. No component does this; if you put green text inside a field, use
-  `--color-text` or `--color-brand-900` instead.
-- **Skeletons are barely visible**: `--color-skeleton-base` and
-  `-highlight` are 1.1–1.2:1 against the parchment. They're a faint shimmer by
-  design and are `aria-hidden` in the demo; don't use them as the only sign
-  that something is loading for anyone who needs it (add a text status for
-  screen readers, e.g. a polite live region).
+- **Skeletons are deliberately faint**: `--color-skeleton-base` is 1.5:1
+  against the parchment, enough to see at a glance but well under the 3:1
+  non-text minimum. They're decorative and `aria-hidden` in the demo; don't
+  use them as the only sign that something is loading (mark the region
+  `aria-busy="true"` and add a text status in a polite live region).
 - **The gold ring is 1.8:1 on parchment**. It's trim that sits between the
   dark edge and the green fill, where it reads fine (6.5:1 on the edge); never
   use gold as text or as an outline directly on the page.
