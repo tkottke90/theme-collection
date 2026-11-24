@@ -48,6 +48,11 @@ export class ThemeTextarea extends FormControlElement {
         color: var(--color-text);
         resize: vertical;
       }
+      /* Preflight's 50% currentcolor placeholder is 2.9:1 on the well; muted ink is 4.8:1. */
+      textarea::placeholder {
+        color: var(--color-text-muted);
+        opacity: 1;
+      }
       textarea:focus {
         outline: 2px solid var(--color-brand-600);
         outline-offset: 1px;

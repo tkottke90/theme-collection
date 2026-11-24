@@ -59,6 +59,11 @@ export class ThemeInput extends FormControlElement {
         font: inherit;
         color: var(--color-text);
       }
+      /* Preflight's 50% currentcolor placeholder is 2.9:1 on the well; muted ink is 4.8:1. */
+      input::placeholder {
+        color: var(--color-text-muted);
+        opacity: 1;
+      }
       input:focus {
         outline: 2px solid var(--color-brand-600);
         outline-offset: 1px;
