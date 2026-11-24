@@ -31,13 +31,13 @@ const TONES: Record<PlateTone, ToneStyle> = {
     to: "var(--color-plate-100)",
     groove: "var(--color-plate-300)",
   },
-  // The face falls away from the top-left light toward the core colour, so
+  // The face falls away from the top-left light into the core colour, so
   // the slope agrees with the bevel and drop shadow. The light end stays at
   // plate-700 (muted text is tuned to just pass AA there); every text
   // pairing only gains contrast toward the dark end.
   steel: {
     from: "var(--color-plate-700)",
-    to: "color-mix(in srgb, var(--color-plate-800) 50%, var(--color-core))",
+    to: "var(--color-core)",
     groove: "var(--color-plate-500)",
   },
 };
