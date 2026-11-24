@@ -113,7 +113,8 @@ their `name`, reset with the form, follow `<fieldset disabled>`, fire `change`
 from the element, and work with `<label for>` or a wrapping `<label>`. Radios
 group by `name`. Each control forwards its accessible name (its `aria-label`,
 else its `<label>`'s text) to the native element inside it; `theme-field`
-names the control it wraps with its label.
+names the control it wraps with its label; wrapping radios in an element, it
+names that element as a `radiogroup`, so each radio keeps its own label.
 
 _Template note: add a row for every theme-specific element, and any pairing
 rules (which variant goes on which surface)._

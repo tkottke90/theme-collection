@@ -11,7 +11,7 @@ const meta: Meta = {
       title: "Field",
       description: [
         "A field stacks a small, uppercase, widely tracked muted label over its control, like the stencilled legend beside a switch on a control panel.",
-        "The label lives in the field's shadow root, where a for attribute can't reach a control slotted in from outside, so the field links them itself: it names the control with the label for screen readers, unless the control already has a name, and clicking the label focuses the control, or toggles a checkbox or radio.",
+        "The label lives in the field's shadow root, where a for attribute can't reach a control slotted in from outside, so the field links them itself: it names the control with the label for screen readers, unless the control already has a name, and clicking the label focuses the control, or toggles a checkbox. Wrapping a group of radios, it names the group instead, so each radio keeps its own label.",
       ],
     },
   },

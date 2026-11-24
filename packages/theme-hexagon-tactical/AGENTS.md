@@ -360,13 +360,14 @@ or else from its `<label>` (text inside the control itself, such as a select's
 options, is excluded). `theme-field` gives the control it wraps the field's
 label as its name, unless the control already has an `aria-label` or
 `aria-labelledby`, and clicking the field label focuses the control (or
-toggles a checkbox/radio). If the field wraps more than one control, point
-`for` at the one it labels. For a radio group, point `for` at a
-`role="radiogroup"` wrapper, so each radio keeps its own label:
+toggles a checkbox). If the field wraps more than one control, point
+`for` at the one it labels. Radios are labelled as a group: wrap them in an
+element and the field names that element as a `radiogroup`, so each radio
+keeps its own label:
 
 ```html
-<theme-field label="Formation" for="formation">
-  <div id="formation" role="radiogroup">
+<theme-field label="Formation">
+  <div>
     <label
       ><theme-input type="radio" name="formation" value="wedge" checked></theme-input> Wedge</label
     >

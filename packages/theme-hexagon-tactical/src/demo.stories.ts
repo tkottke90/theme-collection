@@ -171,9 +171,8 @@ export const demoPage = () => html`
               <theme-textarea name="orders" rows="3" placeholder="Hold the north ridge.">
               </theme-textarea>
             </theme-field>
-            <!-- for= points the field at the group, so each radio keeps its own name. -->
-            <theme-field label="Formation" for="formation">
-              <div id="formation" role="radiogroup" style="display: flex; gap: 1.25rem">
+            <theme-field label="Formation">
+              <div style="display: flex; gap: 1.25rem">
                 ${["Wedge", "Line"].map(
                   (c) =>
                     html`<label style=${INLINE_LABEL}
