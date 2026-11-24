@@ -122,3 +122,29 @@ describe("form-associated controls", () => {
     wrap.remove();
   });
 });
+
+describe("accessible names", () => {
+  it("forward the host's aria-label to the inner native element", async () => {
+    for (const html of [
+      '<theme-input aria-label="Machine"></theme-input>',
+      '<theme-input type="checkbox" aria-label="Core"></theme-input>',
+      '<theme-select aria-label="Class"><option>A</option></theme-select>',
+      '<theme-textarea aria-label="Notes"></theme-textarea>',
+    ]) {
+      const { el, wrap } = await mount<ThemeInput>(html);
+      const inner = el.shadowRoot!.querySelector("input, select, textarea")!;
+      expect(inner.getAttribute("aria-label")).toBe(el.getAttribute("aria-label"));
+      wrap.remove();
+    }
+  });
+
+  it("follow aria-label changes and leave the inner element unnamed without one", async () => {
+    const { el, wrap } = await mount<ThemeInput>("<theme-input></theme-input>");
+    const inner = el.shadowRoot!.querySelector("input")!;
+    expect(inner.hasAttribute("aria-label")).toBe(false);
+    el.setAttribute("aria-label", "Renamed");
+    await el.updateComplete;
+    expect(inner.getAttribute("aria-label")).toBe("Renamed");
+    wrap.remove();
+  });
+});

@@ -1,4 +1,5 @@
 import { css, html } from "lit";
+import { ifDefined } from "lit/directives/if-defined.js";
 import { customElement, property } from "lit/decorators.js";
 import { FormControlElement } from "./form-control.js";
 import { themeStyles } from "./generated/theme-styles.js";
@@ -53,6 +54,7 @@ export class ThemeTextarea extends FormControlElement {
         .value=${this.value}
         placeholder=${this.placeholder}
         ?disabled=${this.isDisabled}
+        aria-label=${ifDefined(this.accessibleName)}
         @input=${this.onInput}
         @change=${this.emitChange}
         class="${SOCKET_CONTROL_CLASSES} resize-y"

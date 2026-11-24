@@ -1,4 +1,5 @@
 import { css, html } from "lit";
+import { ifDefined } from "lit/directives/if-defined.js";
 import { customElement, property } from "lit/decorators.js";
 import { FormControlElement } from "./form-control.js";
 import { themeStyles } from "./generated/theme-styles.js";
@@ -129,6 +130,7 @@ export class ThemeInput extends FormControlElement {
           .value=${this.value}
           .checked=${this.checked}
           ?disabled=${this.isDisabled}
+          aria-label=${ifDefined(this.accessibleName)}
           @change=${this.onBoxChange}
           class="absolute inset-0 m-0 h-full w-full cursor-pointer opacity-0"
         />
@@ -158,6 +160,7 @@ export class ThemeInput extends FormControlElement {
         .value=${this.value}
         placeholder=${this.placeholder}
         ?disabled=${this.isDisabled}
+        aria-label=${ifDefined(this.accessibleName)}
         @input=${this.onTextInput}
         @change=${this.emitChange}
         class=${SOCKET_CONTROL_CLASSES}

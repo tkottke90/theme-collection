@@ -100,6 +100,12 @@ labelable, so both `<label for="id">` and a wrapping `<label>` work, including
 toggling a checkbox or radio by clicking the label text. Radios with the same
 `name` form a group.
 
+Each control passes its accessible name to the native element inside it, so
+screen readers announce the label: from `aria-label` on the element, or from
+its `<label>`. `theme-field` names the control it wraps with its own label
+(unless the control already has a name) and focuses it when the label is
+clicked.
+
 ```html
 <form>
   <label>Machine <theme-input name="machine"></theme-input></label>

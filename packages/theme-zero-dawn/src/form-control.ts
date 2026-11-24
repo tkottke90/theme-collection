@@ -10,9 +10,24 @@ import { property, state } from "lit/decorators.js";
  * and `<fieldset disabled>`, and is labelable, so `<label for>` and wrapping
  * `<label>`s work.
  *
+ * Labels attach to the host, but assistive technology reads the native
+ * element inside the shadow root, which a label can't reach. So each control
+ * resolves its accessible name (see `accessibleName`) and puts it on that
+ * inner element.
+ *
  * `ElementInternals` is missing in some environments (e.g. jsdom); there the
  * control still renders and tracks its value, it just can't join a form.
  */
+/** A label's text, skipping anything inside `control` (e.g. a wrapped select's options). */
+function textOutside(label: Node, control: Node): string {
+  let text = "";
+  const walker = document.createTreeWalker(label, NodeFilter.SHOW_TEXT);
+  for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+    if (!control.contains(node)) text += node.textContent ?? "";
+  }
+  return text.replace(/\s+/g, " ").trim();
+}
+
 export abstract class FormControlElement extends LitElement {
   static formAssociated = true;
 
@@ -40,7 +55,31 @@ export abstract class FormControlElement extends LitElement {
     return this.disabled || this.inheritedDisabled;
   }
 
+  /**
+   * The host's `aria-label`. Read here and forwarded to the inner element
+   * (`theme-field` also sets it to name the control it wraps).
+   */
+  @property({ attribute: "aria-label" }) accessibleLabel: string | null = null;
+
   protected readonly internals: ElementInternals | null;
+
+  /**
+   * The name assistive technology should announce: the host's `aria-label`,
+   * else the text of the `<label>` elements associated with the host (via
+   * `for` or by wrapping it), excluding text inside the control itself so a
+   * wrapped select doesn't read out its own options.
+   */
+  protected get accessibleName(): string | undefined {
+    const own = this.accessibleLabel?.trim();
+    if (own) return own;
+    const labels = this.internals?.labels;
+    if (!labels?.length) return undefined;
+    const text = Array.from(labels)
+      .map((label) => textOutside(label, this))
+      .filter(Boolean)
+      .join(" ");
+    return text || undefined;
+  }
 
   constructor() {
     super();

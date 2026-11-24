@@ -286,9 +286,16 @@ chroma are locked so every hue stays readable.
 Form controls are **form-associated**: inside a `<form>` they submit under
 their `name`, reset with the form, follow `<fieldset disabled>`, fire `change`
 from the element, and work with `<label for>` or a wrapping `<label>`. Radios
-group by `name`. `theme-field`'s label is visual only and is not yet linked to
-the control it wraps; wrap the control in a `<label>` (or give it an
-`aria-label`) when the accessible name matters.
+group by `name`.
+
+Accessible names reach screen readers: each control forwards its name to the
+native element inside its shadow root, taken from `aria-label` on the element
+or else from its `<label>` (text inside the control itself, such as a select's
+options, is excluded). `theme-field` gives the control it wraps the field's
+label as its name, unless the control already has an `aria-label` or
+`aria-labelledby`, and clicking the field label focuses the control (or
+toggles a checkbox/radio). If the field wraps more than one control, point
+`for` at the one it labels.
 
 ### Vanilla (with a bundler)
 

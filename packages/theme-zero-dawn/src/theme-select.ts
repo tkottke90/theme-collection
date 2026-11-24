@@ -1,4 +1,5 @@
 import { css, html } from "lit";
+import { ifDefined } from "lit/directives/if-defined.js";
 import { customElement, property, state } from "lit/decorators.js";
 import { FormControlElement } from "./form-control.js";
 import { themeStyles } from "./generated/theme-styles.js";
@@ -96,6 +97,7 @@ export class ThemeSelect extends FormControlElement {
     return html`<span class=${SOCKET_CLASSES}>
       <select
         ?disabled=${this.isDisabled}
+        aria-label=${ifDefined(this.accessibleName)}
         class="${SOCKET_CONTROL_CLASSES} cursor-pointer pr-9"
         @change=${this.onChange}
       >
