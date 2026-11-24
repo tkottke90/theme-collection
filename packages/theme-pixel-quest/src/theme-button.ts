@@ -51,9 +51,19 @@ export class ThemeButton extends LitElement {
         background-color: transparent;
         color: var(--color-brand-600);
       }
+      /*
+       * Disabled: parchment fill and muted ink (5.6:1, readable), with the
+       * frame faded so it reads as inactive. Applies to every variant.
+       */
       .pixel-frame.badge:disabled .pixel-frame__fill {
         background-color: var(--color-neutral-100);
-        color: var(--color-neutral-500);
+      }
+      button.pixel-frame:disabled .pixel-frame__fill {
+        color: var(--color-text-muted);
+      }
+      button:disabled::before,
+      button:disabled::after {
+        opacity: 0.35;
       }
       button:not(:disabled):hover .pixel-frame__fill {
         filter: brightness(1.08);

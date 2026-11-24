@@ -61,9 +61,16 @@ export class ThemeSelect extends FormControlElement {
         font: inherit;
         color: var(--color-text);
       }
+      /*
+       * The focus ring goes on the host: the pixel frame's fill is clipped
+       * (clip-path), which would cut off an outline on the inner control.
+       */
       select:focus {
+        outline: none;
+      }
+      :host(:focus-within) {
         outline: 2px solid var(--color-brand-600);
-        outline-offset: 1px;
+        outline-offset: 2px;
       }
     `,
   ];
