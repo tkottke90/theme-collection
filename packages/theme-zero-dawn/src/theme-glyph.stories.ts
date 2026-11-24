@@ -5,6 +5,16 @@ import { GLYPHS } from "./glyphs.js";
 
 const meta: Meta = {
   title: "Theme/Zero Dawn/Glyph",
+  parameters: {
+    intro: {
+      tag: "theme-glyph",
+      title: "Glyph",
+      description: [
+        "The glyphs are original, drawn in the grammar of the tribal sign-painting reference without tracing it: symmetric, chevron-heavy, a few chunky strokes. Each sits on a painted triangle, shield or diamond, and the whole mark is passed through a fractal-noise displacement filter so its edges read as dry brush.",
+        "The stroke colour is chosen per paint for contrast, paint-white on the deep colours and core-dark on ochre and steel-blue. A glyph is decorative by default and becomes an announced image only when given a label.",
+      ],
+    },
+  },
   render: (args) =>
     html`<theme-glyph
       name=${args["name"]}

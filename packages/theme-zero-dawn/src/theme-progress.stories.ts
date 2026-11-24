@@ -6,6 +6,16 @@ import "./theme-container.js";
 
 const meta: Meta = {
   title: "Theme/Zero Dawn/Progress",
+  parameters: {
+    intro: {
+      tag: "theme-progress",
+      title: "Progress",
+      description: [
+        "Progress is a glowing cyan channel divided into segments by seam ticks, in two variants. Raised puts the channel in a bevelled steel plate with its own drop shadow, for dark containers. Recessed has no plate at all: it is a slot cut into whatever surface it sits on.",
+        "The recessed slot's walls are lit as the inside of a hole, the reverse of a raised edge: top and left in shadow, bottom and right catching the light. The fill glows from the slot's floor and tints its walls without spilling onto the surface, so on a light card the light seems to come from inside the plate. The variant is always set explicitly; the bar never guesses it from its surroundings.",
+      ],
+    },
+  },
   render: (args) =>
     html`<div style="max-width: 24rem">
       <theme-progress

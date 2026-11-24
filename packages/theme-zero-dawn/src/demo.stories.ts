@@ -268,6 +268,8 @@ export const demoPage = () => html`
 
 const meta: Meta = {
   title: "Theme/Zero Dawn/Demo",
+  // demoPage is exported for the standalone demo bundle, not as a story.
+  excludeStories: ["demoPage"],
   parameters: { layout: "fullscreen" },
 };
 export default meta;

@@ -4,6 +4,16 @@ import "./theme-disc.js";
 
 const meta: Meta = {
   title: "Theme/Zero Dawn/Disc",
+  parameters: {
+    intro: {
+      tag: "theme-disc",
+      title: "Disc",
+      description: [
+        "A radial gauge with a value, and a spinner without one, in three faces. The dish is a ten-sided raised plate with five bevelled panels, each shaded by the direction it actually faces. Segments is a ring of plate segments that shows its number in the core. Peaks is a ring of painted triangles around the divider's medallion.",
+        "In every face the structure stays still and only the light moves. The dish's cyan arc travels the rim while its core breathes in brightness, never in size; a cyan pulse runs round the segments; a lit run ratchets round the peaks. All three stop moving for reduced motion and keep a still in-progress state.",
+      ],
+    },
+  },
   render: (args) =>
     html`<theme-disc
       .value=${args["value"]}
@@ -30,6 +40,7 @@ export const PeaksSpinner: Story = {
 
 /** All three faces side by side, as a gauge (top) and a spinner (bottom). */
 export const Compare: Story = {
+  parameters: { intro: null },
   render: () =>
     html`<div
       style="display: grid; grid-template-columns: repeat(3, auto); gap: 2.5rem 3.5rem; justify-content: start"
