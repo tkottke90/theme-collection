@@ -54,13 +54,13 @@ The standard set: `theme-button`, `theme-input`, `theme-textarea`,
 
 Theme-specific extras:
 
-| Element             | What it is                                                                                          |
-| ------------------- | --------------------------------------------------------------------------------------------------- |
-| `theme-glyph`       | Hand-painted emblem. `name` (10 original glyphs), `color` (tribal paints), `shape`, `size`, `label` |
-| `theme-divider`     | Woven band rule: `variant="peaks"` (sawtooth) or `"trim"` (zigzag and beads)                        |
-| `theme-disc`        | Segmented radial dish. With `value` it's a meter; without one it's a spinner                        |
-| `theme-circuit`     | Symmetric circuit-trace backdrop for heroes and empty states; `glow` lights the traces              |
-| `theme-plate-stack` | Progress shown as overlapping armour shards: `value`, `max`, `segments`, `label`                    |
+| Element             | What it is                                                                                                                                                                               |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `theme-glyph`       | Hand-painted emblem. `name` (10 original glyphs), `color` (tribal paints), `shape`, `size`, `label`                                                                                      |
+| `theme-divider`     | Woven band rule: `variant="peaks"` (sawtooth) or `"trim"` (zigzag and beads)                                                                                                             |
+| `theme-disc`        | Radial progress: a meter with `value`, a spinner without. `variant` is `dish`, `segments` or `peaks`; only the light moves                                                               |
+| `theme-circuit`     | Symmetric circuit-trace backdrop for heroes and empty states; `glow` lights the traces                                                                                                   |
+| `theme-plate-stack` | Progress bar: a glowing cyan channel. `variant="raised"` (steel plate, for dark containers) or `"recessed"` (cut into the surface, for light cards); `value`, `max`, `segments`, `label` |
 
 ### Surfaces and ink
 

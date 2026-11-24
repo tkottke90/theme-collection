@@ -68,7 +68,12 @@ function machineCard(m: Machine) {
       </div>
     </div>
     <div style="margin: 1rem 0 1.25rem">
-      <theme-plate-stack value=${m.armour} segments="10" label="Armour"></theme-plate-stack>
+      <theme-plate-stack
+        variant="recessed"
+        value=${m.armour}
+        segments="10"
+        label="Armour"
+      ></theme-plate-stack>
     </div>
     <theme-button variant="primary" label="Track"></theme-button>
   </theme-card>`;
@@ -160,6 +165,14 @@ export const demoPage = () => html`
               <theme-disc value="22" label="Overridden"></theme-disc>
               <theme-disc label="Syncing"></theme-disc>
             </div>
+            <div style="margin-top: 1.5rem">
+              <theme-plate-stack
+                variant="raised"
+                value="48"
+                segments="8"
+                label="Expedition supplies"
+              ></theme-plate-stack>
+            </div>
           </theme-container>
           <theme-container as="ul">
             <theme-item>Climb the relay at the northern ridge</theme-item>
@@ -228,31 +241,6 @@ export const demoPage = () => html`
           )}
         </div>
       </theme-container>
-    </section>
-
-    <section style=${SECTION}>
-      <theme-heading level="2">Progress bar variants</theme-heading>
-      <theme-text variant="caption"
-        >For review: the same four bars on the dark page and on a light card</theme-text
-      >
-      <div style=${GRID("20rem")}>
-        <theme-container>
-          <div style="display: flex; flex-direction: column; gap: 1.5rem">
-            ${(["shards", "channel", "cells", "peaks"] as const).map(
-              (v) =>
-                html`<theme-plate-stack variant=${v} value="70" label=${v}></theme-plate-stack>`,
-            )}
-          </div>
-        </theme-container>
-        <theme-card heading="On a light plate">
-          <div style="display: flex; flex-direction: column; gap: 1.5rem">
-            ${(["shards", "channel", "cells", "peaks"] as const).map(
-              (v) =>
-                html`<theme-plate-stack variant=${v} value="30" label=${v}></theme-plate-stack>`,
-            )}
-          </div>
-        </theme-card>
-      </div>
     </section>
 
     <section style=${SECTION}>

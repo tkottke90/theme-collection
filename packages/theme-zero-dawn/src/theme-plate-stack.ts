@@ -1,27 +1,24 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { themeStyles } from "./generated/theme-styles.js";
-import {
-  renderCells,
-  renderChannel,
-  renderPeaksBar,
-  renderShards,
-  shardsWidth,
-} from "./plate-stack-variants.js";
+import { renderRaised, renderRecessed } from "./plate-stack-variants.js";
 import { ResizeFrameController } from "./resize-frame-controller.js";
 
 /**
- * - `shards`: overlapping armour shards (the original, fixed width).
- * - `channel`: raised steel plate with a sunken, cyan-filled channel.
- * - `cells`: a row of small raised, bevelled plate blocks.
- * - `peaks`: the divider's painted sawtooth, filling with ochre.
+ * - `raised`: a bevelled steel plate with the channel cut into it. Pairs with
+ *   dark steel containers.
+ * - `recessed`: the channel cut straight into the surface, glowing from
+ *   inside. Pairs with light plates (Card).
  */
-export type PlateStackVariant = "shards" | "channel" | "cells" | "peaks";
+export type PlateStackVariant = "raised" | "recessed";
 
 /** Used until the host has been measured (and in jsdom, which can't measure). */
 const FALLBACK_WIDTH = 240;
 
-/** Progress bar. `variant` picks the face — see `PlateStackVariant`. */
+/**
+ * Progress bar: a glowing cyan channel split into `segments` by seam ticks.
+ * Stretches to its container's width. `variant` picks raised or recessed.
+ */
 @customElement("theme-plate-stack")
 export class ThemePlateStack extends LitElement {
   static styles = [
@@ -37,31 +34,22 @@ export class ThemePlateStack extends LitElement {
   @property({ type: Number }) max = 100;
   @property({ type: Number }) segments = 10;
   @property({ type: String }) label = "";
-  @property({ type: String, reflect: true }) variant: PlateStackVariant = "shards";
+  @property({ type: String, reflect: true }) variant: PlateStackVariant = "raised";
 
-  /** Host width in px, for the fluid faces. */
+  /** Host width in px. */
   private size = new ResizeFrameController<number>(this, (w) => (w > 0 ? w : null));
 
   render() {
     const segments = Math.max(1, Math.round(this.segments));
     const max = this.max > 0 ? this.max : 100;
     const pct = Math.min(1, Math.max(0, this.value / max));
-    const fluid = this.variant !== "shards";
     const w = this.size.geometry ?? FALLBACK_WIDTH;
-
     const face =
-      this.variant === "channel"
-        ? renderChannel(w, pct, segments)
-        : this.variant === "cells"
-          ? renderCells(w, pct, segments)
-          : this.variant === "peaks"
-            ? renderPeaksBar(w, pct)
-            : renderShards(pct, segments);
-    const viewWidth = fluid ? w : shardsWidth(segments);
+      this.variant === "recessed"
+        ? renderRecessed(w, pct, segments)
+        : renderRaised(w, pct, segments);
 
-    return html`<div
-      class="${fluid ? "flex w-full" : "inline-flex max-w-full"} flex-col gap-2 font-sans"
-    >
+    return html`<div class="flex w-full flex-col gap-2 font-sans">
       ${
         this.label
           ? html`<div
@@ -75,9 +63,9 @@ export class ThemePlateStack extends LitElement {
           : null
       }
       <svg
-        viewBox="0 0 ${viewWidth} ${face.height}"
-        class=${fluid ? "block w-full" : "block h-12 w-auto max-w-full"}
-        height=${fluid ? face.height : 48}
+        viewBox="0 0 ${w} ${face.height}"
+        class="block w-full"
+        height=${face.height}
         style="overflow: visible"
         role="progressbar"
         aria-label=${this.label || "Progress"}
@@ -86,7 +74,7 @@ export class ThemePlateStack extends LitElement {
         aria-valuenow=${this.value}
       >
         <defs>
-          <filter id="zd-stack-glow" x="-200%" y="-200%" width="500%" height="500%">
+          <filter id="zd-stack-glow" x="-20%" y="-200%" width="140%" height="500%">
             <feGaussianBlur stdDeviation="1.5" result="b" />
             <feMerge>
               <feMergeNode in="b" />

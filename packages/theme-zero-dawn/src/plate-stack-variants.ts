@@ -1,12 +1,12 @@
 import { svg, type SVGTemplateResult } from "lit";
-import { renderBrushFilter } from "./glyphs.js";
 import { renderBevel } from "./plate-frame-svg.js";
-import { computePlate } from "./plate-geometry.js";
+import { computePlate, type PlateGeometry } from "./plate-geometry.js";
 
 /**
- * The faces of `theme-plate-stack`. Each renders at a measured width `w` (px)
- * and returns its own height, so the bar stretches to its container without
- * distorting bevels or brush strokes. Fixed-width `shards` is the original.
+ * The faces of `theme-plate-stack`: a glowing cyan channel, either on a
+ * raised steel plate or cut straight into the surface. Each renders at a
+ * measured width `w` (px) and returns its own height, so the bar stretches
+ * to its container without distorting bevels.
  */
 export interface StackFace {
   height: number;
@@ -15,168 +15,125 @@ export interface StackFace {
 
 const GLOW = "url(#zd-stack-glow)";
 
-// --- Shards: the original overlapping armour shards (fixed width) ------------
-
-const SHARD = "M2 44 Q5 16 26 2 L30 6 Q17 21 15 46 Z";
-const SHARD_STEP = 20;
-
-export function shardsWidth(segments: number): number {
-  return (segments - 1) * SHARD_STEP + 34;
-}
-
-export function renderShards(pct: number, segments: number): StackFace {
-  const lit = Math.round(pct * segments);
-  const shards = Array.from({ length: segments }, (_, i) => {
-    const on = i < lit;
-    return svg`
-      <g transform="translate(${i * SHARD_STEP} 0)" class=${on ? "shard on" : "shard"}>
-        <path d=${SHARD} transform="translate(2 3)" fill="var(--color-core-deep)" />
-        <path
-          d=${SHARD}
-          fill=${on ? "var(--color-plate-100)" : "var(--color-plate-700)"}
-          stroke=${on ? "var(--color-plate-50)" : "var(--color-plate-500)"}
-          stroke-width="1"
-        />
-        ${on ? svg`<path d="M26 2 L30 6" stroke="var(--color-brand-500)" stroke-width="2.5" filter=${GLOW} />` : null}
-      </g>
-    `;
+/**
+ * The lit part shared by both faces: the cyan fill on the channel floor, a
+ * bright leading edge, and seam ticks splitting the floor into `segments`.
+ */
+function renderFill(
+  x0: number,
+  y0: number,
+  len: number,
+  depth: number,
+  pct: number,
+  segments: number,
+) {
+  const fill = len * pct;
+  const ticks = Array.from({ length: segments - 1 }, (_, k) => {
+    const x = x0 + (len * (k + 1)) / segments;
+    return svg`<line class="tick" x1=${x} y1=${y0} x2=${x} y2=${y0 + depth} stroke="var(--color-core-deep)" stroke-width="1.5" />`;
   });
-  return { height: 50, content: svg`${shards}` };
+  return svg`
+    <rect class="fill" x=${x0} y=${y0} width=${fill} height=${depth} fill="var(--color-brand-500)" filter=${GLOW} />
+    ${
+      pct > 0 && pct < 1
+        ? svg`<rect x=${x0 + fill - 2} y=${y0} width="2" height=${depth} fill="var(--color-brand-100)" />`
+        : null
+    }
+    ${ticks}
+  `;
 }
 
-// --- Channel: raised steel plate with a sunken, cyan-filled channel ----------
+// --- Raised: a bevelled steel plate with the channel cut into it -------------
 
-const CH_H = 22;
-const CH_INSET = 9; // channel's left/right inset from the plate edge
-const CH_Y = 8;
-const CH_DEPTH = 6;
+const RAISED_H = 22;
+const RAISED_INSET = 9; // channel's left/right inset from the plate edge
+const RAISED_Y = 8;
+const RAISED_DEPTH = 6;
 
 /**
  * A raised, bevelled steel plate (the secondary button's construction) with a
- * channel cut into it. The channel is lit as a recess: its top and left walls
- * face away from the light and read dark, its bottom and right walls catch it.
- * A glowing cyan bar fills the channel; seam ticks split it into `segments`.
+ * channel cut into it. Sits best on dark steel containers. The channel is lit
+ * as a recess: top and left walls dark, bottom and right walls catching the
+ * light.
  */
-export function renderChannel(w: number, pct: number, segments: number): StackFace {
-  const g = computePlate(w, CH_H, { cut: 8, smallCut: 0, groove: 3, drop: 3, notch: false });
-  const x0 = CH_INSET;
-  const x1 = w - CH_INSET;
+export function renderRaised(w: number, pct: number, segments: number): StackFace {
+  const g = computePlate(w, RAISED_H, { cut: 8, smallCut: 0, groove: 3, drop: 3, notch: false });
+  const x0 = RAISED_INSET;
+  const x1 = w - RAISED_INSET;
   const len = Math.max(0, x1 - x0);
-  const fill = len * pct;
-  const y1 = CH_Y + CH_DEPTH;
-
-  const ticks = Array.from({ length: segments - 1 }, (_, k) => {
-    const x = x0 + (len * (k + 1)) / segments;
-    return svg`<line class="tick" x1=${x} y1=${CH_Y} x2=${x} y2=${y1} stroke="var(--color-core-deep)" stroke-width="1.5" />`;
-  });
+  const y1 = RAISED_Y + RAISED_DEPTH;
 
   return {
-    height: CH_H,
+    height: RAISED_H,
     content: svg`
       ${
         g
           ? svg`
             <defs><clipPath id="zd-ch-clip"><path d=${g.underD} /></clipPath></defs>
-            <path d=${g.dropD} fill="var(--color-core-deep)" />
-            <path d=${g.underD} fill="var(--color-plate-700)" />
+            <path class="drop" d=${g.dropD} fill="var(--color-core-deep)" />
+            <path class="plate" d=${g.underD} fill="var(--color-plate-700)" />
             ${renderBevel(g, "zd-ch-clip")}
           `
           : null
       }
-      <rect class="channel" x=${x0} y=${CH_Y} width=${len} height=${CH_DEPTH} fill="var(--color-core-deep)" />
-      <rect class="fill" x=${x0} y=${CH_Y} width=${fill} height=${CH_DEPTH} fill="var(--color-brand-500)" filter=${GLOW} />
-      ${
-        pct > 0 && pct < 1
-          ? svg`<rect x=${x0 + fill - 2} y=${CH_Y} width="2" height=${CH_DEPTH} fill="var(--color-brand-100)" />`
-          : null
-      }
-      ${ticks}
-      <path d="M${x0} ${y1} V${CH_Y} H${x1}" fill="none" stroke="var(--color-core)" stroke-width="1" />
-      <path d="M${x1} ${CH_Y} V${y1} H${x0}" fill="none" stroke="var(--color-plate-300)" stroke-opacity="0.6" stroke-width="1" />
+      <rect class="channel" x=${x0} y=${RAISED_Y} width=${len} height=${RAISED_DEPTH} fill="var(--color-core-deep)" />
+      ${renderFill(x0, RAISED_Y, len, RAISED_DEPTH, pct, segments)}
+      <path d="M${x0} ${y1} V${RAISED_Y} H${x1}" fill="none" stroke="var(--color-core)" stroke-width="1" />
+      <path d="M${x1} ${RAISED_Y} V${y1} H${x0}" fill="none" stroke="var(--color-plate-300)" stroke-opacity="0.6" stroke-width="1" />
     `,
   };
 }
 
-// --- Cells: a row of small raised plate blocks --------------------------------
+// --- Recessed: the channel cut straight into the surface ----------------------
 
-const CELL_H = 14;
-const CELL_GAP = 4;
+const RECESSED_H = 14;
+const RECESSED_WALL = 3;
 
-/**
- * `segments` small raised plates, each built and bevelled exactly like a
- * button. Filled cells are sunlit plate with a cyan seam just inside the top
- * bevel (on the bevel itself the lit facet washes it out); empty cells are
- * dark steel.
- */
-export function renderCells(w: number, pct: number, segments: number): StackFace {
-  const lit = Math.round(pct * segments);
-  const cw = Math.max(6, (w - CELL_GAP * (segments - 1)) / segments);
-
-  const cells = Array.from({ length: segments }, (_, i) => {
-    const on = i < lit;
-    const g = computePlate(cw, CELL_H, { cut: 4, smallCut: 0, groove: 2, drop: 2, notch: false });
-    if (!g) return null;
-    const clip = `zd-cell-clip-${i}`;
-    return svg`
-      <g class=${on ? "cell on" : "cell"} transform="translate(${(i * (cw + CELL_GAP)).toFixed(2)} 0)">
-        <defs><clipPath id=${clip}><path d=${g.underD} /></clipPath></defs>
-        <path d=${g.dropD} fill="var(--color-core-deep)" />
-        <path d=${g.underD} fill=${on ? "var(--color-plate-100)" : "var(--color-plate-700)"} />
-        ${renderBevel(g, clip)}
-        ${
-          on
-            ? // A rect, not a line: a filter sized from a zero-height line's
-              // bounding box has no area, so a glowing horizontal line vanishes.
-              svg`<rect class="seam" x="5" y="2.25" width=${(cw - 8).toFixed(2)} height="2" fill="var(--color-brand-500)" filter=${GLOW} />`
-            : null
-        }
-      </g>
-    `;
-  });
-
-  return { height: CELL_H + 2, content: svg`${cells}` };
+/** The same bevel facets, lit as walls of a hole: each faces inward. */
+function invert(g: PlateGeometry): PlateGeometry {
+  return { ...g, bevel: g.bevel.map((f) => ({ ...f, light: -f.light })) };
 }
 
-// --- Peaks: the divider's painted sawtooth, filling with ochre ----------------
-
-const PK_STEP = 12;
-const PK_BASE = 20;
-const PK_H = 30;
-
 /**
- * The divider's sawtooth band, brush-painted. Peaks fill with ochre up to the
- * value, and the ochre diamond medallion rides the band as the progress
- * marker.
+ * No plate: a chamfered slot cut into whatever surface it sits on, so it
+ * takes that surface's colour. Its bevel band is lit as the slot's walls, the
+ * reverse of a raised edge: the top and left walls face away from the light
+ * and fall into shadow, the bottom and right walls catch it. The cyan fill
+ * sits on the slot floor and its glow spills up the walls (but never out onto
+ * the surface), so on a light panel the light reads as coming from inside it.
  */
-export function renderPeaksBar(w: number, pct: number): StackFace {
-  const count = Math.max(2, Math.floor(w / PK_STEP));
-  const step = w / count;
-  const teeth = Array.from({ length: count }, (_, i) => {
-    const x = i * step;
-    const tip = i % 2 === 0 ? 4 : 11;
-    const on = (i + 0.5) / count <= pct;
-    return svg`<polygon
-      class=${on ? "tooth on" : "tooth"}
-      points="${x.toFixed(2)},${PK_BASE} ${(x + step / 2).toFixed(2)},${tip} ${(x + step).toFixed(2)},${PK_BASE}"
-      fill=${on ? "var(--color-tribe-ochre)" : "var(--color-plate-500)"}
-    />`;
+export function renderRecessed(w: number, pct: number, segments: number): StackFace {
+  const g = computePlate(w, RECESSED_H, {
+    cut: 5,
+    smallCut: 0,
+    groove: RECESSED_WALL,
+    drop: 0,
+    notch: false,
   });
-  const mx = Math.min(w - 7, Math.max(7, w * pct));
-  const my = PK_BASE + 1.5;
+  const x0 = RECESSED_WALL;
+  const len = Math.max(0, w - 2 * RECESSED_WALL);
+  const depth = RECESSED_H - 2 * RECESSED_WALL;
 
   return {
-    height: PK_H,
+    height: RECESSED_H,
     content: svg`
-      <defs>${renderBrushFilter("zd-stack-brush", 2)}</defs>
-      <g filter="url(#zd-stack-brush)">
-        ${teeth}
-        <rect x="0" y=${PK_BASE} width=${w} height="3" fill="var(--color-band)" />
-        <g class="marker">
-          <path d="M${mx} ${my - 7} L${mx + 7} ${my} L${mx} ${my + 7} L${mx - 7} ${my} Z" fill="var(--color-tribe-ochre)" />
-          <path d="M${mx} ${my - 3.5} L${mx + 3.5} ${my} L${mx} ${my + 3.5} L${mx - 3.5} ${my} Z" fill="var(--color-core)" />
-          <circle cx=${mx} cy=${my} r="1.5" fill="var(--color-brand-500)" />
-        </g>
-      </g>
+      ${
+        g
+          ? svg`
+            <defs>
+              <clipPath id="zd-rc-slot"><path d=${g.underD} /></clipPath>
+              <clipPath id="zd-rc-floor"><path d=${g.grooveD} /></clipPath>
+            </defs>
+            <path class="slot" d=${g.underD} fill="var(--color-core)" fill-opacity="0.35" />
+            <g class="walls">${renderBevel(invert(g), "zd-rc-slot")}</g>
+            <path class="floor" d=${g.grooveD} fill="var(--color-core-deep)" />
+            <g clip-path="url(#zd-rc-slot)">
+              <g clip-path="url(#zd-rc-floor)">${renderFill(x0, RECESSED_WALL, len, depth, pct, segments)}</g>
+              <rect class="spill" x=${x0} y="0" width=${len * pct} height=${RECESSED_H} fill="var(--color-brand-500)" fill-opacity="0.18" />
+            </g>
+          `
+          : null
+      }
     `,
   };
 }
