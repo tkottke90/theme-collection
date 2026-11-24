@@ -3,75 +3,86 @@ import "./theme-input.js";
 import type { ThemeField } from "./theme-field.js";
 import type { ThemeInput } from "./theme-input.js";
 
-async function mount(inner: string, label = "Email address"): Promise<ThemeField> {
-  const el = document.createElement("theme-field") as ThemeField;
-  el.label = label;
-  el.innerHTML = inner;
-  document.body.appendChild(el);
-  await el.updateComplete;
-  // slotchange fires asynchronously
-  await new Promise((r) => setTimeout(r));
-  return el;
+async function mount(html: string) {
+  const wrap = document.createElement("div");
+  wrap.innerHTML = html;
+  document.body.appendChild(wrap);
+  const field = wrap.querySelector("theme-field") as ThemeField;
+  await field.updateComplete;
+  // slotchange is async; let it run.
+  await new Promise((r) => setTimeout(r, 0));
+  await field.updateComplete;
+  return { field, wrap };
 }
 
 describe("theme-field", () => {
-  afterEach(() => {
-    document.body.innerHTML = "";
+  it("renders the label text", async () => {
+    const { field, wrap } = await mount('<theme-field label="Email address"></theme-field>');
+    expect(field.shadowRoot?.querySelector("label")?.textContent?.trim()).toBe("Email address");
+    wrap.remove();
   });
 
-  it("renders the label", async () => {
-    const el = await mount("<theme-input></theme-input>");
-    expect(el.shadowRoot?.querySelector("label")?.textContent?.trim()).toBe("Email address");
-  });
-
-  it("names a slotted theme control through accessibleLabel", async () => {
-    const el = await mount("<theme-input></theme-input>");
-    const input = el.querySelector("theme-input") as ThemeInput;
-    await input.updateComplete;
-    expect(input.accessibleLabel).toBe("Email address");
-    expect(input.shadowRoot?.querySelector("input")?.getAttribute("aria-label")).toBe(
-      "Email address",
+  it("names the slotted theme control with its label, and the control forwards it inward", async () => {
+    const { field, wrap } = await mount(
+      '<theme-field label="Email"><theme-input id="m"></theme-input></theme-field>',
     );
+    const input = wrap.querySelector("theme-input") as ThemeInput;
+    await input.updateComplete;
+    expect(field.labelledControl).toBe(input);
+    expect(input.getAttribute("aria-label")).toBe("Email");
+    expect(input.shadowRoot?.querySelector("input")?.getAttribute("aria-label")).toBe("Email");
+    wrap.remove();
   });
 
-  it("names a bare native control with aria-label and follows label changes", async () => {
-    const el = await mount("<input />");
-    const input = el.querySelector("input")!;
-    expect(input.getAttribute("aria-label")).toBe("Email address");
-
-    el.label = "Work email";
-    await el.updateComplete;
-    expect(input.getAttribute("aria-label")).toBe("Work email");
+  it("names a native control, including one inside a slotted wrapper", async () => {
+    const { wrap } = await mount(
+      '<theme-field label="Notes"><div><textarea></textarea></div></theme-field>',
+    );
+    expect(wrap.querySelector("textarea")?.getAttribute("aria-label")).toBe("Notes");
+    wrap.remove();
   });
 
-  it("leaves a name the consumer set alone", async () => {
-    const el = await mount('<input aria-label="Mine" />');
-    expect(el.querySelector("input")?.getAttribute("aria-label")).toBe("Mine");
+  it("uses the control named by `for` when given", async () => {
+    const { wrap } = await mount(`
+      <theme-field label="Second" for="two"><input id="one" /><input id="two" /></theme-field>`);
+    expect(wrap.querySelector("#two")?.getAttribute("aria-label")).toBe("Second");
+    expect(wrap.querySelector("#one")?.hasAttribute("aria-label")).toBe(false);
+    wrap.remove();
   });
 
-  it("labels the control matching `for` when there are several", async () => {
-    const el = document.createElement("theme-field") as ThemeField;
-    el.label = "Second";
-    el.for = "b";
-    el.innerHTML = '<div><input id="a" /><input id="b" /></div>';
-    document.body.appendChild(el);
-    await el.updateComplete;
-    await new Promise((r) => setTimeout(r));
-    expect(el.labelledControl?.id).toBe("b");
-    expect(el.querySelector("#a")?.hasAttribute("aria-label")).toBe(false);
+  it("never overrides a name the consumer gave the control", async () => {
+    const { wrap } = await mount(
+      '<theme-field label="Field"><input aria-label="Mine" /></theme-field>',
+    );
+    expect(wrap.querySelector("input")?.getAttribute("aria-label")).toBe("Mine");
+    wrap.remove();
   });
 
-  it("removes its name when the control is taken out", async () => {
-    const el = await mount("<input />");
-    const input = el.querySelector("input")!;
-    input.remove();
-    await new Promise((r) => setTimeout(r));
+  it("keeps the name in step with the label, and removes it when the control leaves", async () => {
+    const { field, wrap } = await mount('<theme-field label="Old"><input /></theme-field>');
+    const input = wrap.querySelector("input")!;
+    field.label = "New";
+    await field.updateComplete;
+    expect(input.getAttribute("aria-label")).toBe("New");
+
+    document.body.appendChild(input);
+    await new Promise((r) => setTimeout(r, 0));
     expect(input.hasAttribute("aria-label")).toBe(false);
+    input.remove();
+    wrap.remove();
   });
 
-  it("focuses the control when the label is clicked", async () => {
-    const el = await mount("<input />");
-    el.shadowRoot?.querySelector("label")?.click();
-    expect(document.activeElement).toBe(el.querySelector("input"));
+  it("focuses the control when the label is clicked, and toggles a checkbox", async () => {
+    const { field, wrap } = await mount('<theme-field label="Name"><input id="n" /></theme-field>');
+    field.shadowRoot!.querySelector("label")!.click();
+    expect(document.activeElement).toBe(wrap.querySelector("#n"));
+    wrap.remove();
+
+    const box = await mount(
+      '<theme-field label="Subscribe"><input type="checkbox" /></theme-field>',
+    );
+    box.field.shadowRoot!.querySelector("label")!.click();
+    expect((box.wrap.querySelector("input") as HTMLInputElement).checked).toBe(true);
+    box.wrap.remove();
   });
 });
