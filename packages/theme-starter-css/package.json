@@ -1,13 +1,14 @@
 {
   "name": "@tkottke90/theme-starter-css",
   "version": "0.1.0",
-  "description": "Starter CSS theme (Tailwind v4-based) — reference template for @tkottke90/theme-* CSS-only packages.",
+  "description": "Starter CSS theme (Tailwind v4-based) \u2014 reference template for @tkottke90/theme-* CSS-only packages.",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.css",
   "style": "./dist/index.css",
   "files": [
-    "dist"
+    "dist",
+    "AGENTS.md"
   ],
   "scripts": {
     "build": "rimraf dist && tailwindcss -i ./src/index.css -o ./dist/index.css --minify",
