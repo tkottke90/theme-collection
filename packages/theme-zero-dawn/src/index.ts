@@ -22,6 +22,7 @@ export { ThemeGlyph } from "./theme-glyph.js";
 export { ThemeDivider } from "./theme-divider.js";
 export type { DividerVariant } from "./theme-divider.js";
 export { ThemeDisc } from "./theme-disc.js";
+export type { DiscVariant } from "./theme-disc.js";
 export { ThemeCircuit } from "./theme-circuit.js";
 export { ThemePlateStack } from "./theme-plate-stack.js";
 export { GLYPHS } from "./glyphs.js";

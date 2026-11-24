@@ -2,6 +2,14 @@ import { LitElement, css, html, svg } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { themeStyles } from "./generated/theme-styles.js";
+import { discVariantStyles, renderPeaks, renderSegments } from "./disc-variants.js";
+
+/**
+ * - `dish`: plated dish with spokes and a cyan rim arc (the original).
+ * - `segments`: ring of light-shaded plate segments round a dark core.
+ * - `peaks`: ring of brush-painted triangles round a painted medallion.
+ */
+export type DiscVariant = "dish" | "segments" | "peaks";
 
 const C = 60;
 const TRACK_R = 50;
@@ -14,14 +22,15 @@ function polar(r: number, deg: number): [number, number] {
 }
 
 /**
- * Segmented radial disc — a plated dish with spokes, inset panels and a dark
- * core hub. With a `value` it's a gauge (cyan arc on the rim, `role=meter`);
- * without one it's an indeterminate spinner (`role=progressbar`).
+ * Radial progress. With a `value` it's a gauge (`role=meter`); without one
+ * it's an indeterminate spinner (`role=progressbar`). `variant` picks the
+ * face — see `DiscVariant`.
  */
 @customElement("theme-disc")
 export class ThemeDisc extends LitElement {
   static styles = [
     themeStyles,
+    discVariantStyles,
     css`
       :host {
         display: inline-block;
@@ -48,6 +57,7 @@ export class ThemeDisc extends LitElement {
   @property({ type: Number }) max = 100;
   @property({ type: String }) label = "";
   @property({ type: Number }) size = 128;
+  @property({ type: String, reflect: true }) variant: DiscVariant = "dish";
 
   private renderDish() {
     const spokes = Array.from({ length: SPOKES }, (_, i) => {
@@ -77,6 +87,36 @@ export class ThemeDisc extends LitElement {
       <circle cx=${C} cy=${C} r="22" fill="none" stroke="var(--color-wire)" stroke-width="3" stroke-dasharray="20 9" />
       <circle cx=${C} cy=${C} r="18" fill="var(--color-core)" />
       <circle cx=${C} cy=${C} r="7" fill="var(--color-brand-500)" filter="url(#zd-disc-glow)" />
+    `;
+  }
+
+  private renderDishFace(determinate: boolean, offset: number) {
+    return svg`
+        <g class=${determinate ? "" : "spin"}>${this.renderDish()}</g>
+        <circle
+          cx=${C}
+          cy=${C}
+          r=${TRACK_R}
+          fill="none"
+          stroke="var(--color-core)"
+          stroke-opacity="0.35"
+          stroke-width="4"
+        />
+        <g class=${determinate ? "" : "spin"}>
+          <circle
+            class="arc"
+            cx=${C}
+            cy=${C}
+            r=${TRACK_R}
+            fill="none"
+            stroke="var(--color-brand-500)"
+            stroke-width="4"
+            stroke-dasharray=${CIRCUMFERENCE}
+            stroke-dashoffset=${offset}
+            transform="rotate(-90 ${C} ${C})"
+            filter="url(#zd-disc-glow)"
+          />
+        </g>
     `;
   }
 
@@ -115,34 +155,16 @@ export class ThemeDisc extends LitElement {
             </feMerge>
           </filter>
         </defs>
-        <g class=${determinate ? "" : "spin"}>${this.renderDish()}</g>
-        <circle
-          cx=${C}
-          cy=${C}
-          r=${TRACK_R}
-          fill="none"
-          stroke="var(--color-core)"
-          stroke-opacity="0.35"
-          stroke-width="4"
-        />
-        <g class=${determinate ? "" : "spin"}>
-          <circle
-            class="arc"
-            cx=${C}
-            cy=${C}
-            r=${TRACK_R}
-            fill="none"
-            stroke="var(--color-brand-500)"
-            stroke-width="4"
-            stroke-dasharray=${CIRCUMFERENCE}
-            stroke-dashoffset=${offset}
-            transform="rotate(-90 ${C} ${C})"
-            filter="url(#zd-disc-glow)"
-          />
-        </g>
+        ${
+          this.variant === "segments"
+            ? renderSegments(determinate ? pct : null)
+            : this.variant === "peaks"
+              ? renderPeaks(determinate ? pct : null)
+              : this.renderDishFace(determinate, offset)
+        }
       </svg>
       ${
-        determinate
+        determinate && this.variant !== "segments"
           ? html`<span class="text-sm font-semibold tracking-[0.12em] text-text uppercase"
               >${Math.round(pct * 100)}%${this.label ? html` · ${this.label}` : null}</span
             >`

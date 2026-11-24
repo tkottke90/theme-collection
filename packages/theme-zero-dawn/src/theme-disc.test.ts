@@ -1,5 +1,6 @@
 import "./theme-disc.js";
 import type { ThemeDisc } from "./theme-disc.js";
+import { PEAK_COUNT, SEGMENT_COUNT } from "./disc-variants.js";
 
 describe("theme-disc", () => {
   it("is an indeterminate progressbar with no value", async () => {
@@ -26,6 +27,55 @@ describe("theme-disc", () => {
     expect(root?.getAttribute("aria-valuenow")).toBe("150");
     expect(root?.getAttribute("aria-valuemax")).toBe("200");
     expect(el.shadowRoot?.textContent).toContain("75%");
+
+    el.remove();
+  });
+
+  it("segments: lights segments in proportion and shows the value in the core", async () => {
+    const el = document.createElement("theme-disc") as ThemeDisc;
+    el.variant = "segments";
+    el.value = 50;
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    expect(el.shadowRoot?.querySelectorAll(".segment")).toHaveLength(SEGMENT_COUNT);
+    expect(el.shadowRoot?.querySelectorAll(".segment.on")).toHaveLength(SEGMENT_COUNT / 2);
+    expect(el.shadowRoot?.querySelector(".readout")?.textContent?.trim()).toBe("50");
+    expect(el.shadowRoot?.querySelector(".pulse")).toBeNull();
+
+    el.remove();
+  });
+
+  it("segments: spinner pulses every segment, staggered round the ring", async () => {
+    const el = document.createElement("theme-disc") as ThemeDisc;
+    el.variant = "segments";
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const pulses = Array.from(el.shadowRoot?.querySelectorAll<SVGElement>(".pulse") ?? []);
+    expect(pulses).toHaveLength(SEGMENT_COUNT);
+    const delays = pulses.map((p) => parseFloat(p.style.animationDelay));
+    expect(new Set(delays).size).toBe(SEGMENT_COUNT);
+    expect(el.shadowRoot?.querySelector('[role="progressbar"]')).not.toBeNull();
+
+    el.remove();
+  });
+
+  it("peaks: paints triangles in proportion; spinner adds the ticking runner", async () => {
+    const el = document.createElement("theme-disc") as ThemeDisc;
+    el.variant = "peaks";
+    el.value = 25;
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    expect(el.shadowRoot?.querySelectorAll(".peak")).toHaveLength(PEAK_COUNT);
+    expect(el.shadowRoot?.querySelectorAll(".peak.on")).toHaveLength(PEAK_COUNT / 4);
+    expect(el.shadowRoot?.querySelector(".peaks-spin")).toBeNull();
+
+    el.value = undefined;
+    await el.updateComplete;
+    expect(el.shadowRoot?.querySelector(".peaks-spin")).not.toBeNull();
+    expect(el.getAttribute("variant")).toBe("peaks");
 
     el.remove();
   });

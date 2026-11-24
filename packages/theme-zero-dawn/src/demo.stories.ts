@@ -209,6 +209,26 @@ export const demoPage = () => html`
     </section>
 
     <section style=${SECTION}>
+      <theme-heading level="2">Progress dial variants</theme-heading>
+      <theme-text variant="caption">For review: gauge at 64% (top), spinner (bottom)</theme-text>
+      <theme-container>
+        <div
+          style="display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: 2rem; justify-items: center"
+        >
+          ${(["dish", "segments", "peaks"] as const).map(
+            (v) =>
+              html`<div
+                style="display: flex; flex-direction: column; gap: 1.5rem; align-items: center"
+              >
+                <theme-disc variant=${v} value="64" label=${v}></theme-disc>
+                <theme-disc variant=${v} label="Syncing"></theme-disc>
+              </div>`,
+          )}
+        </div>
+      </theme-container>
+    </section>
+
+    <section style=${SECTION}>
       <theme-heading level="2">Incoming report</theme-heading>
       <div style="max-width: 32rem">
         <theme-container>
