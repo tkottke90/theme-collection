@@ -8,6 +8,16 @@ const STOP_ICON = svg`<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y=
 
 const meta: Meta = {
   title: "Theme/Hexagon Tactical WC/Transport Control",
+  parameters: {
+    intro: {
+      tag: "theme-transport-control",
+      title: "Transport Control",
+      description: [
+        "A play or stop style control: a flatter 64 by 56px key with a 3px grey border and a muted icon. While pressed its border and icon turn lime with a faint glow, and it exposes aria-pressed.",
+        "label is its accessible name; the slotted icon is decoration.",
+      ],
+    },
+  },
   render: (args) => html`
     <theme-transport-control ?pressed=${args["pressed"]} label=${args["label"]}>
       ${args["icon"] === "play" ? PLAY_ICON : STOP_ICON}

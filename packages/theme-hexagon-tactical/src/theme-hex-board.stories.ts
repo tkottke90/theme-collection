@@ -6,6 +6,16 @@ import "./theme-chip.js";
 
 const meta: Meta = {
   title: "Theme/Hexagon Tactical WC/Hex Board",
+  parameters: {
+    intro: {
+      tag: "theme-hex-board",
+      title: "Hex Board",
+      description: [
+        "A flat-topped hex grid. It sizes itself from cols, rows and the hex width w, and publishes w as a custom property that each slotted Hex Socket reads, along with its own q and r, to place itself. Custom properties inherit into slotted children across the shadow boundary, so the board needs no layout script.",
+        "Coordinates are axial: q is the column, and each column sits half a hex lower than the one before it, so r counts down within a column.",
+      ],
+    },
+  },
   render: () => html`
     <theme-hex-board cols="3" rows="3.6" w="88">
       <theme-hex-socket q="0" r="0" step="3" aria-label="Lift, step 3">

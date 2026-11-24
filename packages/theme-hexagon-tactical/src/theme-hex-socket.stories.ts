@@ -5,6 +5,16 @@ import "./theme-chip.js";
 
 const meta: Meta = {
   title: "Theme/Hexagon Tactical WC/Hex Socket",
+  parameters: {
+    intro: {
+      tag: "theme-hex-socket",
+      title: "Hex Socket",
+      description: [
+        "One cell of a hex board: a button clipped to a hexagon, with a bevelled grey rim (lighter at the top, darker at the bottom) around a dark radial well. A chip slotted in sits in the well like a tile in its socket.",
+        "empty shows a faint hex outline in the well, add a lighter well with a plus, and selected turns the rim lime. step puts a small lime number in the lower corner, the order the tile runs in. Name each socket with aria-label.",
+      ],
+    },
+  },
   render: (args) => html`
     <div style="position: relative; width: 90px; height: 80px;">
       <theme-hex-socket
