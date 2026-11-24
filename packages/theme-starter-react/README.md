@@ -11,7 +11,7 @@ so the structure is easy to see and copy.
 > with `npm run screenshot`. Each section that needs rewriting has a note like
 > this one; delete the notes when you're done.
 
-![Component gallery for @tkottke90/theme-starter-react](./docs/screenshot.png)
+![Demo page for @tkottke90/theme-starter-react](./docs/screenshot.png)
 
 ## Usage
 
@@ -91,9 +91,10 @@ as a radio group), it labels them as a group.
 </form>
 ```
 
-In Preact, `onChange` is the native `change` event (fired on blur for text);
-use `onInput` for every keystroke. Under `preact/compat`, `onChange` behaves as
-in React.
+This package imports `preact/compat` (for `forwardRef`, so a `ref` reaches each
+control's native element). Importing compat installs it for the whole app: text
+inputs' `onChange` then fires on every keystroke, as in React, everywhere in
+your Preact tree, not just in these components. `onInput` works either way.
 
 > **Copying the starter?** Keep this behaviour (the tests in
 > `src/form-control.test.tsx` cover it); only restyle the controls.
@@ -111,5 +112,5 @@ npm run screenshot        # regenerate docs/screenshot.png
 Tokens live in `themes/theme-starter/theme.css` and are compiled into
 `dist/theme.css` by `scripts/build.mjs`; don't copy token values into the
 components. Each stories file sets `parameters.intro` (shown above its
-stories), and `src/Demo.stories.tsx` is the full-page demo at the top of the
-screenshot.
+stories), and `src/Demo.stories.tsx` is the full-page demo the screenshot
+shows.

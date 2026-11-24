@@ -1,5 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/preact";
+import { createRef } from "preact";
 import { useState } from "preact/hooks";
+import { ThemeButton } from "./ThemeButton.js";
 import { ThemeField } from "./ThemeField.js";
 import { ThemeInput } from "./ThemeInput.js";
 import { ThemeSelect } from "./ThemeSelect.js";
@@ -139,7 +141,8 @@ describe("form controls", () => {
     expect(input.value).toBe("Ada");
     fireEvent.input(input, { target: { value: "Aloy" } });
     expect(input.value).toBe("Aloy");
-    fireEvent.change(input);
+    // The package imports preact/compat, which gives onChange React semantics:
+    // it fires on input, not on the native change event.
     expect(onChange).toHaveBeenCalledTimes(1);
   });
 
@@ -160,5 +163,39 @@ describe("ThemeField", () => {
   it("names a group of controls when it wraps more than one", () => {
     render(<Sighting />);
     expect(screen.getByRole("group", { name: "Threat" })).toBeTruthy();
+  });
+});
+
+describe("refs", () => {
+  it("reach each control's native element, object or callback", () => {
+    const input = createRef<HTMLInputElement>();
+    const select = createRef<HTMLSelectElement>();
+    const textarea = createRef<HTMLTextAreaElement>();
+    const button = createRef<HTMLButtonElement>();
+    let fromCallback: HTMLSelectElement | null = null;
+    render(
+      <form>
+        <ThemeInput ref={input} name="a" />
+        <ThemeSelect ref={select} name="b" defaultValue="y">
+          <option value="x">X</option>
+          <option value="y">Y</option>
+        </ThemeSelect>
+        <ThemeSelect
+          ref={(el: HTMLSelectElement | null) => {
+            fromCallback = el;
+          }}
+          name="c"
+        >
+          <option value="z">Z</option>
+        </ThemeSelect>
+        <ThemeTextarea ref={textarea} name="d" />
+        <ThemeButton ref={button} type="submit" label="Go" />
+      </form>,
+    );
+    expect(input.current).toBeInstanceOf(HTMLInputElement);
+    expect(select.current?.value).toBe("y"); // the select keeps its own ref for defaultValue
+    expect(fromCallback).toBeInstanceOf(HTMLSelectElement);
+    expect(textarea.current).toBeInstanceOf(HTMLTextAreaElement);
+    expect(button.current?.type).toBe("submit");
   });
 });

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/preact";
-import { ThemeTextarea } from "./ThemeTextarea.js";
+import { ThemeTextarea, type ThemeTextareaProps } from "./ThemeTextarea.js";
 
-const meta: Meta<typeof ThemeTextarea> = {
+const meta: Meta<ThemeTextareaProps> = {
   title: "Theme/Starter React/Textarea",
   component: ThemeTextarea,
   parameters: {
@@ -18,7 +18,7 @@ const meta: Meta<typeof ThemeTextarea> = {
 };
 export default meta;
 
-type Story = StoryObj<typeof ThemeTextarea>;
+type Story = StoryObj<ThemeTextareaProps>;
 
 export const Default: Story = {};
 

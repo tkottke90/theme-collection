@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/preact";
-import { ThemeInput } from "./ThemeInput.js";
+import { ThemeInput, type ThemeInputProps } from "./ThemeInput.js";
 
-const meta: Meta<typeof ThemeInput> = {
+const meta: Meta<ThemeInputProps> = {
   title: "Theme/Starter React/Input",
   component: ThemeInput,
   parameters: {
@@ -17,7 +17,7 @@ const meta: Meta<typeof ThemeInput> = {
 };
 export default meta;
 
-type Story = StoryObj<typeof ThemeInput>;
+type Story = StoryObj<ThemeInputProps>;
 
 export const Text: Story = {
   args: { type: "text", placeholder: "Text" },

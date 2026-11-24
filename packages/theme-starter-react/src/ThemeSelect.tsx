@@ -1,25 +1,29 @@
 import type { JSX } from "preact";
+import { forwardRef, type ForwardedRef } from "preact/compat";
 import { useLayoutEffect, useRef } from "preact/hooks";
 
 /**
  * Every native `<select>` prop is forwarded (`name`, `id`, `value`,
  * `required`, `onChange`, `aria-*`, ...), so the control works in a plain
  * `<form>`, controlled (`value`) or uncontrolled (`defaultValue`, or a
- * `selected` option).
+ * `selected` option). A `ref` reaches the native `<select>`.
  */
 export type ThemeSelectProps = JSX.SelectHTMLAttributes<HTMLSelectElement>;
 
 const CLASSES =
   "rounded-theme border border-neutral-300 px-3 py-2 [font:inherit] text-neutral-900 bg-white cursor-pointer disabled:bg-neutral-100 disabled:cursor-not-allowed focus:outline focus:outline-2 focus:outline-brand-500 focus:outline-offset-1";
 
-export function ThemeSelect({
-  defaultValue,
-  class: cls,
-  className,
-  children,
-  ...rest
-}: ThemeSelectProps): JSX.Element {
-  const ref = useRef<HTMLSelectElement>(null);
+/** Point a forwarded ref (object or callback) at the element. */
+function assignRef<T>(ref: ForwardedRef<T>, value: T | null): void {
+  if (typeof ref === "function") ref(value);
+  else if (ref) ref.current = value;
+}
+
+export const ThemeSelect = forwardRef<HTMLSelectElement, ThemeSelectProps>(function ThemeSelect(
+  { defaultValue, class: cls, className, children, ...rest },
+  forwarded,
+) {
+  const ref = useRef<HTMLSelectElement | null>(null);
 
   // A <select> has no `defaultValue` DOM property, so mark the matching
   // option as the default instead: it becomes selected now, and is what
@@ -37,8 +41,15 @@ export function ThemeSelect({
   }, []);
 
   return (
-    <select {...rest} ref={ref} className={[CLASSES, cls, className].filter(Boolean).join(" ")}>
+    <select
+      {...rest}
+      ref={(el: HTMLSelectElement | null) => {
+        ref.current = el;
+        assignRef(forwarded, el);
+      }}
+      className={[CLASSES, cls, className].filter(Boolean).join(" ")}
+    >
       {children}
     </select>
   );
-}
+});

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/preact";
-import { ThemeButton } from "./ThemeButton.js";
+import { ThemeButton, type ThemeButtonProps } from "./ThemeButton.js";
 
-const meta: Meta<typeof ThemeButton> = {
+const meta: Meta<ThemeButtonProps> = {
   title: "Theme/Starter React/Button",
   component: ThemeButton,
   parameters: {
@@ -18,7 +18,7 @@ const meta: Meta<typeof ThemeButton> = {
 };
 export default meta;
 
-type Story = StoryObj<typeof ThemeButton>;
+type Story = StoryObj<ThemeButtonProps>;
 
 export const Primary: Story = {
   args: { variant: "primary" },

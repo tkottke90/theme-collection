@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/preact";
-import { ThemeSelect } from "./ThemeSelect.js";
+import { ThemeSelect, type ThemeSelectProps } from "./ThemeSelect.js";
 
-const meta: Meta<typeof ThemeSelect> = {
+const meta: Meta<ThemeSelectProps> = {
   title: "Theme/Starter React/Select",
   component: ThemeSelect,
   parameters: {
@@ -26,7 +26,7 @@ const meta: Meta<typeof ThemeSelect> = {
 };
 export default meta;
 
-type Story = StoryObj<typeof ThemeSelect>;
+type Story = StoryObj<ThemeSelectProps>;
 
 export const Default: Story = {};
 

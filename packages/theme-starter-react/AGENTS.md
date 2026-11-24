@@ -153,8 +153,10 @@ export function Rename() {
 }
 ```
 
-In Preact, `onChange` is the native `change` event; use `onInput` to react to
-every keystroke.
+This package imports `preact/compat` (for `forwardRef`, so a `ref` reaches each
+control's native element). Importing compat installs it for the whole app: text
+inputs' `onChange` then fires on every keystroke, as in React, everywhere in
+your Preact tree, not just in these components. `onInput` works either way.
 
 ### React (via `preact/compat`)
 
@@ -174,10 +176,10 @@ export default {
 };
 ```
 
-Under compat, `onChange` fires on every keystroke as in React. Components are
-function components without `forwardRef`, so pass `id`/`name` rather than a
-`ref` to reach the native control (for example, `document.getElementById` or
-`form.elements`).
+`ThemeInput`,
+`ThemeSelect`, `ThemeTextarea` and `ThemeButton` forward a `ref` to their
+native element (via `forwardRef` from `preact/compat`, which ships inside
+`preact`), so ref-based form libraries work.
 
 > **Copying the starter?** If the theme needs fonts or other page setup, add
 > it to both examples.

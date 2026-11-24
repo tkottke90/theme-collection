@@ -1,4 +1,4 @@
-import type { JSX } from "preact";
+import { forwardRef } from "preact/compat";
 
 export type ThemeButtonVariant = "primary" | "secondary" | "ghost";
 
@@ -17,15 +17,14 @@ const VARIANT_CLASSES: Record<ThemeButtonVariant, string> = {
   ghost: "bg-transparent text-brand-500 border-none",
 };
 
-export function ThemeButton({
-  label = "Click me",
-  variant = "primary",
-  type = "button",
-  disabled = false,
-  onClick,
-}: ThemeButtonProps): JSX.Element {
+/** A `ref` reaches the native `<button>`. */
+export const ThemeButton = forwardRef<HTMLButtonElement, ThemeButtonProps>(function ThemeButton(
+  { label = "Click me", variant = "primary", type = "button", disabled = false, onClick },
+  ref,
+) {
   return (
     <button
+      ref={ref}
       type={type}
       onClick={onClick}
       disabled={disabled}
@@ -34,4 +33,4 @@ export function ThemeButton({
       {label}
     </button>
   );
-}
+});
