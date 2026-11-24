@@ -89,7 +89,7 @@ export class ThemeTextarea extends FormControlElement {
         <textarea
           rows=${this.rows}
           .value=${this.value}
-          placeholder=${this.placeholder}
+          placeholder=${ifDefined(this.placeholder || undefined)}
           ?disabled=${this.isDisabled}
           aria-label=${ifDefined(this.accessibleName)}
           @input=${this.onInput}

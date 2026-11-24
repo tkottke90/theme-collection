@@ -25,6 +25,8 @@ export class ThemeCard extends LitElement {
       }
       h2 {
         margin: 0 0 0.5rem;
+        font-size: 1.125rem;
+        line-height: 1.2;
         font-family: var(--font-slab);
         font-weight: 700;
       }

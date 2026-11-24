@@ -52,7 +52,7 @@ export class ThemeStatMeter extends LitElement {
         height: 100%;
       }
       .labels {
-        flex: 1 1 auto;
+        flex: 0 0 var(--stat-meter-label-width, 9rem);
         min-width: 0;
         display: flex;
         flex-direction: column;
@@ -89,6 +89,8 @@ export class ThemeStatMeter extends LitElement {
         background-color: var(--color-progress-fill);
       }
       .value {
+        min-width: 5ch;
+        text-align: right;
         flex: 0 0 auto;
         font-family: var(--font-slab);
         font-weight: 700;

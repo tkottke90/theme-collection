@@ -28,6 +28,10 @@ export class ThemeButton extends LitElement {
         font-family: var(--font-slab);
         font-weight: 700;
       }
+      button:focus-visible {
+        outline: 2px solid var(--color-brand-600);
+        outline-offset: 2px;
+      }
       button:disabled {
         cursor: not-allowed;
       }

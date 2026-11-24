@@ -154,7 +154,7 @@ export class ThemeInput extends FormControlElement {
         <input
           type=${this.type}
           .value=${this.value}
-          placeholder=${this.placeholder}
+          placeholder=${ifDefined(this.placeholder || undefined)}
           ?disabled=${this.isDisabled}
           aria-label=${ifDefined(this.accessibleName)}
           @input=${this.onTextInput}

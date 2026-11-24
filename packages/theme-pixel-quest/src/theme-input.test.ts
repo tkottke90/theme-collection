@@ -47,4 +47,15 @@ describe("theme-input radio grouping", () => {
     a.remove();
     b.remove();
   });
+
+  it("renders no placeholder attribute when none is set", async () => {
+    const el = document.createElement("theme-input") as ThemeInput;
+    document.body.appendChild(el);
+    await el.updateComplete;
+    expect(el.shadowRoot?.querySelector("input")?.hasAttribute("placeholder")).toBe(false);
+    el.placeholder = "Name";
+    await el.updateComplete;
+    expect(el.shadowRoot?.querySelector("input")?.getAttribute("placeholder")).toBe("Name");
+    el.remove();
+  });
 });
