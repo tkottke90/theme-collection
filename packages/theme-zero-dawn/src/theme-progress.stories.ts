@@ -4,6 +4,11 @@ import "./theme-progress.js";
 import "./theme-card.js";
 import "./theme-container.js";
 
+/** The fill control as a style: set on a bar, or on a wrapper so every bar inside inherits it. */
+function fillStyle(args: Record<string, unknown>): string {
+  return args["fill"] ? `--zd-progress-fill: ${String(args["fill"])}` : "";
+}
+
 const meta: Meta = {
   title: "Theme/Zero Dawn/Progress",
   parameters: {
@@ -24,7 +29,7 @@ const meta: Meta = {
         segments=${args["segments"]}
         label=${args["label"]}
         variant=${args["variant"]}
-        style=${args["fill"] ? `--zd-progress-fill: ${args["fill"]}` : ""}
+        style=${fillStyle(args)}
       ></theme-progress>
     </div>`,
   args: { value: 60, segments: 10, label: "Armour", variant: "raised", fill: "" },
@@ -42,13 +47,18 @@ export default meta;
 type Story = StoryObj;
 
 export const Raised: Story = {};
-export const Empty: Story = { args: { value: 0 } };
+// An empty bar has no fill to colour, so the fill control would do nothing.
+export const Empty: Story = {
+  args: { value: 0 },
+  parameters: { controls: { exclude: ["fill"] } },
+};
 export const Full: Story = { args: { value: 100 } };
 
 /** Recessed sits on a light plate: the light reads as coming from inside it. */
 export const Recessed: Story = {
-  render: () =>
-    html`<div style="max-width: 24rem">
+  parameters: { controls: { include: ["fill"] } },
+  render: (args) =>
+    html`<div style="max-width: 24rem; ${fillStyle(args)}">
       <theme-card heading="Armour">
         <theme-progress variant="recessed" value="60" label="Plating"></theme-progress>
       </theme-card>
@@ -57,9 +67,12 @@ export const Recessed: Story = {
 
 /** Each variant on the surface it pairs with. */
 export const Pairings: Story = {
-  render: () =>
+  parameters: { controls: { include: ["fill"] } },
+  render: (args) =>
     html`<div
-      style="display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 2rem; max-width: 48rem"
+      style="display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 2rem; max-width: 48rem; ${fillStyle(
+        args,
+      )}"
     >
       <theme-container>
         <div style="display: flex; flex-direction: column; gap: 1.5rem">
@@ -82,6 +95,8 @@ export const Pairings: Story = {
  * every bar keeps the same weight and contrast.
  */
 export const CustomFill: Story = {
+  // Fixed inputs are the point here, so no controls to override them.
+  parameters: { controls: { disable: true } },
   render: () =>
     html`<div style="max-width: 24rem; display: flex; flex-direction: column; gap: 1.5rem">
       ${[
