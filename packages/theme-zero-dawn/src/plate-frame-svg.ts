@@ -39,13 +39,21 @@ const TONES: Record<PlateTone, ToneStyle> = {
 };
 
 /**
+ * Strength of the paint-white wash on facets facing the light. Kept low so a
+ * lit edge reads as a catch-light, not an outline: on steel the brightest
+ * facet lands near the shaded-armour tone (plate-500) rather than near the
+ * light plate colour.
+ */
+const LIT_WASH = 0.25;
+
+/**
  * One bevel facet, shaded flat by how it faces the light: lit facets get a
- * paint-white wash, facets turned away get the core colour, darker the
+ * faint paint-white wash, facets turned away get the core colour, darker the
  * further they turn.
  */
 export function renderFacet(d: string, light: number) {
   return light > 0.01
-    ? svg`<path class="facet lit" d=${d} fill="var(--color-paint)" fill-opacity=${(0.6 * light).toFixed(3)} />`
+    ? svg`<path class="facet lit" d=${d} fill="var(--color-paint)" fill-opacity=${(LIT_WASH * light).toFixed(3)} />`
     : svg`<path class="facet shade" d=${d} fill="var(--color-core)" fill-opacity=${(0.12 + 0.38 * -light).toFixed(3)} />`;
 }
 
