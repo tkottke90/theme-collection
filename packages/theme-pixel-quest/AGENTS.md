@@ -102,7 +102,8 @@ emphasis left.
 | ------------------------ | ------------------------------ | -------------------------------------------------------------------- |
 | Banner heading           | Pixelify Sans (`--font-pixel`) | 700, cream on a badge; h1–h4 sizes as below                          |
 | h1–h4                    | Courier Prime (`--font-slab`)  | 700, `--color-text`; 2.25 / 1.75 / 1.375 / 1.125rem, line height 1.2 |
-| Card titles, summaries   | Courier Prime                  | 700, body size                                                       |
+| Card titles              | Courier Prime                  | 700, 1.125rem (the h4 step)                                          |
+| Disclosure summaries     | Courier Prime                  | 700, body size                                                       |
 | Buttons                  | Courier Prime                  | 700                                                                  |
 | Stat labels and readouts | Courier Prime                  | 700; readouts use tabular numerals                                   |
 | Field labels             | Inter (`--font-sans`)          | 600, `--color-text-muted`                                            |
@@ -115,9 +116,10 @@ Inter means "this is content".
 
 ### Rule 6: focus
 
-Wells (input, select, textarea) show a **2px `--color-brand-600` outline**,
-offset 1px. Buttons, links and disclosure summaries keep the browser's default
-focus ring. Give your own wells the green outline; never remove a focus ring.
+Every focusable element shows a **2px `--color-brand-600` outline** on
+keyboard focus: offset 1px on wells (input, select, textarea), 2px on buttons,
+links and disclosure summaries. Give your own controls the same outline; never
+remove a focus ring or swap it for a colour change.
 Links keep their underline at all times: colour alone wouldn't separate them
 from body text.
 
@@ -312,7 +314,7 @@ or any framework that renders DOM.
 | `theme-select`                                  | Form control                       | `name`, `value`, `disabled`; `<option>` children                                                                           |
 | `theme-textarea`                                | Form control                       | `name`, `value`, `placeholder`, `rows`, `disabled`                                                                         |
 | `theme-skeleton-heading`, `theme-skeleton-text` | Loading placeholders               | `width`                                                                                                                    |
-| `theme-stat-meter`                              | Labelled stat bar with a readout   | `label`, `sublabel`, `value`, `max` (default 10); slot `icon` an SVG                                                       |
+| `theme-stat-meter`                              | Labelled stat bar with a readout   | `label`, `sublabel`, `value`, `max` (default 10); slot `icon` an SVG; CSS `--stat-meter-label-width` (default `9rem`)      |
 | `theme-page-frame`                              | The sheet's outer border           | slot the page                                                                                                              |
 
 Pairing rules:
@@ -321,6 +323,10 @@ Pairing rules:
   `icon` slot fills a 1.75rem square: slot an `<svg slot="icon">` with a
   `viewBox` (`fill="currentColor"` picks up the ink colour) and mark it
   `aria-hidden="true"`.
+- Stacked `theme-stat-meter`s line up because the label column has a fixed
+  width (`--stat-meter-label-width`, default `9rem`) and the readout a minimum
+  one. Widen the column on the parent if your labels are longer:
+  `.stats { --stat-meter-label-width: 12rem; }`.
 - `theme-page-frame` goes around a whole page once. It has square corners on
   purpose; don't nest one inside a panel.
 - `theme-button` is a plain button, not a form control: it doesn't submit a
@@ -483,7 +489,8 @@ Behaviour you can rely on (verified with Preact 10):
 - Preact sets these as **properties**, so numbers and booleans arrive typed
   (`value={energy}` is a number; `banner` is `true`).
 - `onChange` receives the element's `change` event; `onClick` works on
-  `theme-button`.
+  `theme-button`. In a `.tsx` file, read the value as
+  `(e.target as ThemeInput).value` (`ThemeInput` is exported).
 - A native `<form>` collects the custom controls' values on submit.
 - No attribute in this package starts with `on`, so none clashes with
   Preact's event-handler props.

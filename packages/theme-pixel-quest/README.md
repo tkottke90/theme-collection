@@ -73,10 +73,10 @@ The standard set: `theme-button`, `theme-input`, `theme-textarea`,
 
 Theme-specific extras:
 
-| Element            | What it is                                                                                                                               |
-| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `theme-stat-meter` | Icon, label and sublabel, a pixel-framed progress bar and a `value/max` readout. `label`, `sublabel`, `value`, `max`; slot `icon` an SVG |
-| `theme-page-frame` | The sheet's outer border: a near-black edge with a gold pinstripe around a padded parchment page. Wrap a whole page in it, once          |
+| Element            | What it is                                                                                                                                                                                       |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `theme-stat-meter` | Icon, label and sublabel, a pixel-framed progress bar and a `value/max` readout. `label`, `sublabel`, `value`, `max`; slot `icon` an SVG; CSS `--stat-meter-label-width` lines stacked meters up |
+| `theme-page-frame` | The sheet's outer border: a near-black edge with a gold pinstripe around a padded parchment page. Wrap a whole page in it, once                                                                  |
 
 `theme-stat-meter`'s bar is a `meter` named by `label`, so screen readers
 announce it as, for example, "Energy, meter, 6 of 10".
