@@ -13,16 +13,29 @@ export class PlateFrameController extends ResizeFrameController<PlateGeometry> {
   }
 }
 
-const TONES: Record<
-  PlateTone,
-  { from: string; to: string; grid: string; gridOpacity: number; groove: string }
-> = {
+interface ToneStyle {
+  from: string;
+  to: string;
+  /** Triangle-lattice etch colour, or null for a clean plate. */
+  grid: string | null;
+  gridOpacity: number;
+  groove: string;
+  /**
+   * Recess the panel inside the groove with an inset shadow, so the rim
+   * between the plate edge and the groove (the fillet) reads as raised.
+   */
+  inset: boolean;
+}
+
+const TONES: Record<PlateTone, ToneStyle> = {
+  // Elevated light plates (Card) stay clean: no lattice, recessed inner panel.
   light: {
     from: "var(--color-plate-50)",
     to: "var(--color-plate-100)",
-    grid: "var(--color-core)",
-    gridOpacity: 0.07,
+    grid: null,
+    gridOpacity: 0,
     groove: "var(--color-plate-300)",
+    inset: true,
   },
   steel: {
     from: "var(--color-plate-700)",
@@ -30,6 +43,7 @@ const TONES: Record<
     grid: "var(--color-plate-50)",
     gridOpacity: 0.05,
     groove: "var(--color-plate-500)",
+    inset: false,
   },
 };
 
@@ -37,7 +51,7 @@ const TONES: Record<
  * Renders the plate frame as an absolutely-positioned SVG overlay behind the
  * host's content. Host needs `position: relative; isolation: isolate`.
  *
- * IDs (`zd-fill`, `zd-grid`, `zd-glow`) are fixed: each instance lives in its
+ * IDs (`zd-fill`, `zd-grid`, `zd-inset`, `zd-glow`) are fixed: each instance lives in its
  * own shadow root, which scopes them, so they never collide.
  */
 export function renderPlateFrame(geometry: PlateGeometry | null, tone: PlateTone = "light") {
@@ -57,15 +71,33 @@ export function renderPlateFrame(geometry: PlateGeometry | null, tone: PlateTone
           <stop offset="0" style="stop-color: ${t.from}" />
           <stop offset="1" style="stop-color: ${t.to}" />
         </linearGradient>
-        <pattern id="zd-grid" width="28" height="48.5" patternUnits="userSpaceOnUse">
-          <path
-            d="M0 0H28M0 24.25H28M0 0L28 48.5M14 0L28 24.25M0 24.25L14 48.5M28 0L0 48.5M14 0L0 24.25M28 24.25L14 48.5"
-            fill="none"
-            stroke=${t.grid}
-            stroke-opacity=${t.gridOpacity}
-            stroke-width="1"
-          />
-        </pattern>
+        ${
+          t.grid
+            ? svg`<pattern id="zd-grid" width="28" height="48.5" patternUnits="userSpaceOnUse">
+                <path
+                  d="M0 0H28M0 24.25H28M0 0L28 48.5M14 0L28 24.25M0 24.25L14 48.5M28 0L0 48.5M14 0L0 24.25M28 24.25L14 48.5"
+                  fill="none"
+                  stroke=${t.grid}
+                  stroke-opacity=${t.gridOpacity}
+                  stroke-width="1"
+                />
+              </pattern>`
+            : null
+        }
+        ${
+          t.inset
+            ? svg`<filter id="zd-inset" x="-5%" y="-5%" width="110%" height="110%">
+                <feComponentTransfer in="SourceAlpha" result="outside">
+                  <feFuncA type="table" tableValues="1 0" />
+                </feComponentTransfer>
+                <feGaussianBlur in="outside" stdDeviation="3" />
+                <feOffset dx="3" dy="3.5" result="spread" />
+                <feFlood style="flood-color: var(--color-core); flood-opacity: 0.65" />
+                <feComposite in2="spread" operator="in" />
+                <feComposite in2="SourceAlpha" operator="in" />
+              </filter>`
+            : null
+        }
         <filter id="zd-glow" x="-50%" y="-50%" width="200%" height="200%">
           <feGaussianBlur stdDeviation="2" result="blur" />
           <feMerge>
@@ -80,7 +112,12 @@ export function renderPlateFrame(geometry: PlateGeometry | null, tone: PlateTone
             <path d=${g.dropD} fill="var(--color-core-deep)" />
             <path d=${g.underD} fill="var(--color-core)" />
             <path d=${g.plateD} fill="url(#zd-fill)" />
-            <path d=${g.plateD} fill="url(#zd-grid)" />
+            ${t.grid ? svg`<path class="grid" d=${g.plateD} fill="url(#zd-grid)" />` : null}
+            ${
+              t.inset
+                ? svg`<path class="inset" d=${g.grooveD} fill="black" filter="url(#zd-inset)" />`
+                : null
+            }
             <path d=${g.grooveD} fill="none" stroke=${t.groove} stroke-width="1" />
             <path d=${g.wireD} fill="none" stroke="var(--color-wire)" stroke-width="1.5" />
             <path
