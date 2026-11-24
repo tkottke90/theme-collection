@@ -15,7 +15,7 @@
   --color-brand-50: #e7f2e3;
   --color-brand-100: #c3ddba;
   --color-brand-500: #4a9640;
-  --color-brand-600: #2a5c26;
+  --color-brand-600: #265423;
   --color-brand-900: #1d3c24;
 
   --color-neutral-50: #f5ead2;
@@ -38,7 +38,7 @@
   --color-text: #241a0a;
   --color-text-muted: #5a4a32;
 
-  --color-skeleton-base: #ddc69a;
+  --color-skeleton-base: #bfa878;
   --color-skeleton-highlight: #f0e0bc;
 
   --font-pixel: "Pixelify Sans", "Press Start 2P", ui-monospace, monospace;

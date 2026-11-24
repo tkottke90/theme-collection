@@ -1,6 +1,7 @@
-import { LitElement, css, html } from "lit";
+import { css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
+import { FormControlElement } from "./generated/core/form-control.js";
 import { themeStyles } from "./generated/theme-styles.js";
 import { pixelFrameStyles, pixelFrameShapes, pixelFrameShapeStyle } from "./pixel-frame.js";
 
@@ -9,13 +10,11 @@ const SHAPE_STYLE = pixelFrameShapeStyle(FRAME_SHAPE);
 
 /**
  * No literal textarea exists in the source image — extrapolated the same
- * way as Input/Select (see theme-input.ts).
+ * way as Input/Select (see theme-input.ts). The native `<textarea>` sits in
+ * a form-associated host (see `FormControlElement`).
  */
 @customElement("theme-textarea")
-export class ThemeTextarea extends LitElement {
-  /** Focusing the element focuses the inner control (used by `theme-field`'s label). */
-  static shadowRootOptions = { ...LitElement.shadowRootOptions, delegatesFocus: true };
-
+export class ThemeTextarea extends FormControlElement {
   static styles = [
     themeStyles,
     pixelFrameStyles,
@@ -24,6 +23,11 @@ export class ThemeTextarea extends LitElement {
         display: inline-block;
         width: 100%;
         font-family: var(--font-sans);
+      }
+      :host([disabled]),
+      :host([data-disabled]) {
+        opacity: 0.5;
+        pointer-events: none;
       }
       .pixel-frame {
         display: block;
@@ -44,9 +48,21 @@ export class ThemeTextarea extends LitElement {
         color: var(--color-text);
         resize: vertical;
       }
+      /* Preflight's 50% currentcolor placeholder is 2.9:1 on the well; muted ink is 4.8:1. */
+      textarea::placeholder {
+        color: var(--color-text-muted);
+        opacity: 1;
+      }
+      /*
+       * The focus ring goes on the host: the pixel frame's fill is clipped
+       * (clip-path), which would cut off an outline on the inner control.
+       */
       textarea:focus {
+        outline: none;
+      }
+      :host(:focus-within) {
         outline: 2px solid var(--color-brand-600);
-        outline-offset: 1px;
+        outline-offset: 2px;
       }
     `,
   ];
@@ -54,20 +70,37 @@ export class ThemeTextarea extends LitElement {
   @property({ type: Number }) rows = 4;
   @property({ type: String }) value = "";
   @property({ type: String }) placeholder = "";
-  /**
-   * Accessible name, forwarded to the inner control. `theme-field` sets this
-   * from its label, since a label outside this shadow root can't reach it.
-   */
-  @property({ type: String, attribute: "accessible-label" }) accessibleLabel?: string;
+
+  private defaultValue = "";
+
+  connectedCallback(): void {
+    super.connectedCallback();
+    this.defaultValue = this.getAttribute("value") ?? "";
+  }
+
+  protected formValue(): string {
+    return this.value;
+  }
+
+  protected restoreDefault(): void {
+    this.value = this.defaultValue;
+  }
+
+  private onInput(e: Event): void {
+    this.value = (e.target as HTMLTextAreaElement).value;
+  }
 
   render() {
     return html`<div class="pixel-frame" style=${SHAPE_STYLE}>
       <div class="pixel-frame__fill">
         <textarea
-          aria-label=${ifDefined(this.accessibleLabel)}
           rows=${this.rows}
           .value=${this.value}
-          placeholder=${this.placeholder}
+          placeholder=${ifDefined(this.placeholder || undefined)}
+          ?disabled=${this.isDisabled}
+          aria-label=${ifDefined(this.accessibleName)}
+          @input=${this.onInput}
+          @change=${this.emitChange}
         ></textarea>
       </div>
     </div>`;

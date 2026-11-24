@@ -26,7 +26,6 @@ const PENDING = new Set([
   "theme-field-journal-wc",
   "theme-forest-isle",
   "theme-network-ops",
-  "theme-pixel-quest",
   "theme-tactical-react",
   "theme-tactical-wc",
 ]);

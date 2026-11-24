@@ -518,7 +518,8 @@ Behaviour you can rely on (verified with Preact 10):
   `on` as an event listener, so `on={4}` throws. Set it through a `ref`, as
   above.
 - `onChange` receives the element's `change` event; `onClick` works on the
-  button-like elements.
+  button-like elements. In a `.tsx` file, read the value as
+  `(e.target as ThemeInput).value` (`ThemeInput` is exported).
 - A native `<form>` collects the custom controls' values on submit.
 
 **TypeScript.** Preact doesn't know the custom tags, so declare them once (for

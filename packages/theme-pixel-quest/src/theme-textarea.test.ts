@@ -13,4 +13,15 @@ describe("theme-textarea", () => {
 
     el.remove();
   });
+
+  it("renders no placeholder attribute when none is set", async () => {
+    const el = document.createElement("theme-textarea") as ThemeTextarea;
+    document.body.appendChild(el);
+    await el.updateComplete;
+    expect(el.shadowRoot?.querySelector("textarea")?.hasAttribute("placeholder")).toBe(false);
+    el.placeholder = "Name";
+    await el.updateComplete;
+    expect(el.shadowRoot?.querySelector("textarea")?.getAttribute("placeholder")).toBe("Name");
+    el.remove();
+  });
 });
