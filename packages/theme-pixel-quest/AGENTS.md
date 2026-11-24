@@ -70,7 +70,9 @@ a near-black edge) is the theme's only strong emphasis. Use it for:
 
 Everything else is ink on parchment. **Secondary** actions keep the outline
 but drop the fill (green text on parchment); **ghost** actions drop the outline
-too. **Disabled** turns the badge into parchment with muted ink. Hover only
+too. **Disabled**, in every variant, sets muted ink on parchment and fades
+the frame to 35%, so the label stays readable while the control reads as
+inactive. Hover only
 brightens a little (`filter: brightness(1.08)`); there's no press animation.
 
 One or two badges per screen region. A page where everything is a badge has no
@@ -116,9 +118,11 @@ Inter means "this is content".
 
 ### Rule 6: focus
 
-Every focusable element shows a **2px `--color-brand-600` outline** on
-keyboard focus: offset 1px on wells (input, select, textarea), 2px on buttons,
-links and disclosure summaries. Give your own controls the same outline; never
+Every focusable element shows a **2px `--color-brand-600` outline**, offset
+2px, on focus: around the host on wells (input, select, textarea), on the
+inner element for buttons, links and disclosure summaries. A ring drawn
+inside a pixel frame is cut off by the frame's `clip-path`, so for your own
+framed controls put the outline on the outer, unclipped element. Give your own controls the same outline; never
 remove a focus ring or swap it for a colour change.
 Links keep their underline at all times: colour alone wouldn't separate them
 from body text.
@@ -139,16 +143,14 @@ each ink actually sits on:
 | `--color-panel-border` (outlines)                  | page                     | 11.8      |
 | `--color-border` (item rules)                      | page                     | 3.9       |
 | `--color-progress-fill`                            | `--color-progress-track` | 3.3       |
-| `--color-brand-600` focus ring (non-text, needs 3) | well                     | 4.5       |
+| `--color-text-muted` on a disabled button          | parchment                | 5.6       |
+| `--color-brand-600` focus ring (non-text, needs 3) | page/panel               | 5.2       |
 
 Known failures. Work around them rather than copying them:
 
 - **`--color-brand-600` as text on a well is 4.48:1**, just under AA for small
   text. No component does this; if you put green text inside a field, use
   `--color-text` or `--color-brand-900` instead.
-- **Disabled buttons are 2.8:1** (`--color-neutral-500` on
-  `--color-neutral-100`). WCAG exempts disabled controls, but don't reuse that
-  pair for anything a user needs to read.
 - **Skeletons are barely visible**: `--color-skeleton-base` and
   `-highlight` are 1.1–1.2:1 against the parchment. They're a faint shimmer by
   design and are `aria-hidden` in the demo; don't use them as the only sign
