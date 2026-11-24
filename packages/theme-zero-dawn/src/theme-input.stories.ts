@@ -26,5 +26,71 @@ export const Text: Story = { args: { type: "text", placeholder: "Text" } };
 export const Email: Story = { args: { type: "email", placeholder: "Email" } };
 export const Password: Story = { args: { type: "password", placeholder: "Password" } };
 export const Number: Story = { args: { type: "number", placeholder: "Number" } };
-export const Checkbox: Story = { args: { type: "checkbox" } };
-export const Radio: Story = { args: { type: "radio" } };
+/** Option text set like the theme's controls: display face, theme ink. */
+const OPTION = html`<style>
+  .zd-option {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-sans);
+    color: var(--color-text);
+    cursor: pointer;
+  }
+  .zd-group {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .zd-group legend {
+    padding: 0;
+    margin-bottom: 0.75rem;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-text);
+  }
+</style>`;
+
+/** Clicking the words toggles the box: the label activates the control. */
+export const Checkbox: Story = {
+  render: () =>
+    html`${OPTION}
+      <div style="display: flex; flex-direction: column; gap: 0.75rem">
+        <label class="zd-option"
+          ><theme-input type="checkbox" name="core" value="exposed"></theme-input>Core was
+          exposed</label
+        >
+        <label class="zd-option"
+          ><theme-input type="checkbox" name="tracked" value="yes" checked></theme-input>Machine is
+          being tracked</label
+        >
+      </div>`,
+};
+
+/**
+ * Radios sharing a `name` form one group: choosing one clears the others. A
+ * fieldset and legend give the group an accessible name, read before each
+ * option.
+ */
+export const Radio: Story = {
+  render: () =>
+    html`${OPTION}
+      <fieldset class="zd-group">
+        <legend>Threat level</legend>
+        <label class="zd-option"
+          ><theme-input type="radio" name="threat" value="low"></theme-input>Low</label
+        >
+        <label class="zd-option"
+          ><theme-input type="radio" name="threat" value="medium" checked></theme-input
+          >Medium</label
+        >
+        <label class="zd-option"
+          ><theme-input type="radio" name="threat" value="high"></theme-input>High</label
+        >
+      </fieldset>`,
+};
