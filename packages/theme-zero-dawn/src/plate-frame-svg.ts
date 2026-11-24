@@ -40,11 +40,10 @@ const TONES: Record<PlateTone, ToneStyle> = {
 
 /**
  * Strength of the paint-white wash on facets facing the light. Kept low so a
- * lit edge reads as a catch-light, not an outline: on steel the brightest
- * facet lands near the shaded-armour tone (plate-500) rather than near the
- * light plate colour.
+ * lit edge reads as a faint catch-light, not an outline: on steel even the
+ * brightest facet stays at about the shaded-armour tone (plate-500).
  */
-const LIT_WASH = 0.25;
+const LIT_WASH = 0.1875;
 
 /**
  * One bevel facet, shaded flat by how it faces the light: lit facets get a
