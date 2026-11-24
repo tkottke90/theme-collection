@@ -1,7 +1,7 @@
 import { css, html } from "lit";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { customElement, property } from "lit/decorators.js";
-import { FormControlElement } from "./form-control.js";
+import { FormControlElement } from "./generated/core/form-control.js";
 import { themeStyles } from "./generated/theme-styles.js";
 import { plateStyles } from "./plate-styles.js";
 import { SOCKET_CLASSES, SOCKET_CONTROL_CLASSES } from "./form-control-classes.js";
