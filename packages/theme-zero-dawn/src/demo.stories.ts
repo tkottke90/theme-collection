@@ -231,6 +231,31 @@ export const demoPage = () => html`
     </section>
 
     <section style=${SECTION}>
+      <theme-heading level="2">Progress bar variants</theme-heading>
+      <theme-text variant="caption"
+        >For review: the same four bars on the dark page and on a light card</theme-text
+      >
+      <div style=${GRID("20rem")}>
+        <theme-container>
+          <div style="display: flex; flex-direction: column; gap: 1.5rem">
+            ${(["shards", "channel", "cells", "peaks"] as const).map(
+              (v) =>
+                html`<theme-plate-stack variant=${v} value="70" label=${v}></theme-plate-stack>`,
+            )}
+          </div>
+        </theme-container>
+        <theme-card heading="On a light plate">
+          <div style="display: flex; flex-direction: column; gap: 1.5rem">
+            ${(["shards", "channel", "cells", "peaks"] as const).map(
+              (v) =>
+                html`<theme-plate-stack variant=${v} value="30" label=${v}></theme-plate-stack>`,
+            )}
+          </div>
+        </theme-card>
+      </div>
+    </section>
+
+    <section style=${SECTION}>
       <theme-heading level="2">Incoming report</theme-heading>
       <div style="max-width: 32rem">
         <theme-container>

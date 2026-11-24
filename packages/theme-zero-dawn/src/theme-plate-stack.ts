@@ -1,15 +1,27 @@
-import { LitElement, css, html, svg } from "lit";
+import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { themeStyles } from "./generated/theme-styles.js";
-
-/** One tapered, back-swept armour shard (like a neck plate), 30×46 box. */
-const SHARD = "M2 44 Q5 16 26 2 L30 6 Q17 21 15 46 Z";
-const STEP = 20;
+import {
+  renderCells,
+  renderChannel,
+  renderPeaksBar,
+  renderShards,
+  shardsWidth,
+} from "./plate-stack-variants.js";
+import { ResizeFrameController } from "./resize-frame-controller.js";
 
 /**
- * Progress as a row of overlapping armour shards: lit plates (sunlit shell
- * with a cyan leading edge) up to the current value, dark steel after it.
+ * - `shards`: overlapping armour shards (the original, fixed width).
+ * - `channel`: raised steel plate with a sunken, cyan-filled channel.
+ * - `cells`: a row of small raised, bevelled plate blocks.
+ * - `peaks`: the divider's painted sawtooth, filling with ochre.
  */
+export type PlateStackVariant = "shards" | "channel" | "cells" | "peaks";
+
+/** Used until the host has been measured (and in jsdom, which can't measure). */
+const FALLBACK_WIDTH = 240;
+
+/** Progress bar. `variant` picks the face — see `PlateStackVariant`. */
 @customElement("theme-plate-stack")
 export class ThemePlateStack extends LitElement {
   static styles = [
@@ -25,35 +37,31 @@ export class ThemePlateStack extends LitElement {
   @property({ type: Number }) max = 100;
   @property({ type: Number }) segments = 10;
   @property({ type: String }) label = "";
+  @property({ type: String, reflect: true }) variant: PlateStackVariant = "shards";
+
+  /** Host width in px, for the fluid faces. */
+  private size = new ResizeFrameController<number>(this, (w) => (w > 0 ? w : null));
 
   render() {
     const segments = Math.max(1, Math.round(this.segments));
     const max = this.max > 0 ? this.max : 100;
     const pct = Math.min(1, Math.max(0, this.value / max));
-    const lit = Math.round(pct * segments);
-    const width = (segments - 1) * STEP + 34;
+    const fluid = this.variant !== "shards";
+    const w = this.size.geometry ?? FALLBACK_WIDTH;
 
-    const shards = Array.from({ length: segments }, (_, i) => {
-      const on = i < lit;
-      return svg`
-        <g transform="translate(${i * STEP} 0)" class=${on ? "shard on" : "shard"}>
-          <path d=${SHARD} transform="translate(2 3)" fill="var(--color-core-deep)" />
-          <path
-            d=${SHARD}
-            fill=${on ? "var(--color-plate-100)" : "var(--color-plate-700)"}
-            stroke=${on ? "var(--color-plate-50)" : "var(--color-plate-500)"}
-            stroke-width="1"
-          />
-          ${
-            on
-              ? svg`<path d="M26 2 L30 6" stroke="var(--color-brand-500)" stroke-width="2.5" filter="url(#zd-stack-glow)" />`
-              : null
-          }
-        </g>
-      `;
-    });
+    const face =
+      this.variant === "channel"
+        ? renderChannel(w, pct, segments)
+        : this.variant === "cells"
+          ? renderCells(w, pct, segments)
+          : this.variant === "peaks"
+            ? renderPeaksBar(w, pct)
+            : renderShards(pct, segments);
+    const viewWidth = fluid ? w : shardsWidth(segments);
 
-    return html`<div class="inline-flex max-w-full flex-col gap-2 font-sans">
+    return html`<div
+      class="${fluid ? "flex w-full" : "inline-flex max-w-full"} flex-col gap-2 font-sans"
+    >
       ${
         this.label
           ? html`<div
@@ -67,8 +75,9 @@ export class ThemePlateStack extends LitElement {
           : null
       }
       <svg
-        viewBox="0 0 ${width} 50"
-        class="block h-12 w-auto max-w-full"
+        viewBox="0 0 ${viewWidth} ${face.height}"
+        class=${fluid ? "block w-full" : "block h-12 w-auto max-w-full"}
+        height=${fluid ? face.height : 48}
         style="overflow: visible"
         role="progressbar"
         aria-label=${this.label || "Progress"}
@@ -85,7 +94,7 @@ export class ThemePlateStack extends LitElement {
             </feMerge>
           </filter>
         </defs>
-        ${shards}
+        ${face.content}
       </svg>
     </div>`;
   }

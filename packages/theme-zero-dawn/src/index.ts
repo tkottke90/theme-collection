@@ -25,6 +25,7 @@ export { ThemeDisc } from "./theme-disc.js";
 export type { DiscVariant } from "./theme-disc.js";
 export { ThemeCircuit } from "./theme-circuit.js";
 export { ThemePlateStack } from "./theme-plate-stack.js";
+export type { PlateStackVariant } from "./theme-plate-stack.js";
 export { GLYPHS } from "./glyphs.js";
 export type { GlyphName, GlyphColor, GlyphShape } from "./glyphs.js";
 export { computePlate } from "./plate-geometry.js";
