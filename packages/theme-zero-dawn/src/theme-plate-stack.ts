@@ -57,10 +57,12 @@ export class ThemePlateStack extends LitElement {
       ${
         this.label
           ? html`<div
-              class="flex justify-between text-xs font-semibold tracking-[0.14em] text-text uppercase"
+              class="flex justify-between text-xs font-semibold tracking-[0.14em] text-[var(--zd-ink,var(--color-text))] uppercase"
             >
               <span>${this.label}</span
-              ><span class="text-text-muted">${Math.round(pct * 100)}%</span>
+              ><span class="text-[var(--zd-ink-muted,var(--color-text-muted))]"
+                >${Math.round(pct * 100)}%</span
+              >
             </div>`
           : null
       }

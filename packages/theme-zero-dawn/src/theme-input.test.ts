@@ -37,3 +37,26 @@ describe("theme-input", () => {
     el.remove();
   });
 });
+
+describe("theme-input radio grouping", () => {
+  it("unchecks same-named radios when one is chosen", async () => {
+    const a = document.createElement("theme-input") as ThemeInput;
+    const b = document.createElement("theme-input") as ThemeInput;
+    for (const el of [a, b]) {
+      el.type = "radio";
+      el.name = "threat";
+      document.body.appendChild(el);
+    }
+    b.checked = true;
+    await Promise.all([a.updateComplete, b.updateComplete]);
+
+    a.shadowRoot?.querySelector("input")?.click();
+    await Promise.all([a.updateComplete, b.updateComplete]);
+
+    expect(a.checked).toBe(true);
+    expect(b.checked).toBe(false);
+
+    a.remove();
+    b.remove();
+  });
+});

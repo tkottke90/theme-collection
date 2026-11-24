@@ -7,19 +7,36 @@ describe("theme-select", () => {
     document.body.appendChild(el);
     await el.updateComplete;
 
-    const select = el.shadowRoot?.querySelector("select");
-    expect(select).not.toBeNull();
+    expect(el.shadowRoot?.querySelector("select")).not.toBeNull();
 
     el.remove();
   });
 
-  it("projects slotted options as light-DOM children", async () => {
+  it("mirrors light-DOM options into the shadow select", async () => {
     const el = document.createElement("theme-select") as ThemeSelect;
-    el.innerHTML = '<option value="one">One</option>';
+    el.innerHTML = '<option value="one">One</option><option value="two" selected>Two</option>';
     document.body.appendChild(el);
     await el.updateComplete;
 
-    expect(el.querySelector("option")?.textContent).toBe("One");
+    const options = el.shadowRoot?.querySelectorAll("select option") ?? [];
+    expect(options).toHaveLength(2);
+    expect(options[0]?.textContent?.trim()).toBe("One");
+    expect(el.value).toBe("two");
+
+    el.remove();
+  });
+
+  it("picks up options added after connection", async () => {
+    const el = document.createElement("theme-select") as ThemeSelect;
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    el.innerHTML = '<option value="a">A</option>';
+    await new Promise((r) => setTimeout(r, 0));
+    await el.updateComplete;
+
+    expect(el.shadowRoot?.querySelectorAll("select option")).toHaveLength(1);
+    expect(el.value).toBe("a");
 
     el.remove();
   });

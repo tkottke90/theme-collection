@@ -51,7 +51,7 @@ export class ThemeCircuit extends LitElement {
 
   render() {
     const stroke = this.glow ? "var(--color-brand-500)" : "var(--color-plate-100)";
-    const opacity = this.glow ? 0.45 : 0.16;
+    const opacity = this.glow ? 0.28 : 0.16;
     return html`
       <svg
         class="pointer-events-none absolute inset-0 -z-10 h-full w-full"

@@ -47,9 +47,25 @@ export class ThemeInput extends LitElement {
     `,
   ];
 
-  @property({ type: String }) type: ThemeInputType = "text";
+  @property({ type: String, reflect: true }) type: ThemeInputType = "text";
   @property({ type: String }) value = "";
   @property({ type: String }) placeholder = "";
+  @property({ type: String, reflect: true }) name = "";
+  @property({ type: Boolean }) checked = false;
+
+  /**
+   * Each radio lives in its own shadow root, so native `name` grouping can't
+   * reach its siblings — uncheck same-named `theme-input` radios by hand.
+   */
+  private onBoxChange(e: Event): void {
+    this.checked = (e.target as HTMLInputElement).checked;
+    if (this.type !== "radio" || !this.checked || !this.name) return;
+    const root = this.getRootNode() as Document | ShadowRoot;
+    root.querySelectorAll<ThemeInput>(`theme-input[type="radio"]`).forEach((other) => {
+      if (other !== this && other.name === this.name) other.checked = false;
+    });
+    this.dispatchEvent(new Event("change", { bubbles: true, composed: true }));
+  }
 
   render() {
     if (this.type === "checkbox" || this.type === "radio") {
@@ -61,7 +77,10 @@ export class ThemeInput extends LitElement {
       return html`<label class="relative inline-flex h-5 w-5 cursor-pointer">
         <input
           type=${this.type}
+          name=${this.name}
           .value=${this.value}
+          .checked=${this.checked}
+          @change=${this.onBoxChange}
           class="absolute inset-0 m-0 h-full w-full cursor-pointer opacity-0"
         />
         <svg viewBox="0 0 20 20" class="h-5 w-5" aria-hidden="true">
@@ -87,6 +106,7 @@ export class ThemeInput extends LitElement {
     return html`<span class=${SOCKET_CLASSES}>
       <input
         type=${this.type}
+        name=${this.name}
         .value=${this.value}
         placeholder=${this.placeholder}
         class=${SOCKET_CONTROL_CLASSES}
