@@ -11,6 +11,7 @@ const meta: Meta = {
       title: "Container",
       description: [
         "A container is the card's frame without the heading: the same pixel-stepped dark outline around parchment, holding a div, ol or ul (the as attribute) so list semantics survive inside the frame.",
+        "Lists keep their markers: an ol numbers its items and a ul uses small square bullets, a single pixel's worth of ink. Markers are bold Courier Prime in muted brown, so they read as an index beside the content rather than part of it.",
         "Body text inside is Inter in the dark brown ink the whole theme uses for copy.",
       ],
     },
