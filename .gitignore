@@ -9,6 +9,7 @@ packages/theme-hexagon-tactical/src/generated/
 packages/theme-pixel-quest/src/generated/
 packages/theme-field-journal-wc/src/generated/
 packages/theme-futuristic-industrial/src/generated/
+packages/theme-zero-dawn/src/generated/
 .compile-theme-tmp-*/
 *.log
 .DS_Store
