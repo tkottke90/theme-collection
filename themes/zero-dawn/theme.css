@@ -20,7 +20,7 @@
   --color-plate-500: #505866; /* read: shaded cool armour */
   --color-plate-700: #343a4a; /* est. steel plate surface */
   --color-plate-800: #2b3040; /* est. */
-  --color-plate-ink-muted: #4b4f5c; /* est. muted text on a light plate */
+  --color-plate-ink-muted: #3d414b; /* adj. from est. #4b4f5c: AA at the light plate's darkest gradient end */
 
   /* Inner core — the dark machinery showing through seams. */
   --color-core: #191b30; /* read: blue-black internals */

@@ -26,9 +26,12 @@ interface ToneStyle {
  * blur: the plates are cut, not rounded.
  */
 const TONES: Record<PlateTone, ToneStyle> = {
+  // Light plates slope a step past plate-100. The end is capped by contrast:
+  // at this mix, links (brand-900) hold 4.67:1 and muted ink 4.6:1; one step
+  // darker and links fall below AA.
   light: {
     from: "var(--color-plate-50)",
-    to: "var(--color-plate-100)",
+    to: "color-mix(in srgb, var(--color-plate-100) 70%, var(--color-plate-300))",
     groove: "var(--color-plate-300)",
   },
   // The face falls away from the top-left light into the core colour, so
