@@ -10,21 +10,22 @@ type ButtonVariant = "primary" | "secondary" | "ghost";
  * Per-variant face/edge colours as arbitrary-property utilities (so they
  * resolve from theme tokens), plus whether the button is a raised plate:
  * raised buttons get the faceted bevel and the hard core drop, like Card.
+ * `active:` darkens the face a step as the plate is pressed in.
  */
 const VARIANTS: Record<ButtonVariant, { classes: string; raised: boolean }> = {
   primary: {
     classes:
-      "text-core [--zd-face:var(--color-plate-100)] [--zd-edge:transparent] hover:[--zd-face:var(--color-plate-50)]",
+      "text-core [--zd-face:var(--color-plate-100)] [--zd-edge:transparent] hover:[--zd-face:var(--color-plate-50)] active:[--zd-face:color-mix(in_srgb,var(--color-plate-100)_82%,var(--color-core))]",
     raised: true,
   },
   secondary: {
     classes:
-      "text-text [--zd-face:var(--color-plate-700)] [--zd-edge:transparent] hover:[--zd-face:var(--color-plate-500)]",
+      "text-text [--zd-face:var(--color-plate-700)] [--zd-edge:transparent] hover:[--zd-face:var(--color-plate-500)] active:[--zd-face:var(--color-plate-800)]",
     raised: true,
   },
   ghost: {
     classes:
-      "text-brand-300 [--zd-face:transparent] [--zd-edge:transparent] hover:[--zd-face:var(--color-core)]",
+      "text-brand-300 [--zd-face:transparent] [--zd-edge:transparent] hover:[--zd-face:var(--color-core)] active:[--zd-face:var(--color-core-deep)]",
     raised: false,
   },
 };
@@ -36,7 +37,17 @@ const DISABLED = {
 };
 
 /** Chamfered top-left and bottom-right only, as before; a 3px bevel band. */
-const BUTTON_PLATE = { cut: 10, smallCut: 0, groove: 3, drop: 3, notch: false };
+export const BUTTON_PLATE = { cut: 10, smallCut: 0, groove: 3, drop: 3, notch: false };
+
+/**
+ * How far a pressed button travels. A raised plate moves exactly its drop
+ * distance, so it lands on its own shadow and covers it: pressed flush. A
+ * flat (ghost) button just nudges.
+ */
+export function pressDistance(raised: boolean, disabled: boolean): number {
+  if (disabled) return 0;
+  return raised ? BUTTON_PLATE.drop : 1;
+}
 
 function renderButtonFrame(g: PlateGeometry | null, raised: boolean) {
   return svg`
@@ -51,9 +62,11 @@ function renderButtonFrame(g: PlateGeometry | null, raised: boolean) {
           ? svg`
             <defs><clipPath id="zd-btn-clip"><path d=${g.underD} /></clipPath></defs>
             ${raised ? svg`<path class="drop" d=${g.dropD} fill="var(--color-core-deep)" />` : null}
-            <path class="face" d=${g.underD} style="fill: var(--zd-face)" />
-            ${raised ? renderBevel(g, "zd-btn-clip") : null}
-            <path class="edge" d=${g.underD} fill="none" style="stroke: var(--zd-edge)" stroke-width="1.5" />
+            <g class="plate">
+              <path class="face" d=${g.underD} style="fill: var(--zd-face)" />
+              ${raised ? renderBevel(g, "zd-btn-clip") : null}
+              <path class="edge" d=${g.underD} fill="none" style="stroke: var(--zd-edge)" stroke-width="1.5" />
+            </g>
           `
           : null
       }
@@ -77,6 +90,17 @@ export class ThemeButton extends LitElement {
           fill 0.15s ease,
           stroke 0.15s ease;
       }
+      /* Press: the plate and its label travel --zd-press down-right (onto the
+         drop shadow for raised buttons) — fast in, slightly slower back out. */
+      .plate,
+      .label {
+        transition: transform 0.12s ease-out;
+      }
+      button:active:not(:disabled) .plate,
+      button:active:not(:disabled) .label {
+        transform: translate(var(--zd-press), var(--zd-press));
+        transition-duration: 0.04s;
+      }
       button:focus-visible {
         outline: none;
         --zd-edge: var(--color-brand-500);
@@ -86,7 +110,9 @@ export class ThemeButton extends LitElement {
       }
       @media (prefers-reduced-motion: reduce) {
         .face,
-        .edge {
+        .edge,
+        .plate,
+        .label {
           transition: none;
         }
       }
@@ -103,10 +129,11 @@ export class ThemeButton extends LitElement {
     const v = this.disabled ? DISABLED : (VARIANTS[this.variant] ?? VARIANTS.primary);
     return html`<button
       ?disabled=${this.disabled}
+      style="--zd-press: ${pressDistance(v.raised, this.disabled)}px"
       class="relative isolate block cursor-pointer border-0 bg-transparent px-5 py-2.5 font-sans text-sm font-semibold tracking-[0.12em] uppercase ${v.classes}"
     >
       ${renderButtonFrame(this.frame.geometry, v.raised)}
-      <slot>${this.label}</slot>
+      <span class="label relative inline-block"><slot>${this.label}</slot></span>
     </button>`;
   }
 }

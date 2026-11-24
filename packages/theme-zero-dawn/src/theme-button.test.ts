@@ -1,5 +1,6 @@
 import "./theme-button.js";
 import type { ThemeButton } from "./theme-button.js";
+import { BUTTON_PLATE, pressDistance } from "./theme-button.js";
 
 describe("theme-button", () => {
   it("renders a button with the default label", async () => {
@@ -76,6 +77,37 @@ describe("theme-button", () => {
     el.disabled = true;
     await el.updateComplete;
     expect(el.shadowRoot?.querySelector(".bevel")).toBeNull();
+
+    el.remove();
+  });
+
+  it("presses raised buttons exactly onto their drop shadow, ghosts a nudge, disabled not at all", () => {
+    expect(pressDistance(true, false)).toBe(BUTTON_PLATE.drop);
+    expect(pressDistance(false, false)).toBe(1);
+    expect(pressDistance(true, true)).toBe(0);
+  });
+
+  it("moves the plate and label together, leaving the drop shadow in place", async () => {
+    const el = document.createElement("theme-button") as ThemeButton;
+    document.body.appendChild(el);
+    const frame = (el as unknown as { frame: { geometry: unknown } }).frame;
+    const { computePlate } = await import("./plate-geometry.js");
+    frame.geometry = computePlate(120, 40, BUTTON_PLATE);
+    el.requestUpdate();
+    await el.updateComplete;
+
+    const root = el.shadowRoot;
+    expect(root?.querySelector(".plate .face")).not.toBeNull();
+    expect(root?.querySelector(".plate .bevel")).not.toBeNull();
+    expect(root?.querySelector(".drop")?.closest(".plate")).toBeNull();
+    expect(root?.querySelector(".label slot")).not.toBeNull();
+    expect(root?.querySelector("button")?.getAttribute("style")).toContain(
+      `--zd-press: ${BUTTON_PLATE.drop}px`,
+    );
+
+    el.disabled = true;
+    await el.updateComplete;
+    expect(root?.querySelector("button")?.getAttribute("style")).toContain("--zd-press: 0px");
 
     el.remove();
   });
