@@ -1,5 +1,5 @@
 import type { Decorator } from "@storybook/html";
-import { backdropStyle, introHeaderStyle, introMode, storyIntro } from "./intro.js";
+import { backdropStyle, INTRO_HEADER_STYLE, storyIntro } from "./intro.js";
 
 export type { StoryIntro } from "./intro.js";
 
@@ -21,16 +21,14 @@ const escapeHtml = (value: string) =>
 /** The story-intro decorator for plain-HTML (CSS-only) packages. See `intro.ts`. */
 export function htmlIntroDecorator(options: HtmlIntroOptions): Decorator {
   return (story, context) => {
-    const mode = introMode();
     const intro = storyIntro(context.parameters);
     const root = document.createElement("div");
-    root.setAttribute("style", backdropStyle(options.backdrop, mode));
+    root.setAttribute("style", backdropStyle(options.backdrop));
 
-    if (intro && mode.intro !== "hide") {
+    if (intro) {
       const header = document.createElement("header");
       header.className = "story-intro";
-      header.setAttribute("data-story-intro", "");
-      header.setAttribute("style", introHeaderStyle(mode));
+      header.setAttribute("style", INTRO_HEADER_STYLE);
       header.innerHTML = [
         options.eyebrow(escapeHtml(intro.tag)),
         options.heading(escapeHtml(intro.title)),
@@ -39,11 +37,9 @@ export function htmlIntroDecorator(options: HtmlIntroOptions): Decorator {
       root.appendChild(header);
     }
 
-    if (!(intro && mode.intro === "only")) {
-      const content = story();
-      if (typeof content === "string") root.insertAdjacentHTML("beforeend", content);
-      else root.appendChild(content);
-    }
+    const content = story();
+    if (typeof content === "string") root.insertAdjacentHTML("beforeend", content);
+    else root.appendChild(content);
     return root;
   };
 }

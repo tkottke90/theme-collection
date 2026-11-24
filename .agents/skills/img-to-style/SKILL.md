@@ -232,8 +232,8 @@ Stop and ask the user for anything missing here. Never guess these:
      templates for this theme. AGENTS.md is the style guide for agents
      building UI with the package, and stays in `package.json` `files`.
    - **Screenshot**: regenerate `docs/screenshot.png` (see CONTRIBUTING.md,
-     "Screenshots for style changes") and view it to check the demo and
-     each component's intro and stories render.
+     "Screenshots for style changes") and view it. It shows only the demo
+     story, so check every component appears there.
 
 7. **Run the required checks** scoped to the new package, per
    `AGENTS.md` ("Before considering a change done"):

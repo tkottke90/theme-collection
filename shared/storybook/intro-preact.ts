@@ -1,6 +1,6 @@
 import type { Decorator } from "@storybook/preact";
 import { h, type ComponentChild } from "preact";
-import { backdropStyle, introHeaderStyle, introMode, storyIntro } from "./intro.js";
+import { backdropStyle, INTRO_HEADER_STYLE, storyIntro } from "./intro.js";
 
 export type { StoryIntro } from "./intro.js";
 
@@ -18,26 +18,24 @@ export interface PreactIntroOptions {
 /** The story-intro decorator for Preact packages. See `intro.ts`. Written with `h()` so it needs no JSX config. */
 export function preactIntroDecorator(options: PreactIntroOptions): Decorator {
   return (Story, context) => {
-    const mode = introMode();
     const intro = storyIntro(context.parameters);
-    const header =
-      intro && mode.intro !== "hide"
-        ? h(
-            "header",
-            { class: "story-intro", "data-story-intro": "", style: introHeaderStyle(mode) },
-            options.eyebrow(`<${intro.tag}>`),
-            options.heading(intro.title),
-            ...intro.description.map((p, i) => options.paragraph(p, i)),
-          )
-        : null;
+    const header = intro
+      ? h(
+          "header",
+          { class: "story-intro", style: INTRO_HEADER_STYLE },
+          options.eyebrow(`<${intro.tag}>`),
+          options.heading(intro.title),
+          ...intro.description.map((p, i) => options.paragraph(p, i)),
+        )
+      : null;
     return h(
       "div",
       {
         ...options.backdropProps?.(context.globals),
-        style: backdropStyle(options.backdrop, mode),
+        style: backdropStyle(options.backdrop),
       },
       header,
-      intro && mode.intro === "only" ? null : h(Story, null),
+      h(Story, null),
     );
   };
 }

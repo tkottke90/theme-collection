@@ -10,7 +10,7 @@ and built to a single self-contained stylesheet. No JavaScript ships.
 > rename the package everywhere it appears in this file, and regenerate the
 > screenshot below with `npm run screenshot`. Then delete this note.
 
-![Component gallery for @tkottke90/theme-starter-css](./docs/screenshot.png)
+![Demo page for @tkottke90/theme-starter-css](./docs/screenshot.png)
 
 ## Usage
 
@@ -109,6 +109,5 @@ npm run screenshot         # regenerate docs/screenshot.png (after build-storybo
 ```
 
 Tokens live in `themes/theme-starter/theme.css`; `src/index.css` imports
-them. Every stories file sets `parameters.intro` (shown above its stories and
-in the screenshot), and `stories/Demo.stories.ts` is a full page built from
-the classes.
+them. Every stories file sets `parameters.intro` (shown above its stories), and `stories/Demo.stories.ts` is a full page built from
+the classes, and is what the screenshot shows.

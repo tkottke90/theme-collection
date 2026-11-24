@@ -12,7 +12,7 @@ It works in any project, with or without a framework.
 > `AGENTS.md`, the stories' `Theme/Starter WC/…` titles) and point the build
 > at your own `themes/<name>/` folder. See the repo's `CONTRIBUTING.md`.
 
-![Component gallery for @tkottke90/theme-starter-wc](./docs/screenshot.png)
+![Demo page for @tkottke90/theme-starter-wc](./docs/screenshot.png)
 
 > The screenshot is generated: run `npm run screenshot` after
 > `npm run build-storybook`. The `Demo` story comes first, then each

@@ -97,7 +97,8 @@ three starters meet it; copy them.
       components.
 - [ ] **A demo story**: a stories file titled `.../Demo`, with
       `intro: null`, composing a full page from only the package's own
-      components, including a working form.
+      components, including a working form. It is what the README
+      screenshot shows, so it should use every component.
 - [ ] **Form-ready controls.** Inputs, selects and textareas submit under
       `name`, reset with their form, follow `<fieldset disabled>`, and get
       their accessible name from a label. Web Component packages get this
@@ -159,13 +160,11 @@ npm run build-storybook -w <package-name>
 npm run screenshot -w <package-name>
 ```
 
-This renders every Storybook story for the package headlessly (via
-[Playwright](https://playwright.dev)) and writes one composite PNG to
-`packages/<package-name>/docs/screenshot.png`: the demo story full-width at
-the top, then one section per component with its intro once, followed by
-its stories two to a row. The script asks the intro decorator for this
-through the story URL (`screenshot=1`, `intro=only|hide`; see
-`shared/storybook/intro.ts`). Look at the PNG before committing it. Commit the updated PNG and
+This renders the package's demo story (the stories file titled
+`.../Demo`) headlessly (via [Playwright](https://playwright.dev)) at 1000px
+wide and writes it to `packages/<package-name>/docs/screenshot.png`. The
+demo composes every component into one page, so keep it up to date when you
+add a component. Look at the PNG before committing it. Commit the updated PNG and
 make sure it's linked from the package's `README.md` (see the starter
 packages for the exact markdown). The screenshot script uses a headless
 Chromium browser; run `npx playwright install chromium` once after
