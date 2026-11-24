@@ -53,7 +53,7 @@ const TONES: Record<PlateTone, ToneStyle> = {
  * paint-white wash, facets turned away get the core colour, darker the
  * further they turn.
  */
-function renderFacet(d: string, light: number) {
+export function renderFacet(d: string, light: number) {
   return light > 0.01
     ? svg`<path class="facet lit" d=${d} fill="var(--color-paint)" fill-opacity=${(0.6 * light).toFixed(3)} />`
     : svg`<path class="facet shade" d=${d} fill="var(--color-core)" fill-opacity=${(0.12 + 0.38 * -light).toFixed(3)} />`;

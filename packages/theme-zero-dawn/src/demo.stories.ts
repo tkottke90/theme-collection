@@ -209,8 +209,10 @@ export const demoPage = () => html`
     </section>
 
     <section style=${SECTION}>
-      <theme-heading level="2">Progress dial variants</theme-heading>
-      <theme-text variant="caption">For review: gauge at 64% (top), spinner (bottom)</theme-text>
+      <theme-heading level="2">Progress dials</theme-heading>
+      <theme-text variant="caption"
+        >Dish, segments and peaks: gauge (top), spinner (bottom)</theme-text
+      >
       <theme-container>
         <div
           style="display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: 2rem; justify-items: center"

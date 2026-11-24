@@ -44,6 +44,16 @@ const K = Math.SQRT2 - 1;
 /** Unit vector pointing toward the light (top-left, screen coordinates). */
 const LIGHT: [number, number] = [-Math.SQRT1_2, -Math.SQRT1_2];
 
+/**
+ * How squarely a surface with outward normal (nx, ny) faces the theme's
+ * top-left light: 1 = straight at it, -1 = straight away. Every bevel in the
+ * theme (plates, buttons, dish) is shaded from this one function.
+ */
+export function facingLight(nx: number, ny: number): number {
+  const len = Math.hypot(nx, ny) || 1;
+  return (nx / len) * LIGHT[0] + (ny / len) * LIGHT[1];
+}
+
 function r(n: number): number {
   return Math.round(n * 100) / 100;
 }
@@ -132,7 +142,7 @@ export function computePlate(
     const len = Math.hypot(dx, dy);
     // A square corner (zero-size chamfer) is a zero-length edge: no facet.
     if (len < 0.01) return [];
-    const light = (dy / len) * LIGHT[0] + (-dx / len) * LIGHT[1];
+    const light = facingLight(dy, -dx);
     return [{ d: poly([outer0, outer1, inner1, inner0]), light: Math.round(light * 1000) / 1000 }];
   });
 
