@@ -4,6 +4,16 @@ import "./theme-stat-meter.js";
 
 const meta: Meta = {
   title: "Theme/Pixel Quest/Stat Meter",
+  parameters: {
+    intro: {
+      tag: "theme-stat-meter",
+      title: "Stat Meter",
+      description: [
+        "The poster's most repeated widget: an icon, a bold slab label over a muted Inter sublabel, a short pixel-framed progress bar, and a tabular value / max readout. The bar is a 10px dark-earth track with a mid-green fill, inside a 1px near-black outline with tiny stepped corners, small enough to stay crisp at that height.",
+        'The bar is a meter named by the label, so a screen reader announces it as, say, "Energy, meter, 6 of 10"; the visual readout is hidden from it to avoid saying the value twice.',
+      ],
+    },
+  },
   render: (args) => html`
     <div style="max-width: 320px;">
       <theme-stat-meter
