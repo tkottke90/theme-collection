@@ -240,6 +240,7 @@ Stop and ask the user for anything missing here. Never guess these:
 
    ```
    npm run lint
+   npm run typecheck
    npm run format:check
    npm run test -w packages/theme-<name>
    npm run build -w packages/theme-<name>

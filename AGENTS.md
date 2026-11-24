@@ -55,6 +55,7 @@ Run from the repo root (or scope with `-w <package>` for a single package):
 
 ```
 npm run lint
+npm run typecheck
 npm run format:check
 npm run test --workspaces --if-present
 npm run build --workspaces --if-present
@@ -62,7 +63,8 @@ npm run build-storybook -w <package-name>   # for any package you touched
 ```
 
 A change isn't finished if any of these fail. These are also the exact
-checks CI enforces (`Test`, `Lint`, `Style`, `Build Site`).
+checks CI enforces (`Test`, `Lint` (which also runs `typecheck`), `Style`,
+`Build Site`).
 
 ## Guardrails
 

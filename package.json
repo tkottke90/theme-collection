@@ -17,6 +17,7 @@
     "test": "npm run test --workspaces --if-present",
     "lint": "eslint . && npm run check:standard",
     "check:standard": "node scripts/check-package-standard.mjs",
+    "typecheck": "node scripts/typecheck.mjs",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",

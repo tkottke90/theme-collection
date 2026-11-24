@@ -50,7 +50,7 @@ describe("theme-select", () => {
     inner(el).dispatchEvent(new Event("change"));
     expect(el.value).toBe("b");
     expect(onChange).toHaveBeenCalledTimes(1);
-    expect(onChange.mock.results[0].value).toBe(true);
+    expect(onChange.mock.results[0]!.value).toBe(true);
   });
 
   it("forwards the host's aria-label to the inner select", async () => {

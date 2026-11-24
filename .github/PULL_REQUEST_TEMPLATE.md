@@ -55,6 +55,7 @@ CONTRIBUTING.md, "Package standard"; `npm run lint` checks the first four.
 Ran from the repo root, all passing:
 
 - [ ] `npm run lint`
+- [ ] `npm run typecheck`
 - [ ] `npm run format:check`
 - [ ] `npm run test --workspaces --if-present`
 - [ ] `npm run build --workspaces --if-present`

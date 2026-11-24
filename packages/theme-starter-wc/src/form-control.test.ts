@@ -112,7 +112,7 @@ describe("form-associated controls", () => {
       el.addEventListener("change", onChange);
       el.shadowRoot!.querySelector("input, textarea")!.dispatchEvent(new Event("change"));
       expect(onChange).toHaveBeenCalledTimes(1);
-      expect(onChange.mock.results[0].value).toBe(true);
+      expect(onChange.mock.results[0]!.value).toBe(true);
       wrap.remove();
     }
   });

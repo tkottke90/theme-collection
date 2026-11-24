@@ -204,6 +204,7 @@ Run, from the repo root:
 
 ```
 npm run lint
+npm run typecheck
 npm run format:check
 npm run test --workspaces --if-present
 npm run build --workspaces --if-present
@@ -215,4 +216,10 @@ And, for any package you touched:
 npm run build-storybook -w <package-name>
 ```
 
-These are the same checks CI runs (`Test`, `Lint`, `Style`, `Build Site`).
+`npm run typecheck` (`scripts/typecheck.mjs`) type-checks what package
+builds skip: tests, stories, `.storybook/` config and `shared/`. Package
+`tsconfig.json`s exclude those so they stay out of the published `.d.ts`
+files.
+
+These are the same checks CI runs (`Test`, `Lint` (which also runs
+`typecheck`), `Style`, `Build Site`).
