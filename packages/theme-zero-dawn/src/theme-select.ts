@@ -1,5 +1,6 @@
-import { LitElement, css, html } from "lit";
+import { css, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
+import { FormControlElement } from "./form-control.js";
 import { themeStyles } from "./generated/theme-styles.js";
 import { plateStyles } from "./plate-styles.js";
 import { SOCKET_CLASSES, SOCKET_CONTROL_CLASSES } from "./form-control-classes.js";
@@ -18,7 +19,7 @@ interface OptionData {
  * elements slotted into a shadow-DOM `<select>`.
  */
 @customElement("theme-select")
-export class ThemeSelect extends LitElement {
+export class ThemeSelect extends FormControlElement {
   static styles = [
     themeStyles,
     plateStyles,
@@ -26,6 +27,11 @@ export class ThemeSelect extends LitElement {
       :host {
         display: inline-block;
         font-family: var(--font-sans);
+      }
+      :host([disabled]),
+      :host([data-disabled]) {
+        opacity: 0.5;
+        pointer-events: none;
       }
       select {
         appearance: none;
@@ -37,7 +43,6 @@ export class ThemeSelect extends LitElement {
     `,
   ];
 
-  @property({ type: String }) name = "";
   @property({ type: String }) value = "";
   @state() private options: OptionData[] = [];
 
@@ -74,13 +79,23 @@ export class ThemeSelect extends LitElement {
 
   private onChange(e: Event): void {
     this.value = (e.target as HTMLSelectElement).value;
-    this.dispatchEvent(new Event("change", { bubbles: true, composed: true }));
+    this.emitChange();
+  }
+
+  protected formValue(): string {
+    return this.value;
+  }
+
+  /** Back to the option marked `selected` in markup, or the first one. */
+  protected restoreDefault(): void {
+    this.value = "";
+    this.readOptions();
   }
 
   render() {
     return html`<span class=${SOCKET_CLASSES}>
       <select
-        name=${this.name}
+        ?disabled=${this.isDisabled}
         class="${SOCKET_CONTROL_CLASSES} cursor-pointer pr-9"
         @change=${this.onChange}
       >

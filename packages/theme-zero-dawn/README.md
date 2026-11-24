@@ -62,6 +62,26 @@ Theme-specific extras:
 | `theme-circuit`  | Symmetric circuit-trace backdrop for heroes and empty states; `glow` lights the traces                                                                                                   |
 | `theme-progress` | Progress bar: a glowing cyan channel. `variant="raised"` (steel plate, for dark containers) or `"recessed"` (cut into the surface, for light cards); `value`, `max`, `segments`, `label` |
 
+### Forms
+
+`theme-input`, `theme-select` and `theme-textarea` are form-associated custom
+elements: inside a `<form>` they submit under their `name`, reset with the
+form, follow `<fieldset disabled>`, and fire `change` from the host. They're
+labelable, so both `<label for="id">` and a wrapping `<label>` work, including
+toggling a checkbox or radio by clicking the label text. Radios with the same
+`name` form a group.
+
+```html
+<form>
+  <label>Machine <theme-input name="machine"></theme-input></label>
+  <label><theme-input type="checkbox" name="core" value="yes"></theme-input> Core exposed</label>
+  <theme-select name="class"
+    ><option>Grazer</option>
+    <option>Hunter</option></theme-select
+  >
+</form>
+```
+
 ### Surfaces and ink
 
 A light `theme-card` sets dark ink for its slotted content, and steel surfaces

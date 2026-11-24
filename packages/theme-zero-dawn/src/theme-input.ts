@@ -1,5 +1,6 @@
-import { LitElement, css, html } from "lit";
+import { css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
+import { FormControlElement } from "./form-control.js";
 import { themeStyles } from "./generated/theme-styles.js";
 import { plateStyles } from "./plate-styles.js";
 import { SOCKET_CLASSES, SOCKET_CONTROL_CLASSES } from "./form-control-classes.js";
@@ -19,7 +20,7 @@ const BOX_MARKS = {
 } as const;
 
 @customElement("theme-input")
-export class ThemeInput extends LitElement {
+export class ThemeInput extends FormControlElement {
   static styles = [
     themeStyles,
     plateStyles,
@@ -44,14 +45,57 @@ export class ThemeInput extends LitElement {
       input:focus-visible + svg .mark-outer {
         stroke: var(--color-brand-300);
       }
+      :host([disabled]),
+      :host([data-disabled]) {
+        opacity: 0.5;
+        pointer-events: none;
+      }
     `,
   ];
 
   @property({ type: String, reflect: true }) type: ThemeInputType = "text";
   @property({ type: String }) value = "";
   @property({ type: String }) placeholder = "";
-  @property({ type: String, reflect: true }) name = "";
   @property({ type: Boolean }) checked = false;
+
+  private defaultValue = "";
+  private defaultChecked = false;
+
+  private get isBox(): boolean {
+    return this.type === "checkbox" || this.type === "radio";
+  }
+
+  connectedCallback(): void {
+    super.connectedCallback();
+    this.defaultValue = this.getAttribute("value") ?? "";
+    this.defaultChecked = this.hasAttribute("checked");
+    this.addEventListener("click", this.onHostClick);
+  }
+
+  disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.removeEventListener("click", this.onHostClick);
+  }
+
+  protected formValue(): string | null {
+    if (this.isBox) return this.checked ? this.value || "on" : null;
+    return this.value;
+  }
+
+  protected restoreDefault(): void {
+    this.value = this.defaultValue;
+    this.checked = this.defaultChecked;
+  }
+
+  /**
+   * A label activating this control clicks the host, not the hidden native
+   * box inside it; pass that click on so the label toggles the box. Clicks
+   * that started inside (on the box itself) are left alone.
+   */
+  private onHostClick = (e: MouseEvent): void => {
+    if (!this.isBox || this.isDisabled || e.composedPath()[0] !== this) return;
+    this.renderRoot.querySelector("input")?.click();
+  };
 
   /**
    * Each radio lives in its own shadow root, so native `name` grouping can't
@@ -59,12 +103,17 @@ export class ThemeInput extends LitElement {
    */
   private onBoxChange(e: Event): void {
     this.checked = (e.target as HTMLInputElement).checked;
-    if (this.type !== "radio" || !this.checked || !this.name) return;
-    const root = this.getRootNode() as Document | ShadowRoot;
-    root.querySelectorAll<ThemeInput>(`theme-input[type="radio"]`).forEach((other) => {
-      if (other !== this && other.name === this.name) other.checked = false;
-    });
-    this.dispatchEvent(new Event("change", { bubbles: true, composed: true }));
+    if (this.type === "radio" && this.checked && this.name) {
+      const root = this.getRootNode() as Document | ShadowRoot;
+      root.querySelectorAll<ThemeInput>(`theme-input[type="radio"]`).forEach((other) => {
+        if (other !== this && other.name === this.name) other.checked = false;
+      });
+    }
+    this.emitChange();
+  }
+
+  private onTextInput(e: Event): void {
+    this.value = (e.target as HTMLInputElement).value;
   }
 
   render() {
@@ -77,9 +126,9 @@ export class ThemeInput extends LitElement {
       return html`<label class="relative inline-flex h-5 w-5 cursor-pointer">
         <input
           type=${this.type}
-          name=${this.name}
           .value=${this.value}
           .checked=${this.checked}
+          ?disabled=${this.isDisabled}
           @change=${this.onBoxChange}
           class="absolute inset-0 m-0 h-full w-full cursor-pointer opacity-0"
         />
@@ -106,9 +155,11 @@ export class ThemeInput extends LitElement {
     return html`<span class=${SOCKET_CLASSES}>
       <input
         type=${this.type}
-        name=${this.name}
         .value=${this.value}
         placeholder=${this.placeholder}
+        ?disabled=${this.isDisabled}
+        @input=${this.onTextInput}
+        @change=${this.emitChange}
         class=${SOCKET_CONTROL_CLASSES}
       />
     </span>`;
