@@ -16,35 +16,25 @@ export class PlateFrameController extends ResizeFrameController<PlateGeometry> {
 interface ToneStyle {
   from: string;
   to: string;
-  /** Triangle-lattice etch colour, or null for a clean plate. */
-  grid: string | null;
-  gridOpacity: number;
   groove: string;
-  /**
-   * Shade the bevel band (plate edge to groove) as flat facets sloping away
-   * from the viewer: facets toward the top-left light lighten, facets away
-   * from it darken. Hard facets, no blur — the plates are cut, not rounded.
-   */
-  bevel: boolean;
 }
 
+/**
+ * Every plate, light or steel, is a clean face with a faceted bevel rim:
+ * the band between the plate edge and the groove, shaded as flat facets
+ * sloping away from the viewer toward a top-left light. Hard facets, no
+ * blur: the plates are cut, not rounded.
+ */
 const TONES: Record<PlateTone, ToneStyle> = {
-  // Elevated light plates (Card) stay clean: no lattice, faceted bevel rim.
   light: {
     from: "var(--color-plate-50)",
     to: "var(--color-plate-100)",
-    grid: null,
-    gridOpacity: 0,
     groove: "var(--color-plate-300)",
-    bevel: true,
   },
   steel: {
     from: "var(--color-plate-700)",
     to: "var(--color-plate-800)",
-    grid: "var(--color-plate-50)",
-    gridOpacity: 0.05,
     groove: "var(--color-plate-500)",
-    bevel: false,
   },
 };
 
@@ -73,7 +63,7 @@ export function renderBevel(geometry: PlateGeometry, clipId: string) {
  * Renders the plate frame as an absolutely-positioned SVG overlay behind the
  * host's content. Host needs `position: relative; isolation: isolate`.
  *
- * IDs (`zd-fill`, `zd-grid`, `zd-clip`, `zd-glow`) are fixed: each instance lives in its
+ * IDs (`zd-fill`, `zd-clip`, `zd-glow`) are fixed: each instance lives in its
  * own shadow root, which scopes them, so they never collide.
  */
 export function renderPlateFrame(geometry: PlateGeometry | null, tone: PlateTone = "light") {
@@ -93,20 +83,7 @@ export function renderPlateFrame(geometry: PlateGeometry | null, tone: PlateTone
           <stop offset="0" style="stop-color: ${t.from}" />
           <stop offset="1" style="stop-color: ${t.to}" />
         </linearGradient>
-        ${
-          t.grid
-            ? svg`<pattern id="zd-grid" width="28" height="48.5" patternUnits="userSpaceOnUse">
-                <path
-                  d="M0 0H28M0 24.25H28M0 0L28 48.5M14 0L28 24.25M0 24.25L14 48.5M28 0L0 48.5M14 0L0 24.25M28 24.25L14 48.5"
-                  fill="none"
-                  stroke=${t.grid}
-                  stroke-opacity=${t.gridOpacity}
-                  stroke-width="1"
-                />
-              </pattern>`
-            : null
-        }
-        ${t.bevel && g ? svg`<clipPath id="zd-clip"><path d=${g.plateD} /></clipPath>` : null}
+        ${g ? svg`<clipPath id="zd-clip"><path d=${g.plateD} /></clipPath>` : null}
         <filter id="zd-glow" x="-50%" y="-50%" width="200%" height="200%">
           <feGaussianBlur stdDeviation="2" result="blur" />
           <feMerge>
@@ -121,8 +98,7 @@ export function renderPlateFrame(geometry: PlateGeometry | null, tone: PlateTone
             <path d=${g.dropD} fill="var(--color-core-deep)" />
             <path d=${g.underD} fill="var(--color-core)" />
             <path d=${g.plateD} fill="url(#zd-fill)" />
-            ${t.grid ? svg`<path class="grid" d=${g.plateD} fill="url(#zd-grid)" />` : null}
-            ${t.bevel ? renderBevel(g, "zd-clip") : null}
+            ${renderBevel(g, "zd-clip")}
             <path d=${g.grooveD} fill="none" stroke=${t.groove} stroke-width="1" />
             <path d=${g.wireD} fill="none" stroke="var(--color-wire)" stroke-width="1.5" />
             <path
