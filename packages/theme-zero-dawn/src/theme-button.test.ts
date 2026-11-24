@@ -47,4 +47,36 @@ describe("theme-button", () => {
 
     el.remove();
   });
+
+  it("draws a bevel and core drop only for raised (primary/secondary) buttons", async () => {
+    const el = document.createElement("theme-button") as ThemeButton;
+    document.body.appendChild(el);
+    // jsdom has no layout, so feed the frame a size directly.
+    const frame = (el as unknown as { frame: { geometry: unknown } }).frame;
+    const { computePlate } = await import("./plate-geometry.js");
+    frame.geometry = computePlate(120, 40, {
+      cut: 10,
+      smallCut: 0,
+      groove: 3,
+      drop: 3,
+      notch: false,
+    });
+    el.requestUpdate();
+    await el.updateComplete;
+
+    expect(el.shadowRoot?.querySelector(".bevel")).not.toBeNull();
+    expect(el.shadowRoot?.querySelector(".drop")).not.toBeNull();
+
+    el.variant = "ghost";
+    await el.updateComplete;
+    expect(el.shadowRoot?.querySelector(".bevel")).toBeNull();
+    expect(el.shadowRoot?.querySelector(".drop")).toBeNull();
+
+    el.variant = "secondary";
+    el.disabled = true;
+    await el.updateComplete;
+    expect(el.shadowRoot?.querySelector(".bevel")).toBeNull();
+
+    el.remove();
+  });
 });

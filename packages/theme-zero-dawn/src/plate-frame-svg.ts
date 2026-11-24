@@ -60,6 +60,16 @@ function renderFacet(d: string, light: number) {
 }
 
 /**
+ * A plate's bevel band as flat, light-shaded facets, clipped to the clip path
+ * `clipId` (the plate outline) so cut-outs like the seam notch stay open.
+ */
+export function renderBevel(geometry: PlateGeometry, clipId: string) {
+  return svg`<g class="bevel" clip-path="url(#${clipId})">
+    ${geometry.bevel.map((f) => renderFacet(f.d, f.light))}
+  </g>`;
+}
+
+/**
  * Renders the plate frame as an absolutely-positioned SVG overlay behind the
  * host's content. Host needs `position: relative; isolation: isolate`.
  *
@@ -112,13 +122,7 @@ export function renderPlateFrame(geometry: PlateGeometry | null, tone: PlateTone
             <path d=${g.underD} fill="var(--color-core)" />
             <path d=${g.plateD} fill="url(#zd-fill)" />
             ${t.grid ? svg`<path class="grid" d=${g.plateD} fill="url(#zd-grid)" />` : null}
-            ${
-              t.bevel
-                ? svg`<g class="bevel" clip-path="url(#zd-clip)">
-                    ${g.bevel.map((f) => renderFacet(f.d, f.light))}
-                  </g>`
-                : null
-            }
+            ${t.bevel ? renderBevel(g, "zd-clip") : null}
             <path d=${g.grooveD} fill="none" stroke=${t.groove} stroke-width="1" />
             <path d=${g.wireD} fill="none" stroke="var(--color-wire)" stroke-width="1.5" />
             <path

@@ -48,4 +48,12 @@ describe("computePlate", () => {
     expect(light[3]).toBeCloseTo(-1);
     expect(light[7]).toBeCloseTo(1);
   });
+
+  it("keeps square corners square and skips their zero-length facets", () => {
+    const g = computePlate(120, 40, { cut: 10, smallCut: 0, groove: 3, notch: false });
+    // 8 outline edges minus the two zero-length square-corner "chamfers".
+    expect(g?.bevel).toHaveLength(6);
+    // Inner top-right corner sits exactly 3px in from the outer one.
+    expect(g?.grooveD).toContain("L117 3 L117 3");
+  });
 });

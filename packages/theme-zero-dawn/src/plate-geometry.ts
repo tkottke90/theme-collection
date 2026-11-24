@@ -52,6 +52,15 @@ function poly(points: Array<[number, number]>): string {
   return `M${points.map(([x, y]) => `${r(x)} ${r(y)}`).join(" L")} Z`;
 }
 
+/**
+ * A 45° chamfer of size `c`, inset by `d`, keeps its diagonal but measures
+ * c + d(√2 − 1) − d from the inset corner. A square corner (c = 0) stays
+ * square, so clamp at 0 rather than going negative.
+ */
+function innerCut(c: number, d: number): number {
+  return c > 0 ? Math.max(0, c + d * K - d) : 0;
+}
+
 /** Chamfered rectangle from (x0,y0) to (x1,y1). */
 function chamferPoints(
   x0: number,
@@ -84,7 +93,7 @@ export function computePlate(
   // Never let a chamfer eat more than a third of the shorter side.
   const limit = Math.min(width, height) / 3;
   const cut = Math.min(options.cut ?? 18, limit);
-  const small = Math.min(options.smallCut ?? 6, limit);
+  const small = Math.max(0, Math.min(options.smallCut ?? 6, limit));
 
   const outline = chamferPoints(0, 0, width, height, cut, small);
 
@@ -108,21 +117,23 @@ export function computePlate(
 
   const g = Math.min(groove, limit / 2);
   const groovePoints =
-    g > 0 ? chamferPoints(g, g, width - g, height - g, cut + g * K - g, small + g * K - g) : [];
+    g > 0 ? chamferPoints(g, g, width - g, height - g, innerCut(cut, g), innerCut(small, g)) : [];
   const grooveD = g > 0 ? poly(groovePoints) : "";
 
   // One quad per outline edge: outer edge → matching groove edge. Points run
   // clockwise in screen space, so an edge (dx, dy) has outward normal (dy, -dx).
-  const bevel = groovePoints.map((inner0, i) => {
+  const bevel = groovePoints.flatMap((inner0, i) => {
     const j = (i + 1) % outline.length;
     const outer0 = outline[i] as [number, number];
     const outer1 = outline[j] as [number, number];
     const inner1 = groovePoints[j] as [number, number];
     const dx = outer1[0] - outer0[0];
     const dy = outer1[1] - outer0[1];
-    const len = Math.hypot(dx, dy) || 1;
+    const len = Math.hypot(dx, dy);
+    // A square corner (zero-size chamfer) is a zero-length edge: no facet.
+    if (len < 0.01) return [];
     const light = (dy / len) * LIGHT[0] + (-dx / len) * LIGHT[1];
-    return { d: poly([outer0, outer1, inner1, inner0]), light: Math.round(light * 1000) / 1000 };
+    return [{ d: poly([outer0, outer1, inner1, inner0]), light: Math.round(light * 1000) / 1000 }];
   });
 
   const dropD = poly(outline.map(([x, y]): [number, number] => [x + drop, y + drop]));

@@ -1,8 +1,8 @@
 import { css } from "lit";
 
 /**
- * Shared hand-written CSS for the small chamfered controls (Button, Input,
- * Select, Textarea, Skeleton) — shapes Tailwind utilities can't express.
+ * Shared hand-written CSS for the small chamfered controls (Input, Select,
+ * Textarea, Skeleton) — shapes Tailwind utilities can't express.
  * Colours are never set here: each component sets `--zd-face` / `--zd-edge`
  * through Tailwind arbitrary-property classes pointing at theme tokens.
  *
@@ -51,11 +51,6 @@ export const plateStyles = css`
       0 var(--zd-cut, 10px)
     );
   }
-  /* Hard core drop under a plate: a flat offset, not a blur. */
-  .zd-drop {
-    filter: drop-shadow(3px 4px 0 var(--color-core-deep));
-  }
-  .zd-glow,
   .zd-socket:focus-within {
     filter: drop-shadow(0 0 6px var(--color-brand-500));
   }
