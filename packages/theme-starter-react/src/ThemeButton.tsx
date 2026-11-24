@@ -5,6 +5,8 @@ export type ThemeButtonVariant = "primary" | "secondary" | "ghost";
 export interface ThemeButtonProps {
   label?: string;
   variant?: ThemeButtonVariant;
+  /** Defaults to "button"; use "submit" or "reset" inside a form. */
+  type?: "button" | "submit" | "reset";
   disabled?: boolean;
   onClick?: () => void;
 }
@@ -18,12 +20,13 @@ const VARIANT_CLASSES: Record<ThemeButtonVariant, string> = {
 export function ThemeButton({
   label = "Click me",
   variant = "primary",
+  type = "button",
   disabled = false,
   onClick,
 }: ThemeButtonProps): JSX.Element {
   return (
     <button
-      type="button"
+      type={type}
       onClick={onClick}
       disabled={disabled}
       className={`rounded-theme px-4 py-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 ${VARIANT_CLASSES[variant]}`}

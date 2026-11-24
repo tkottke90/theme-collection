@@ -4,6 +4,16 @@ import { ThemeTextarea } from "./ThemeTextarea.js";
 const meta: Meta<typeof ThemeTextarea> = {
   title: "Theme/Starter React/Textarea",
   component: ThemeTextarea,
+  parameters: {
+    intro: {
+      tag: "ThemeTextarea",
+      title: "Textarea",
+      description: [
+        "A native, vertically resizable textarea that matches ThemeInput. It forwards every native prop, submits under its name and resets to its defaultValue.",
+        "When copying the starter, describe it alongside the input: the same well, border and focus ring.",
+      ],
+    },
+  },
   args: { placeholder: "Write something...", rows: 4 },
 };
 export default meta;
