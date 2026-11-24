@@ -26,12 +26,12 @@ interface ToneStyle {
  * blur: the plates are cut, not rounded.
  */
 const TONES: Record<PlateTone, ToneStyle> = {
-  // Light plates slope a step past plate-100. The end is capped by contrast:
-  // at this mix, links (brand-900) hold 4.67:1 and muted ink 4.6:1; one step
-  // darker and links fall below AA.
+  // Light plates slope past plate-100 toward plate-300. The plate-ink-*
+  // tokens are tuned to hold AA at this end (links 4.64:1, muted 4.62:1,
+  // body 6.9:1); deepen the end and they must be re-tuned with it.
   light: {
     from: "var(--color-plate-50)",
-    to: "color-mix(in srgb, var(--color-plate-100) 70%, var(--color-plate-300))",
+    to: "color-mix(in srgb, var(--color-plate-100) 55%, var(--color-plate-300))",
     groove: "var(--color-plate-300)",
   },
   // The face falls away from the top-left light into the core colour, so
@@ -138,7 +138,7 @@ export function renderPlateFrame(geometry: PlateGeometry | null, tone: PlateTone
  */
 export const PLATE_INK_CLASSES: Record<PlateTone, string> = {
   light:
-    "[--zd-ink:var(--color-core)] [--zd-ink-muted:var(--color-plate-ink-muted)] [--zd-link:var(--color-brand-900)] [--zd-accent:var(--color-tribe-red)]",
+    "[--zd-ink:var(--color-core)] [--zd-ink-muted:var(--color-plate-ink-muted)] [--zd-link:var(--color-plate-ink-link)] [--zd-accent:var(--color-tribe-red)]",
   steel:
     "[--zd-ink:var(--color-text)] [--zd-ink-muted:var(--color-text-muted)] [--zd-link:var(--color-brand-300)] [--zd-accent:var(--color-wire-300)]",
 };
