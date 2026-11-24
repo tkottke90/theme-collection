@@ -4,8 +4,19 @@ import { property } from "lit/decorators.js";
 /** Elements a field can label: the theme's controls and native ones. */
 const CONTROLS = "theme-input, theme-select, theme-textarea, input, select, textarea";
 
+/** Radios, which are labelled one by one; a field labels their group instead. */
+const RADIOS = 'theme-input[type="radio"], input[type="radio"]';
+
 /** Marks an `aria-label` the field set, so it can update or remove its own and never a consumer's. */
 const OWNED = "data-field-label";
+
+/** Marks a `role="radiogroup"` the field set on a radio wrapper, for the same reason. */
+const OWNED_ROLE = "data-field-role";
+
+/** A wrapper of radios (rather than a control itself), which the field labels as a group. */
+function isRadioGroup(el: Element): boolean {
+  return !el.matches(CONTROLS) && el.querySelector(RADIOS) !== null;
+}
 
 /**
  * Base for each theme's `theme-field`: a visible label plus the control
@@ -21,6 +32,14 @@ const OWNED = "data-field-label";
  *
  * The control is the element whose id matches `for`, if set; otherwise the
  * first control slotted in (or inside a slotted wrapper).
+ *
+ * Radios are the exception: each has its own label (its option text), so the
+ * field never names one. When the first control is a radio inside a slotted
+ * wrapper, the field labels the wrapper instead, as a `radiogroup` (unless
+ * the wrapper already has a role), and clicking the label focuses the
+ * checked radio without changing the selection. Radios slotted without a
+ * wrapper (or each in its own slotted `<label>`) have nothing to name, so
+ * the field leaves them alone; `for` can point at a group element instead.
  *
  * In `render()`, bind `@click=${this.onLabelClick}` on the label and
  * `@slotchange=${this.link}` on the default slot.
@@ -55,9 +74,11 @@ export abstract class FieldElement extends LitElement {
     }
     const slot = this.renderRoot.querySelector("slot");
     for (const el of slot?.assignedElements({ flatten: true }) ?? []) {
-      if (el.matches(CONTROLS)) return el as HTMLElement;
-      const inner = el.querySelector<HTMLElement>(CONTROLS);
-      if (inner) return inner;
+      const control = el.matches(CONTROLS) ? el : el.querySelector<HTMLElement>(CONTROLS);
+      if (!control) continue;
+      if (!control.matches(RADIOS)) return control as HTMLElement;
+      // A radio: label its group, if there's a wrapper to stand for one.
+      return el !== control && el.localName !== "label" ? (el as HTMLElement) : null;
     }
     return null;
   }
@@ -77,28 +98,46 @@ export abstract class FieldElement extends LitElement {
     if (label) {
       next.setAttribute("aria-label", label);
       next.setAttribute(OWNED, "");
+      if (isRadioGroup(next) && !next.hasAttribute("role")) {
+        next.setAttribute("role", "radiogroup");
+        next.setAttribute(OWNED_ROLE, "");
+      }
     } else if (ours) {
-      next.removeAttribute("aria-label");
-      next.removeAttribute(OWNED);
+      unname(next);
     }
   }
 
   /** Remove the name this field gave a control it no longer labels. */
   private release(): void {
     const old = this.control;
-    if (old?.hasAttribute(OWNED)) {
-      old.removeAttribute("aria-label");
-      old.removeAttribute(OWNED);
-    }
+    if (old?.hasAttribute(OWNED)) unname(old);
     this.control = null;
   }
 
-  /** Focus the control, or toggle it for a checkbox or radio. */
+  /**
+   * Focus the control, or toggle it for a checkbox or radio. For a radio
+   * group, focus the checked radio (else the first) without selecting it.
+   */
   protected onLabelClick(): void {
     const control = this.control;
     if (!control) return;
+    if (isRadioGroup(control)) {
+      const radios = [...control.querySelectorAll<HTMLElement & { checked?: boolean }>(RADIOS)];
+      (radios.find((r) => r.checked) ?? radios[0])?.focus();
+      return;
+    }
     const type = control.getAttribute("type") ?? (control as HTMLInputElement).type;
     if (type === "checkbox" || type === "radio") control.click();
     else control.focus();
+  }
+}
+
+/** Remove the name (and any group role) a field gave an element. */
+function unname(el: HTMLElement): void {
+  el.removeAttribute("aria-label");
+  el.removeAttribute(OWNED);
+  if (el.hasAttribute(OWNED_ROLE)) {
+    el.removeAttribute("role");
+    el.removeAttribute(OWNED_ROLE);
   }
 }

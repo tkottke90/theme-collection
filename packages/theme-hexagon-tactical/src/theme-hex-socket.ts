@@ -1,5 +1,6 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
+import { ifDefined } from "lit/directives/if-defined.js";
 import { themeStyles } from "./generated/theme-styles.js";
 
 @customElement("theme-hex-socket")
@@ -101,6 +102,11 @@ export class ThemeHexSocket extends LitElement {
   @property({ type: Boolean, reflect: true }) add = false;
   @property({ type: Boolean, reflect: true }) selected = false;
   @property({ type: String }) step = "";
+  /**
+   * The host's `aria-label`, forwarded to the inner `<button>`: a label left
+   * on the host never reaches the element assistive technology reads.
+   */
+  @property({ attribute: "aria-label" }) accessibleLabel: string | null = null;
 
   protected updated(): void {
     this.style.setProperty("--q", String(this.q));
@@ -109,7 +115,7 @@ export class ThemeHexSocket extends LitElement {
 
   render() {
     const classes = `hex ${this.empty ? "empty" : ""} ${this.add ? "add" : ""} ${this.selected ? "selected" : ""}`;
-    return html`<button class=${classes}>
+    return html`<button class=${classes} aria-label=${ifDefined(this.accessibleLabel ?? undefined)}>
       ${this.add ? "+" : html`<slot></slot>`}
       ${this.step ? html`<span class="num">${this.step}</span>` : null}
     </button>`;

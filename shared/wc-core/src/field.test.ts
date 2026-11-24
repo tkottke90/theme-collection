@@ -100,4 +100,75 @@ describe("FieldElement", () => {
     box.field.shadowRoot!.querySelector("label")!.click();
     expect(box.wrap.querySelector("input")!.checked).toBe(true);
   });
+
+  describe("radios", () => {
+    const GROUP = `<test-field label="Threat"><div>
+      <label><input type="radio" name="t" value="low" />Low</label>
+      <label><input type="radio" name="t" value="high" checked />High</label>
+    </div></test-field>`;
+
+    it("labels the radios' wrapper as a radiogroup, never a radio", async () => {
+      const { field, wrap } = await mount(GROUP);
+      const group = wrap.querySelector("div")!;
+      expect(field.labelledControl).toBe(group);
+      expect(group.getAttribute("role")).toBe("radiogroup");
+      expect(group.getAttribute("aria-label")).toBe("Threat");
+      for (const radio of wrap.querySelectorAll("input")) {
+        expect(radio.hasAttribute("aria-label")).toBe(false);
+      }
+    });
+
+    it("finds theme-input radios too", async () => {
+      const { wrap } = await mount(
+        '<test-field label="Plan"><div><theme-input type="radio" name="p"></theme-input></div></test-field>',
+      );
+      expect(wrap.querySelector("div")!.getAttribute("role")).toBe("radiogroup");
+      expect(wrap.querySelector("theme-input")!.hasAttribute("aria-label")).toBe(false);
+    });
+
+    it("keeps a role the consumer set, and removes only what it added", async () => {
+      const { field, wrap } = await mount(
+        '<test-field label="A"><div role="group"><input type="radio" /></div></test-field>',
+      );
+      const group = wrap.querySelector("div")!;
+      expect(group.getAttribute("role")).toBe("group");
+      field.remove();
+      expect(group.getAttribute("role")).toBe("group");
+      expect(group.hasAttribute("aria-label")).toBe(false);
+
+      const other = await mount(GROUP);
+      const div = other.wrap.querySelector("div")!;
+      other.field.label = "";
+      await other.field.updateComplete;
+      expect(div.hasAttribute("role")).toBe(false);
+      expect(div.hasAttribute("aria-label")).toBe(false);
+    });
+
+    it("names nothing when radios have no wrapper to stand for the group", async () => {
+      for (const markup of [
+        '<test-field label="A"><input type="radio" /><input type="radio" /></test-field>',
+        '<test-field label="A"><label><input type="radio" />One</label></test-field>',
+      ]) {
+        const { field, wrap } = await mount(markup);
+        expect(field.labelledControl).toBeNull();
+        expect(wrap.querySelector("[aria-label]")).toBeNull();
+      }
+    });
+
+    it("focuses the checked radio on label click without changing the selection", async () => {
+      const { field, wrap } = await mount(GROUP);
+      field.shadowRoot!.querySelector("label")!.click();
+      const [low, high] = wrap.querySelectorAll("input");
+      expect(document.activeElement).toBe(high);
+      expect(low!.checked).toBe(false);
+      expect(high!.checked).toBe(true);
+    });
+
+    it("still names a single radio picked out with `for`", async () => {
+      const { wrap } = await mount(
+        '<test-field label="Only" for="r"><input id="r" type="radio" /></test-field>',
+      );
+      expect(wrap.querySelector("#r")!.getAttribute("aria-label")).toBe("Only");
+    });
+  });
 });
