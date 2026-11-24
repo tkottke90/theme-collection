@@ -40,7 +40,8 @@ export class ThemeDetail extends LitElement {
 
   @property({ type: String }) summary = "";
 
-  private frame = new PlateFrameController(this, { cut: 14 });
+  // No seam notch: at a collapsed panel's thin height it reads as a glitch.
+  private frame = new PlateFrameController(this, { cut: 14, notch: false });
 
   render() {
     return html`

@@ -17,7 +17,7 @@ export const GLYPHS = {
   hearth: "M30 5 L55 52 H5 Z M30 26 V40",
   focus: "M30 12 A18 18 0 1 1 29.9 12 M30 1 V20 M30 40 V59 M1 30 H20 M40 30 H59",
   claw: "M14 6 Q6 30 18 56 M30 4 V58 M46 6 Q54 30 42 56",
-  quote: "M12 12 H28 L18 40 M34 12 H50 L40 40",
+  quote: "M28 12 L10 30 L28 48 M50 12 L32 30 L50 48",
 } as const;
 
 export type GlyphName = keyof typeof GLYPHS;

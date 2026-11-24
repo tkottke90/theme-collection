@@ -130,7 +130,7 @@ export class ThemeButton extends LitElement {
     return html`<button
       ?disabled=${this.disabled}
       style="--zd-press: ${pressDistance(v.raised, this.disabled)}px"
-      class="relative isolate block cursor-pointer border-0 bg-transparent px-5 py-2.5 font-sans text-sm font-semibold tracking-[0.12em] uppercase ${v.classes}"
+      class="relative isolate block cursor-pointer border-0 bg-transparent px-5 py-2.5 whitespace-nowrap font-sans text-sm font-semibold tracking-[0.12em] uppercase ${v.classes}"
     >
       ${renderButtonFrame(this.frame.geometry, v.raised)}
       <span class="label relative inline-block"><slot>${this.label}</slot></span>

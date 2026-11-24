@@ -54,28 +54,35 @@ const SIGILS: Array<{ name: GlyphName; color: GlyphColor; label: string }> = [
   { name: "eye", color: "violet", label: "Seers" },
 ];
 
+/** One dial face per relay: a live reading and one still coming in. */
+const TELEMETRY = [
+  { variant: "dish", value: 64, reading: "Relay link", pending: "Syncing" },
+  { variant: "segments", value: 82, reading: "Cell charge", pending: "Charging" },
+  { variant: "peaks", value: 45, reading: "Hunt standing", pending: "Tallying" },
+] as const;
+
 const SECTION = "display: flex; flex-direction: column; gap: 1.25rem; margin-top: 3rem;";
 const GRID = (min: string) =>
   `display: grid; grid-template-columns: repeat(auto-fit, minmax(${min}, 1fr)); gap: 1.75rem;`;
 
 function machineCard(m: Machine) {
   return html`<theme-card heading=${m.name}>
-    <div style="display: flex; gap: 1rem; align-items: flex-start">
+    <div style="display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1rem">
       <theme-glyph name=${m.glyph} color=${m.color} shape="shield" size="56"></theme-glyph>
       <div style="flex: 1; min-width: 0">
         <theme-text variant="caption">${m.role}</theme-text>
         <theme-text>${m.body}</theme-text>
       </div>
     </div>
-    <div style="margin: 1rem 0 1.25rem">
+    <div style="margin-top: auto; display: flex; flex-direction: column; gap: 1.25rem">
       <theme-progress
         variant="recessed"
         value=${m.armour}
         segments="10"
         label="Armour"
       ></theme-progress>
+      <div><theme-button variant="primary" label="Track"></theme-button></div>
     </div>
-    <theme-button variant="primary" label="Track"></theme-button>
   </theme-card>`;
 }
 
@@ -109,7 +116,7 @@ export const demoPage = () => html`
     <section style=${SECTION}>
       <theme-heading level="2">Expedition</theme-heading>
       <div style=${GRID("20rem")}>
-        <theme-container>
+        <theme-container style="align-self: start">
           <theme-heading level="3">Log a sighting</theme-heading>
           <div style="display: flex; flex-direction: column; gap: 1.1rem">
             <theme-field label="Machine">
@@ -149,7 +156,7 @@ export const demoPage = () => html`
               style="display: inline-flex; gap: 0.6rem; align-items: center; font-family: var(--font-sans)"
               ><theme-input type="checkbox"></theme-input>Core was exposed</label
             >
-            <div style="display: flex; gap: 0.75rem">
+            <div style="display: flex; flex-wrap: wrap; gap: 0.75rem">
               <theme-button label="Save entry"></theme-button>
               <theme-button variant="secondary" label="Discard"></theme-button>
               <theme-button disabled label="Share"></theme-button>
@@ -222,21 +229,18 @@ export const demoPage = () => html`
     </section>
 
     <section style=${SECTION}>
-      <theme-heading level="2">Progress dials</theme-heading>
-      <theme-text variant="caption"
-        >Dish, segments and peaks: gauge (top), spinner (bottom)</theme-text
-      >
+      <theme-heading level="2">Machine telemetry</theme-heading>
       <theme-container>
         <div
           style="display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: 2rem; justify-items: center"
         >
-          ${(["dish", "segments", "peaks"] as const).map(
-            (v) =>
+          ${TELEMETRY.map(
+            (t) =>
               html`<div
                 style="display: flex; flex-direction: column; gap: 1.5rem; align-items: center"
               >
-                <theme-disc variant=${v} value="64" label=${v}></theme-disc>
-                <theme-disc variant=${v} label="Syncing"></theme-disc>
+                <theme-disc variant=${t.variant} value=${t.value} label=${t.reading}></theme-disc>
+                <theme-disc variant=${t.variant} label=${t.pending}></theme-disc>
               </div>`,
           )}
         </div>

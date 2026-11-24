@@ -3,7 +3,13 @@ import { customElement, property } from "lit/decorators.js";
 import { themeStyles } from "./generated/theme-styles.js";
 import { PLATE_INK_CLASSES, PlateFrameController, renderPlateFrame } from "./plate-frame-svg.js";
 
-/** Sunlit armour plate on a dark core — the theme's signature surface. */
+/**
+ * Sunlit armour plate on a dark core — the theme's signature surface.
+ *
+ * Fills its host's height and stacks its content as a column, so cards in a
+ * row stay the same height and a child with `margin-top: auto` sits on the
+ * bottom edge (e.g. to line up actions across cards).
+ */
 @customElement("theme-card")
 export class ThemeCard extends LitElement {
   static styles = [
@@ -24,7 +30,9 @@ export class ThemeCard extends LitElement {
   render() {
     return html`
       ${renderPlateFrame(this.frame.geometry, "light")}
-      <div class="relative px-7 pt-6 pb-7 font-serif text-lg text-core ${PLATE_INK_CLASSES.light}">
+      <div
+        class="relative flex h-full flex-col px-7 pt-6 pb-7 font-serif text-lg text-core ${PLATE_INK_CLASSES.light}"
+      >
         ${
           this.heading
             ? html`<h2

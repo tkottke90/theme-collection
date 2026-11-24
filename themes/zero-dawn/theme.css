@@ -22,21 +22,17 @@
   --color-plate-800: #2b3040; /* est. */
   /* Inks on a light plate, adj. for AA (>= 4.6:1) at its darkest gradient end. */
   --color-plate-ink-muted: #363a43; /* from est. #4b4f5c */
-  --color-plate-ink-link: #0d3f4c; /* brand-900 #0f4655, darkened in hue */
+  --color-plate-ink-link: #0d3f4c; /* from deep cyan #0f4655, darkened in hue */
 
   /* Inner core — the dark machinery showing through seams. */
   --color-core: #191b30; /* read: blue-black internals */
-  --color-core-warm: #292927; /* read: warm-black internals */
   --color-core-deep: #0e0f1a; /* est. hard drop under plates */
 
   /* Machine glow (cyan seams / focus). Read as #547584 through atmospheric haze,
      brightened to an emissive cyan (est.) — the read value fails 3:1 on bg. */
-  --color-brand-50: #e3f7fb;
   --color-brand-100: #bdebf5;
   --color-brand-300: #7fd3e6;
   --color-brand-500: #3fb8d4;
-  --color-brand-600: #2795b0;
-  --color-brand-900: #0f4655;
 
   /* Cable / wire amber. */
   --color-wire: #ad8350; /* read */
@@ -44,10 +40,7 @@
 
   /* World / atmosphere. */
   --color-haze: #fcd4be; /* read: sunset haze */
-  --color-sky: #656578; /* read: dusk slate sky */
-  --color-rust: #7f5938; /* read: rust earth */
   --color-band: #7898a6; /* read: art-book steel-blue band */
-  --color-band-lilac: #83869c; /* read: art-book lilac band */
 
   /* Tribal paint (glyph sheet). */
   --color-tribe-red: #84212b; /* read */
@@ -92,9 +85,6 @@
      close-in-spirit Google Fonts). */
   --font-sans: "Saira", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Crimson Pro", Georgia, "Times New Roman", serif;
-
-  /* Plates are faceted, never rounded. */
-  --radius-theme: 0;
 
   /* Art-book triangle lattice, as a repeatable background. */
   --background-image-tri-grid: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='69.28'%3E%3Cpath d='M0 0H40M0 34.64H40M0 0L40 69.28M20 0L40 34.64M0 34.64L20 69.28M40 0L0 69.28M20 0L0 34.64M40 34.64L20 69.28' stroke='%23e4e1db' stroke-opacity='.06' fill='none'/%3E%3C/svg%3E");

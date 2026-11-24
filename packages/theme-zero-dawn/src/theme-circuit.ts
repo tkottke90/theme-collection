@@ -35,6 +35,19 @@ export class ThemeCircuit extends LitElement {
         isolation: isolate;
         min-height: var(--zd-circuit-min-height, 240px);
       }
+      /*
+       * Keep the traces out of the content's way: they fade to a faint trace
+       * behind the centre (where the slotted heading and copy sit) and out to
+       * nothing at the top and bottom, so the field never ends in a hard crop.
+       */
+      .traces {
+        --fade: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+        --clear: radial-gradient(ellipse 48% 46% at 50% 50%, rgb(0 0 0 / 0.1) 35%, #000 100%);
+        -webkit-mask-image: var(--clear), var(--fade);
+        -webkit-mask-composite: source-in;
+        mask-image: var(--clear), var(--fade);
+        mask-composite: intersect;
+      }
     `,
   ];
 
@@ -54,7 +67,7 @@ export class ThemeCircuit extends LitElement {
     const opacity = this.glow ? 0.28 : 0.16;
     return html`
       <svg
-        class="pointer-events-none absolute inset-0 -z-10 h-full w-full"
+        class="traces pointer-events-none absolute inset-0 -z-10 h-full w-full"
         viewBox="0 0 400 240"
         preserveAspectRatio="xMidYMid slice"
         aria-hidden="true"

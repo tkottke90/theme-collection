@@ -42,6 +42,30 @@ export class ThemeDisc extends LitElement {
   @property({ type: Number }) size = 128;
   @property({ type: String, reflect: true }) variant: DiscVariant = "dish";
 
+  /**
+   * Gauges get a bold reading ("64% · Relay link"); spinners a quiet status
+   * line. Segments shows its number in its core, so its reading drops the
+   * percentage but keeps the gauge style.
+   */
+  private renderLabel(pct: number | null) {
+    if (pct === null) {
+      return this.label
+        ? html`<span class="text-xs tracking-[0.12em] text-text-muted uppercase"
+            >${this.label}</span
+          >`
+        : null;
+    }
+    const parts = [
+      this.variant === "segments" ? null : `${Math.round(pct * 100)}%`,
+      this.label || null,
+    ].filter(Boolean);
+    return parts.length
+      ? html`<span class="reading text-sm font-semibold tracking-[0.12em] text-text uppercase"
+          >${parts.join(" · ")}</span
+        >`
+      : null;
+  }
+
   render() {
     const determinate = typeof this.value === "number" && !Number.isNaN(this.value);
     const max = this.max > 0 ? this.max : 100;
@@ -75,17 +99,7 @@ export class ThemeDisc extends LitElement {
         </defs>
         ${face(pct)}
       </svg>
-      ${
-        pct !== null && this.variant !== "segments"
-          ? html`<span class="text-sm font-semibold tracking-[0.12em] text-text uppercase"
-              >${Math.round(pct * 100)}%${this.label ? html` · ${this.label}` : null}</span
-            >`
-          : this.label
-            ? html`<span class="text-xs tracking-[0.12em] text-text-muted uppercase"
-                >${this.label}</span
-              >`
-            : null
-      }
+      ${this.renderLabel(pct)}
     </div>`;
   }
 }

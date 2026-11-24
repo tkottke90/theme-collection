@@ -105,4 +105,21 @@ describe("theme-disc", () => {
     expect(keyframes).toContain("drop-shadow");
     expect(keyframes).not.toMatch(/transform|scale/);
   });
+
+  it("styles every gauge reading alike; segments drops the duplicate percentage", async () => {
+    for (const [variant, text] of [
+      ["dish", "40% · Link"],
+      ["segments", "Link"],
+      ["peaks", "40% · Link"],
+    ] as const) {
+      const el = document.createElement("theme-disc") as ThemeDisc;
+      el.variant = variant;
+      el.value = 40;
+      el.label = "Link";
+      document.body.appendChild(el);
+      await el.updateComplete;
+      expect(el.shadowRoot?.querySelector(".reading")?.textContent?.trim()).toBe(text);
+      el.remove();
+    }
+  });
 });
