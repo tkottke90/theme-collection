@@ -1,5 +1,6 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
+import { ifDefined } from "lit/directives/if-defined.js";
 import { themeStyles } from "./generated/theme-styles.js";
 import { pixelFrameStyles, pixelFrameShapes, pixelFrameShapeStyle } from "./pixel-frame.js";
 
@@ -12,6 +13,9 @@ const SHAPE_STYLE = pixelFrameShapeStyle(FRAME_SHAPE);
  */
 @customElement("theme-textarea")
 export class ThemeTextarea extends LitElement {
+  /** Focusing the element focuses the inner control (used by `theme-field`'s label). */
+  static shadowRootOptions = { ...LitElement.shadowRootOptions, delegatesFocus: true };
+
   static styles = [
     themeStyles,
     pixelFrameStyles,
@@ -50,11 +54,21 @@ export class ThemeTextarea extends LitElement {
   @property({ type: Number }) rows = 4;
   @property({ type: String }) value = "";
   @property({ type: String }) placeholder = "";
+  /**
+   * Accessible name, forwarded to the inner control. `theme-field` sets this
+   * from its label, since a label outside this shadow root can't reach it.
+   */
+  @property({ type: String, attribute: "accessible-label" }) accessibleLabel?: string;
 
   render() {
     return html`<div class="pixel-frame" style=${SHAPE_STYLE}>
       <div class="pixel-frame__fill">
-        <textarea rows=${this.rows} .value=${this.value} placeholder=${this.placeholder}></textarea>
+        <textarea
+          aria-label=${ifDefined(this.accessibleLabel)}
+          rows=${this.rows}
+          .value=${this.value}
+          placeholder=${this.placeholder}
+        ></textarea>
       </div>
     </div>`;
   }

@@ -1,5 +1,6 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
+import { ifDefined } from "lit/directives/if-defined.js";
 import { themeStyles } from "./generated/theme-styles.js";
 import { pixelFrameStyles, pixelFrameShapes, pixelFrameShapeStyle } from "./pixel-frame.js";
 
@@ -16,6 +17,9 @@ const SHAPE_STYLE = pixelFrameShapeStyle(FRAME_SHAPE);
  */
 @customElement("theme-input")
 export class ThemeInput extends LitElement {
+  /** Focusing the element focuses the inner control (used by `theme-field`'s label). */
+  static shadowRootOptions = { ...LitElement.shadowRootOptions, delegatesFocus: true };
+
   static styles = [
     themeStyles,
     pixelFrameStyles,
@@ -53,11 +57,17 @@ export class ThemeInput extends LitElement {
   @property({ type: String }) type: ThemeInputType = "text";
   @property({ type: String }) value = "";
   @property({ type: String }) placeholder = "";
+  /**
+   * Accessible name, forwarded to the inner control. `theme-field` sets this
+   * from its label, since a label outside this shadow root can't reach it.
+   */
+  @property({ type: String, attribute: "accessible-label" }) accessibleLabel?: string;
 
   render() {
     const isBoxType = this.type === "checkbox" || this.type === "radio";
     if (isBoxType) {
       return html`<input
+        aria-label=${ifDefined(this.accessibleLabel)}
         type=${this.type}
         .value=${this.value}
         class="accent-brand-600"
@@ -67,7 +77,12 @@ export class ThemeInput extends LitElement {
 
     return html`<div class="pixel-frame" style=${SHAPE_STYLE}>
       <div class="pixel-frame__fill">
-        <input type=${this.type} .value=${this.value} placeholder=${this.placeholder} />
+        <input
+          aria-label=${ifDefined(this.accessibleLabel)}
+          type=${this.type}
+          .value=${this.value}
+          placeholder=${this.placeholder}
+        />
       </div>
     </div>`;
   }

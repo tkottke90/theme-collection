@@ -41,6 +41,20 @@ export class ThemeHeading extends LitElement {
         font-family: var(--font-slab);
         font-weight: 700;
         color: var(--color-text);
+        line-height: 1.2;
+      }
+      /* Tailwind's preflight resets h1-h4 to body size; restore a scale. */
+      h1 {
+        font-size: 2.25rem;
+      }
+      h2 {
+        font-size: 1.75rem;
+      }
+      h3 {
+        font-size: 1.375rem;
+      }
+      h4 {
+        font-size: 1.125rem;
       }
       .pixel-frame {
         display: inline-block;

@@ -111,4 +111,25 @@ describe("theme-button", () => {
 
     el.remove();
   });
+
+  it("forwards accessible-label to the inner button", async () => {
+    const el = document.createElement("theme-button") as ThemeButton;
+    el.setAttribute("accessible-label", "Play");
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    expect(el.shadowRoot?.querySelector("button")?.getAttribute("aria-label")).toBe("Play");
+
+    el.remove();
+  });
+
+  it("sets no aria-label on the inner button by default", async () => {
+    const el = document.createElement("theme-button") as ThemeButton;
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    expect(el.shadowRoot?.querySelector("button")?.hasAttribute("aria-label")).toBe(false);
+
+    el.remove();
+  });
 });

@@ -10,6 +10,14 @@ const TAGS: Record<1 | 2 | 3 | 4, StaticValue> = {
   4: literal`h4`,
 };
 
+/** Per-level type scale: Tailwind's preflight resets h1–h4, so without it every level renders at body size. */
+const SIZES: Record<1 | 2 | 3 | 4, string> = {
+  1: "text-4xl leading-tight",
+  2: "text-3xl leading-tight",
+  3: "text-2xl leading-snug",
+  4: "text-xl leading-snug",
+};
+
 @customElement("theme-heading")
 export class ThemeHeading extends LitElement {
   static styles = [
@@ -24,8 +32,8 @@ export class ThemeHeading extends LitElement {
   @property({ type: Number }) level: 1 | 2 | 3 | 4 = 1;
 
   render() {
-    const tag = TAGS[this.level] ?? TAGS[1];
-    return staticHtml`<${tag} class="font-title font-normal text-text tracking-wide"><slot></slot></${tag}>`;
+    const level = TAGS[this.level] ? this.level : 1;
+    return staticHtml`<${TAGS[level]} class="m-0 font-title font-normal text-text tracking-wide ${SIZES[level]}"><slot></slot></${TAGS[level]}>`;
   }
 }
 
