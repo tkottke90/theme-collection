@@ -5,6 +5,16 @@ import "./theme-item.js";
 
 const meta: Meta = {
   title: "Theme/Starter WC/Item",
+  parameters: {
+    intro: {
+      tag: "theme-item",
+      title: "Item",
+      description: [
+        "A row inside a container, as an li or a div. Rows are divided by a thin rule that's dropped after the last one.",
+        "Copying this starter? Describe how your theme separates or marks list rows (rules, bullets, beads, spacing).",
+      ],
+    },
+  },
   render: () => html`
     <theme-container as="ul">
       <theme-item>First item</theme-item>

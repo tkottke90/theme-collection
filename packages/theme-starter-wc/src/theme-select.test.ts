@@ -53,9 +53,9 @@ describe("theme-select", () => {
     expect(onChange.mock.results[0].value).toBe(true);
   });
 
-  it("forwards accessible-label to the inner select", async () => {
+  it("forwards the host's aria-label to the inner select", async () => {
     const el = await mount('<option value="a">A</option>');
-    el.setAttribute("accessible-label", "Squad");
+    el.setAttribute("aria-label", "Squad");
     await el.updateComplete;
     expect(inner(el).getAttribute("aria-label")).toBe("Squad");
   });
