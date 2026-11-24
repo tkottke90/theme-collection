@@ -27,6 +27,17 @@ import "@tkottke90/theme-zero-dawn";
 `lit` is a peer dependency so every theme package in this repo shares a
 single copy of it.
 
+To style your own elements with the theme's colours and fonts, load the design
+tokens on your page:
+
+```js
+import "@tkottke90/theme-zero-dawn/tokens.css";
+```
+
+**For AI agents and anyone extending the theme:** [`AGENTS.md`](./AGENTS.md)
+(shipped with the package) has the full style guide and usage for vanilla and
+Preact projects.
+
 ### Fonts
 
 The theme uses [Saira](https://fonts.google.com/specimen/Saira) (display/UI)
