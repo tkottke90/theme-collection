@@ -111,6 +111,7 @@ emphasis left.
 | Field labels             | Inter (`--font-sans`)          | 600, `--color-text-muted`                                            |
 | Body, inputs             | Inter                          | 400, `--color-text`                                                  |
 | Caption, stat sublabels  | Inter                          | 0.8125rem, `--color-text-muted`                                      |
+| List markers             | Courier Prime                  | 700, `--color-text-muted`; `ol` numbers, `ul` square bullets         |
 
 Pixelify Sans is for big titles only; at body size a bitmap face is hard to
 read. Courier Prime means "this names something" (a stat, a panel, an action).
@@ -302,7 +303,7 @@ or any framework that renders DOM.
 | ----------------------------------------------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
 | `theme-button`                                  | Badge (primary) or outlined button | `label`, `variant` (`primary`, `secondary`, `ghost`), `disabled`, `accessible-label`; or slot the text                     |
 | `theme-card`                                    | Pixel-framed panel with a title    | `heading`; slot content                                                                                                    |
-| `theme-container`                               | Pixel-framed panel                 | `as` (`div`, `ol`, `ul`; list markers are removed)                                                                         |
+| `theme-container`                               | Pixel-framed panel                 | `as` (`div`, `ol` numbered, `ul` square bullets)                                                                           |
 | `theme-item`                                    | Row with a rule underneath         | `as` (`li`, `div`)                                                                                                         |
 | `theme-detail`                                  | Collapsible pixel-framed panel     | `summary`; slot content                                                                                                    |
 | `theme-blockquote`                              | Callout panel with a coloured rule | `type` (`info`, `tip`, `question`, `success`, `warning`, `failure`, `danger`, `bug`, `example`, `quote`)                   |

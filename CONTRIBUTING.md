@@ -173,9 +173,11 @@ browser preinstalled at a fixed path (some sandboxes/CI images do this
 rather than using Playwright's own managed install), point the script at
 it with `SCREENSHOT_CHROMIUM_PATH=/path/to/chromium npm run screenshot -w
 <package-name>` instead of running `playwright install`. In Claude Code's
-cloud environment that's `SCREENSHOT_CHROMIUM_PATH=/opt/pw-browsers/chromium`:
-the repo's pinned Playwright expects a browser build that isn't installed
-there.
+cloud environment, the environment's setup script runs
+`npx playwright install chromium` for the repo's own Playwright version, so
+the screenshot works with no extra setup. If a session's environment lacks
+that step, `SCREENSHOT_CHROMIUM_PATH=/opt/pw-browsers/chromium` points the
+script at the preinstalled (older) browser instead.
 
 ## Package conventions
 
