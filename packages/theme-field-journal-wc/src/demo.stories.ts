@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/web-components";
-import { html } from "lit";
+import { html, svg, type SVGTemplateResult } from "lit";
 import "./index.js";
 import type { JournalTab } from "./theme-journal-book.js";
 
@@ -57,7 +57,7 @@ function onTabChange(e: CustomEvent<{ id: string }>) {
   book.selected = e.detail.id;
 }
 
-const sketch = (label: string, body: unknown) => html`
+const sketch = (label: string, body: SVGTemplateResult) => html`
   <svg
     viewBox="0 0 220 130"
     role="img"
@@ -89,7 +89,7 @@ export const demoPage = () => html`
         >
           ${sketch(
             "Sketch of a lakeside bridge",
-            html`<rect width="220" height="130" fill="#dfe6da" />
+            svg`<rect width="220" height="130" fill="#dfe6da" />
               <path d="M0 62 C40 30 80 44 110 34 C150 22 180 40 220 30 V130 H0Z" fill="#a9b996" />
               <rect y="96" width="220" height="34" fill="#9cc2cc" />
               <path
@@ -118,6 +118,10 @@ export const demoPage = () => html`
             description="A villager's parcel went missing on its way to the far dock."
             color="red"
             icon="parcel"
+            .tasks=${[
+              { label: "Find the parcel", count: "1/2" },
+              { label: "Deliver it", count: "0/1" },
+            ]}
             favorite
           ></theme-quest-card>
           <form style=${STACK} @submit=${onSubmit}>
@@ -246,7 +250,7 @@ export const demoPage = () => html`
         >
           ${sketch(
             "Sketch of a pressed leaf",
-            html`<rect width="220" height="130" fill="#f3ecd6" />
+            svg`<rect width="220" height="130" fill="#f3ecd6" />
               <path
                 d="M110 10 C140 30 150 70 110 120 C70 70 80 30 110 10Z"
                 fill="#8aa868"
