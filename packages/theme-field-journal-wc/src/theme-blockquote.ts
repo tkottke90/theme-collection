@@ -40,17 +40,22 @@ const ACCENT_CLASSES: Record<BlockquoteType, string> = {
   quote: "border-quote-500 bg-[color-mix(in_srgb,var(--color-quote-500)_14%,var(--card))]",
 };
 
+/**
+ * Label ink: the type's colour blended into the body brown, so every label
+ * keeps 4.5:1 on its tinted panel (the pale bug and example hues need more
+ * brown). The border keeps the pure colour.
+ */
 const ACCENT_TEXT_CLASSES: Record<BlockquoteType, string> = {
-  info: "text-info-500",
-  tip: "text-tip-500",
-  question: "text-question-500",
-  success: "text-success-500",
-  warning: "text-warning-500",
-  failure: "text-failure-500",
-  danger: "text-danger-500",
-  bug: "text-bug-500",
-  example: "text-example-500",
-  quote: "text-quote-500",
+  info: "text-[color:color-mix(in_srgb,var(--color-info-500)_60%,var(--color-text))]",
+  tip: "text-[color:color-mix(in_srgb,var(--color-tip-500)_60%,var(--color-text))]",
+  question: "text-[color:color-mix(in_srgb,var(--color-question-500)_60%,var(--color-text))]",
+  success: "text-[color:color-mix(in_srgb,var(--color-success-500)_60%,var(--color-text))]",
+  warning: "text-[color:color-mix(in_srgb,var(--color-warning-500)_60%,var(--color-text))]",
+  failure: "text-[color:color-mix(in_srgb,var(--color-failure-500)_60%,var(--color-text))]",
+  danger: "text-[color:color-mix(in_srgb,var(--color-danger-500)_60%,var(--color-text))]",
+  bug: "text-[color:color-mix(in_srgb,var(--color-bug-500)_40%,var(--color-text))]",
+  example: "text-[color:color-mix(in_srgb,var(--color-example-500)_50%,var(--color-text))]",
+  quote: "text-[color:color-mix(in_srgb,var(--color-quote-500)_60%,var(--color-text))]",
 };
 
 @customElement("theme-blockquote")
