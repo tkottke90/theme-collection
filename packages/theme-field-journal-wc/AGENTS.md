@@ -168,7 +168,7 @@ or any framework that renders DOM.
 
 | Tag                                             | What it is                 | Attributes / properties                                                                                                          |
 | ----------------------------------------------- | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `theme-button`                                  | Leather-tab button         | `label`, `variant` (`primary`, `secondary`, `ghost`), `disabled`, `accessible-label`                                             |
+| `theme-button`                                  | Leather-tab button         | `label`, `variant` (`primary`, `secondary`, `ghost`), `disabled`, `type` (`button`, `submit`, `reset`), `aria-label`             |
 | `theme-card`                                    | Cream content surface      | `heading`; slot content                                                                                                          |
 | `theme-container`                               | Panel wrapper              | `as` (`div`, `ol`, `ul`)                                                                                                         |
 | `theme-item`                                    | List row                   | `as` (`li`, `div`)                                                                                                               |
@@ -200,8 +200,9 @@ names the control it wraps with its label; wrapping radios in an element, it
 names that element as a `radiogroup`, so each radio keeps its own label.
 
 The form controls no longer read an `accessible-label` attribute; use
-`aria-label`. `theme-button` keeps `accessible-label` (an `aria-label` on the
-host never reaches the inner `<button>`).
+`aria-label`, as does `theme-button`. `theme-button` is form-associated too:
+`type="submit"` submits its form, `type="reset"` resets it, and no `type`
+does neither.
 
 **Pairing rules.** A `theme-journal-book` holds two `theme-journal-page`s, one
 in `slot="left"` and one in `slot="right"`; switching tabs is your job: listen
@@ -235,7 +236,7 @@ import "@tkottke90/theme-field-journal-wc/tokens.css"; // tokens for your own CS
           <theme-input name="name"></theme-input>
         </theme-field>
         <label><theme-input type="checkbox" name="keep" value="yes"></theme-input> Keep it</label>
-        <theme-button label="Log it" id="log"></theme-button>
+        <theme-button type="submit" label="Log it"></theme-button>
       </form>
     </theme-journal-page>
   </theme-journal-book>
@@ -249,11 +250,6 @@ book.tabs = [
   { id: "places", label: "Places", color: "blue", icon: "pin" },
 ];
 book.addEventListener("journal-tab-change", (e) => console.log(e.detail.id));
-
-// theme-button isn't a form control, so submit the form by hand.
-document.getElementById("log").addEventListener("click", () => {
-  document.getElementById("find").requestSubmit();
-});
 ```
 
 Set non-string values (`tabs`, `tasks`) as **properties** from script, and

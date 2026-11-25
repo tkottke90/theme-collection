@@ -21,17 +21,8 @@ const STACK = "display: flex; flex-direction: column; gap: 1rem;";
 const INLINE_LABEL =
   "display: inline-flex; gap: 0.5rem; align-items: center; font-family: var(--font-sans); color: var(--color-neutral-900)";
 
-const formOf = (e: Event) => (e.currentTarget as Element).closest("form");
-
-/** theme-button isn't a form control, so the demo's buttons drive the form by hand. */
-function onSubmitClick(e: Event) {
-  formOf(e)?.requestSubmit();
-}
-
-function onResetClick(e: Event) {
-  const form = formOf(e);
-  form?.reset();
-  const out = form?.querySelector(".demo-result");
+function onReset(e: Event) {
+  const out = (e.currentTarget as HTMLFormElement).querySelector(".demo-result");
   if (out) out.textContent = "Nothing submitted yet.";
 }
 
@@ -73,7 +64,7 @@ export const demoPage = () => html`
       <theme-heading level="2">Get in touch</theme-heading>
       <div style=${GRID("20rem")}>
         <theme-container>
-          <form style=${STACK} @submit=${onSubmit}>
+          <form style=${STACK} @submit=${onSubmit} @reset=${onReset}>
             <theme-field label="Name">
               <theme-input name="name" placeholder="Ada Lovelace"></theme-input>
             </theme-field>
@@ -110,8 +101,8 @@ export const demoPage = () => html`
               newsletter</label
             >
             <div style="display: flex; gap: 0.75rem; flex-wrap: wrap">
-              <theme-button label="Send" @click=${onSubmitClick}></theme-button>
-              <theme-button variant="secondary" label="Reset" @click=${onResetClick}></theme-button>
+              <theme-button type="submit" label="Send"></theme-button>
+              <theme-button type="reset" variant="secondary" label="Reset"></theme-button>
             </div>
             <theme-text variant="caption" class="demo-result" aria-live="polite"
               >Nothing submitted yet.</theme-text

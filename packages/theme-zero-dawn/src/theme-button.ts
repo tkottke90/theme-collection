@@ -1,6 +1,7 @@
-import { LitElement, css, html, svg } from "lit";
+import { css, html, svg } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
+import { FormButtonElement } from "./generated/core/form-button.js";
 import { themeStyles } from "./generated/theme-styles.js";
 import type { PlateGeometry } from "./plate-geometry.js";
 import { PlateFrameController, renderBevel } from "./plate-frame-svg.js";
@@ -76,7 +77,7 @@ function renderButtonFrame(g: PlateGeometry | null, raised: boolean) {
 }
 
 @customElement("theme-button")
-export class ThemeButton extends LitElement {
+export class ThemeButton extends FormButtonElement {
   static styles = [
     themeStyles,
     css`
@@ -122,21 +123,15 @@ export class ThemeButton extends LitElement {
 
   @property({ type: String }) label = "Click me";
   @property({ type: String, reflect: true }) variant: ButtonVariant = "primary";
-  @property({ type: Boolean, reflect: true }) disabled = false;
-  /**
-   * Accessible name, forwarded to the inner `<button>` — an `aria-label` left
-   * on the host never reaches it. Needed for icon-only buttons.
-   */
-  @property({ type: String, attribute: "accessible-label" }) accessibleLabel?: string;
 
   private frame = new PlateFrameController(this, BUTTON_PLATE);
 
   render() {
-    const v = this.disabled ? DISABLED : (VARIANTS[this.variant] ?? VARIANTS.primary);
+    const v = this.isDisabled ? DISABLED : (VARIANTS[this.variant] ?? VARIANTS.primary);
     return html`<button
-      aria-label=${ifDefined(this.accessibleLabel)}
-      ?disabled=${this.disabled}
-      style="--zd-press: ${pressDistance(v.raised, this.disabled)}px"
+      aria-label=${ifDefined(this.accessibleName)}
+      ?disabled=${this.isDisabled}
+      style="--zd-press: ${pressDistance(v.raised, this.isDisabled)}px"
       class="relative isolate block cursor-pointer border-0 bg-transparent px-5 py-2.5 whitespace-nowrap font-sans text-sm font-semibold tracking-[0.12em] uppercase ${v.classes}"
     >
       ${renderButtonFrame(this.frame.geometry, v.raised)}

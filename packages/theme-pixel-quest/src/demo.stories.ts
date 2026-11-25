@@ -22,18 +22,9 @@ const GRID = (cols: string) => `display: grid; grid-template-columns: ${cols}; g
 const INLINE_LABEL =
   "display: inline-flex; gap: 0.5rem; align-items: center; font-family: var(--font-sans); color: var(--color-text)";
 
-const formOf = (e: Event) => (e.currentTarget as Element).closest("form");
-
-/** theme-button isn't a form control, so the demo's buttons drive the form by hand. */
-function onSubmitClick(e: Event) {
-  formOf(e)?.requestSubmit();
-}
-
-function onResetClick(e: Event) {
-  const form = formOf(e);
-  form?.reset();
-  const out = form?.querySelector(".demo-result");
-  if (out) out.textContent = "No hero saved yet.";
+function onReset(e: Event) {
+  const out = (e.currentTarget as HTMLFormElement).querySelector(".demo-result");
+  if (out) out.textContent = "Nothing submitted yet.";
 }
 
 function onSubmit(e: SubmitEvent) {
@@ -81,7 +72,7 @@ export const demoPage = () => html`
         </theme-card>
 
         <theme-card heading="New hero">
-          <form style=${STACK} @submit=${onSubmit}>
+          <form style=${STACK} @submit=${onSubmit} @reset=${onReset}>
             <theme-field label="Hero name">
               <theme-input name="hero" value="Ayla" placeholder="Name your hero"></theme-input>
             </theme-field>
@@ -120,8 +111,8 @@ export const demoPage = () => html`
               mode</label
             >
             <div style=${ROW}>
-              <theme-button label="Save hero" @click=${onSubmitClick}></theme-button>
-              <theme-button variant="secondary" label="Reset" @click=${onResetClick}></theme-button>
+              <theme-button type="submit" label="Save hero"></theme-button>
+              <theme-button type="reset" variant="secondary" label="Reset"></theme-button>
             </div>
             <theme-text variant="caption" class="demo-result" aria-live="polite"
               >No hero saved yet.</theme-text

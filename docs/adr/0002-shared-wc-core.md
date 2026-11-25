@@ -55,9 +55,14 @@ The five older WC packages also name controls through a custom
    `aria-label`, else the text of their associated `<label>`s, and forward
    the result to the inner native element. `FieldElement` sets
    `aria-label` on the control it labels. The `accessible-label` attribute
-   is retired for form controls as each package migrates. `theme-button`
-   is not a form control and keeps its existing `accessible-label` until
-   it gets its own decision.
+   is retired as each package migrates.
+
+4. **`theme-button` is a form control too.** `FormButtonElement` extends
+   `FormControlElement`: `type="submit"` calls `form.requestSubmit()`,
+   `type="reset"` calls `form.reset()`, it follows `<fieldset disabled>`, and
+   is named by `aria-label` like the other controls. A package's
+   `theme-button` keeps only its render and styles. Unlike a native button,
+   `preventDefault()` on the click doesn't cancel the submit or reset.
 
 ## Consequences
 

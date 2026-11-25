@@ -98,8 +98,9 @@ each radio keeps its own label.
 ```
 
 **Migrating:** the form controls no longer read an `accessible-label`
-attribute; use `aria-label` instead. `theme-button` keeps `accessible-label`
-for now.
+attribute; use `aria-label` instead. `theme-button` likewise: use `aria-label`
+instead of `accessible-label`, and `type="submit"` / `type="reset"` to submit or
+reset its form.
 
 This behaviour comes from the shared `FormControlElement` and `FieldElement`
 base classes (see `docs/adr/0002-shared-wc-core.md`), so a copied package gets

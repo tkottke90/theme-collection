@@ -311,29 +311,29 @@ or any framework that renders DOM.
 
 ### Components
 
-| Tag                                             | What it is                    | Attributes / properties                                                                                                       |
-| ----------------------------------------------- | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| `theme-button`                                  | Pressable key                 | `label`, `variant` (`primary`, `secondary`, `ghost`), `disabled`, `accessible-label`; or slot the text                        |
-| `theme-card`                                    | Cut-corner plate with a title | `heading`; slot content                                                                                                       |
-| `theme-container`                               | Cut-corner plate              | `as` (`div`, `ol`, `ul`; list markers are removed)                                                                            |
-| `theme-item`                                    | Row with a rule underneath    | `as` (`li`, `div`)                                                                                                            |
-| `theme-detail`                                  | Collapsible secondary plate   | `summary`; slot content                                                                                                       |
-| `theme-blockquote`                              | Callout plate                 | `type` (`info`, `tip`, `question`, `success`, `warning`, `failure`, `danger`, `bug`, `example`, `quote`)                      |
-| `theme-heading`                                 | Heading                       | `level` (1–4); 1–2 uppercase                                                                                                  |
-| `theme-text`                                    | Body copy or caption          | `variant` (`body`, `caption`)                                                                                                 |
-| `theme-link`                                    | Link                          | `href`                                                                                                                        |
-| `theme-field`                                   | Label above a control         | `label`, `for`; slot the control                                                                                              |
-| `theme-input`                                   | Form control                  | `type` (`text`, `email`, `password`, `number`, `checkbox`, `radio`), `name`, `value`, `placeholder`, `checked`, `disabled`    |
-| `theme-select`                                  | Form control                  | `name`, `value`, `disabled`; `<option>` children                                                                              |
-| `theme-textarea`                                | Form control                  | `name`, `value`, `placeholder`, `rows`, `disabled`                                                                            |
-| `theme-skeleton-heading`, `theme-skeleton-text` | Loading placeholders          | `width`                                                                                                                       |
-| `theme-hex-board`                               | Hex grid that places sockets  | `cols`, `rows`, `w` (hex width, px)                                                                                           |
-| `theme-hex-socket`                              | Hex cell (a button)           | `q`, `r` (axial position), `empty`, `add`, `selected`, `step`, `aria-label`; slot a chip                                      |
-| `theme-chip`                                    | Round tile                    | `variant` (`default`, `blue`, `rust`, `charge`, `wheel`), `charge` (0–1), `nub`, `rotation` (deg); CSS `--size`; slot an icon |
-| `theme-toolbar-button`                          | Square icon key               | `material` (`graphite`, `steel`, `danger`, `toggle`), `pressed`, `label`; slot an icon or glyph                               |
-| `theme-transport-control`                       | Play/stop key                 | `pressed`, `label`; slot an icon                                                                                              |
-| `theme-counter`                                 | Readout in corner brackets    | `value`, `label`                                                                                                              |
-| `theme-slots`                                   | Segmented meter               | `total`, `on`, `hot`, `label`                                                                                                 |
+| Tag                                             | What it is                    | Attributes / properties                                                                                                                |
+| ----------------------------------------------- | ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `theme-button`                                  | Pressable key                 | `label`, `variant` (`primary`, `secondary`, `ghost`), `disabled`, `type` (`button`, `submit`, `reset`), `aria-label`; or slot the text |
+| `theme-card`                                    | Cut-corner plate with a title | `heading`; slot content                                                                                                                |
+| `theme-container`                               | Cut-corner plate              | `as` (`div`, `ol`, `ul`; list markers are removed)                                                                                     |
+| `theme-item`                                    | Row with a rule underneath    | `as` (`li`, `div`)                                                                                                                     |
+| `theme-detail`                                  | Collapsible secondary plate   | `summary`; slot content                                                                                                                |
+| `theme-blockquote`                              | Callout plate                 | `type` (`info`, `tip`, `question`, `success`, `warning`, `failure`, `danger`, `bug`, `example`, `quote`)                               |
+| `theme-heading`                                 | Heading                       | `level` (1–4); 1–2 uppercase                                                                                                           |
+| `theme-text`                                    | Body copy or caption          | `variant` (`body`, `caption`)                                                                                                          |
+| `theme-link`                                    | Link                          | `href`                                                                                                                                 |
+| `theme-field`                                   | Label above a control         | `label`, `for`; slot the control                                                                                                       |
+| `theme-input`                                   | Form control                  | `type` (`text`, `email`, `password`, `number`, `checkbox`, `radio`), `name`, `value`, `placeholder`, `checked`, `disabled`             |
+| `theme-select`                                  | Form control                  | `name`, `value`, `disabled`; `<option>` children                                                                                       |
+| `theme-textarea`                                | Form control                  | `name`, `value`, `placeholder`, `rows`, `disabled`                                                                                     |
+| `theme-skeleton-heading`, `theme-skeleton-text` | Loading placeholders          | `width`                                                                                                                                |
+| `theme-hex-board`                               | Hex grid that places sockets  | `cols`, `rows`, `w` (hex width, px)                                                                                                    |
+| `theme-hex-socket`                              | Hex cell (a button)           | `q`, `r` (axial position), `empty`, `add`, `selected`, `step`, `aria-label`; slot a chip                                               |
+| `theme-chip`                                    | Round tile                    | `variant` (`default`, `blue`, `rust`, `charge`, `wheel`), `charge` (0–1), `nub`, `rotation` (deg); CSS `--size`; slot an icon          |
+| `theme-toolbar-button`                          | Square icon key               | `material` (`graphite`, `steel`, `danger`, `toggle`), `pressed`, `label`; slot an icon or glyph                                        |
+| `theme-transport-control`                       | Play/stop key                 | `pressed`, `label`; slot an icon                                                                                                       |
+| `theme-counter`                                 | Readout in corner brackets    | `value`, `label`                                                                                                                       |
+| `theme-slots`                                   | Segmented meter               | `total`, `on`, `hot`, `label`                                                                                                          |
 
 Pairing rules:
 
@@ -345,9 +345,11 @@ Pairing rules:
 - `theme-toolbar-button` and `theme-transport-control` don't toggle
   themselves: flip `pressed` in your click handler. `pressed` only applies to
   `material="toggle"` on a toolbar button.
-- `theme-button`, `theme-toolbar-button`, `theme-transport-control` and
-  `theme-hex-socket` are plain buttons, not form controls: they don't submit
-  a form. Call `form.requestSubmit()` from a click handler.
+- `theme-button` is form-associated: `type="submit"` submits its form and
+  `type="reset"` resets it (no `type` does neither). `theme-toolbar-button`,
+  `theme-transport-control` and `theme-hex-socket` are plain buttons, not
+  form controls: they don't submit a form. Call `form.requestSubmit()` from
+  a click handler.
 
 Form controls are **form-associated**: inside a `<form>` they submit under
 their `name`, reset with the form, follow `<fieldset disabled>`, fire `change`
@@ -407,7 +409,7 @@ import "@tkottke90/theme-hexagon-tactical/tokens.css"; // tokens for your own CS
     <label
       ><theme-input type="checkbox" name="silent" value="yes"></theme-input> Radio silence</label
     >
-    <theme-button label="Deploy"></theme-button>
+    <theme-button type="submit" label="Deploy"></theme-button>
   </form>
 </body>
 ```
@@ -422,7 +424,6 @@ program.addEventListener("click", () => {
 });
 
 const form = document.getElementById("squad");
-form.querySelector("theme-button").addEventListener("click", () => form.requestSubmit());
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   console.log([...new FormData(form)]);
@@ -501,10 +502,7 @@ export function Squad() {
       <theme-field label="Callsign">
         <theme-input name="callsign" onChange={(e) => console.log(e.target.value)} />
       </theme-field>
-      <theme-button
-        label="Deploy"
-        onClick={(e) => e.currentTarget.closest("form").requestSubmit()}
-      />
+      <theme-button type="submit" label="Deploy" />
     </form>
   );
 }

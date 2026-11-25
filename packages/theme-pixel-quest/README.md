@@ -113,12 +113,13 @@ each radio keeps its own label.
 </form>
 ```
 
-`theme-button` is a plain button, not a form control: it doesn't submit a
-form on its own. Call `form.requestSubmit()` from its click handler.
+`theme-button` is form-associated too: `type="submit"` submits its form and
+`type="reset"` resets it (no `type` does neither), and it follows
+`<fieldset disabled>`.
 
 **Migrating:** the form controls no longer read an `accessible-label`
 attribute; use `aria-label` instead (or a `<label>`, or `theme-field`).
-`theme-button` keeps `accessible-label` for now.
+`theme-button` likewise: use `aria-label` instead of `accessible-label`.
 
 ## Local development
 

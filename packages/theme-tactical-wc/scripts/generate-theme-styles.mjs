@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import { syncWcCore } from "../../../scripts/wc-core.mjs";
 import { compileThemeModule, SKELETON_SHIMMER_CSS } from "../../../scripts/compile-theme.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -10,6 +11,7 @@ const THEME_MODES_CSS = readFileSync(
 );
 
 export function generateThemeStyles() {
+  syncWcCore();
   compileThemeModule({
     themeDir: "../../themes/tactical",
     contentGlobs: ["./src/*.ts"],
