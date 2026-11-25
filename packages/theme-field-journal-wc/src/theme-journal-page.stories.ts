@@ -4,6 +4,16 @@ import "./theme-journal-page.js";
 
 const meta: Meta = {
   title: "Theme/Field Journal WC/Journal Page",
+  parameters: {
+    intro: {
+      tag: "theme-journal-page",
+      title: "Journal Page",
+      description: [
+        "A parchment page: a fanned stack of paper edges toward the spine, a grainy stained sheet, a vignette, a double ruled frame and four corner flourishes. Its side property decides which way the stack fans and the gutter shadow falls.",
+        "Content sits in a padded inner wrapper that clears the flourishes. Override --page-padding to change the margin.",
+      ],
+    },
+  },
   render: (args) => html`
     <div style="max-width: 420px;">
       <theme-journal-page side=${args["side"]}>

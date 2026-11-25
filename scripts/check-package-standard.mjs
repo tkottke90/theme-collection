@@ -23,7 +23,6 @@ import { fileURLToPath } from "node:url";
  * stale.
  */
 const PENDING = new Set([
-  "theme-field-journal-wc",
   "theme-forest-isle",
   "theme-network-ops",
   "theme-tactical-react",

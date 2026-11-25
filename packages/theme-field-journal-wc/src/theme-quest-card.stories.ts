@@ -5,6 +5,16 @@ import type { JournalTask } from "./theme-quest-card.js";
 
 const meta: Meta = {
   title: "Theme/Field Journal WC/Quest Card",
+  parameters: {
+    intro: {
+      tag: "theme-quest-card",
+      title: "Quest Card",
+      description: [
+        "A cream card with a coloured pennant down its side, a title, tag and favourite star in the header, a location line and a description beside a task list. The pennant colour and icon come from the same category palette as the book's tabs.",
+        "A finished task swaps its count for a check and turns green.",
+      ],
+    },
+  },
   render: (args) => html`
     <div style="max-width: 460px;">
       <theme-quest-card

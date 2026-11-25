@@ -22,6 +22,16 @@ const sketch = html`
 
 const meta: Meta = {
   title: "Theme/Field Journal WC/Taped",
+  parameters: {
+    intro: {
+      tag: "theme-taped",
+      title: "Taped",
+      description: [
+        "A taped-in sketch or photo: a white photo border, tape strips across opposite corners, a slight tilt and a handwritten caption. The tilt is l, r or none.",
+        "The slotted content fills the frame, so give it an image or any block that has its own size.",
+      ],
+    },
+  },
   render: (args) => html`
     <div style="max-width: 240px;">
       <theme-taped tilt=${args["tilt"]} caption=${args["caption"]}>${sketch}</theme-taped>

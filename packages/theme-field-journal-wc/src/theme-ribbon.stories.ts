@@ -4,6 +4,16 @@ import "./theme-ribbon.js";
 
 const meta: Meta = {
   title: "Theme/Field Journal WC/Ribbon",
+  parameters: {
+    intro: {
+      tag: "theme-ribbon",
+      title: "Ribbon",
+      description: [
+        "A cloth banner with notched ends, used as a section heading on a page. The page title itself uses theme-heading; the ribbon marks the sections below it.",
+        "Its colour comes from the category palette; the label is cream on a darkened shade so the text stays readable.",
+      ],
+    },
+  },
   render: (args) => html`<theme-ribbon color=${args["color"]}>${args["content"]}</theme-ribbon>`,
   args: { content: "Active Quests", color: "red" },
 };

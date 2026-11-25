@@ -4,6 +4,16 @@ import "./theme-progress.js";
 
 const meta: Meta = {
   title: "Theme/Field Journal WC/Progress",
+  parameters: {
+    intro: {
+      tag: "theme-progress",
+      title: "Progress",
+      description: [
+        "A pressed-in parchment track with a grainy green fill, labelled with its percentage. It exposes progressbar semantics with a value and a max.",
+        "The label and percentage sit either side of the track in muted ink.",
+      ],
+    },
+  },
   render: (args) =>
     html`<theme-progress
       label=${args["label"]}

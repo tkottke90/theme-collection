@@ -4,6 +4,16 @@ import "./theme-blockquote.js";
 
 const meta: Meta = {
   title: "Theme/Field Journal WC/Blockquote",
+  parameters: {
+    intro: {
+      tag: "theme-blockquote",
+      title: "Blockquote",
+      description: [
+        "A callout set into the page: a tinted cream panel with a coloured left rule and a small-caps label. Ten types (info, tip, question, success, warning, failure, danger, bug, example, quote) each take a hue from the theme's category palette so they stay distinct but never louder than the page.",
+        "The ink on each panel stays the dark brown body colour; only the rule and label carry the type's colour.",
+      ],
+    },
+  },
   render: (args) =>
     html`<theme-blockquote type=${args["type"]}>${args["content"]}</theme-blockquote>`,
   args: { content: "A blockquote styled with theme tokens." },

@@ -22,6 +22,16 @@ const TABS: JournalTab[] = [
 // which this wrapper stands in for.
 const meta: Meta = {
   title: "Theme/Field Journal WC/Journal Book",
+  parameters: {
+    intro: {
+      tag: "theme-journal-book",
+      title: "Journal Book",
+      description: [
+        "The leather cover that holds the whole page: a left and a right page in named slots, a column of coloured tabs for navigation, a bookmark ribbon and stitched edges. Below 980px it stacks to one column and the tabs become a row along the top.",
+        "The tabs stick out to the left of the cover, so leave room for them in the page padding. Selecting a tab fires journal-tab-change; swapping the pages is up to you.",
+      ],
+    },
+  },
   render: () => html`
     <div style="padding: 8px 24px 90px 108px;">
       <theme-journal-book .tabs=${TABS} selected="quests">
