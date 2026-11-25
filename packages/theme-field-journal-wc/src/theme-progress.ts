@@ -1,5 +1,6 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
+import { ifDefined } from "lit/directives/if-defined.js";
 import { themeStyles } from "./generated/theme-styles.js";
 
 /** A pressed-in parchment track with a grainy green fill — e.g. "Overall progress". */
@@ -44,6 +45,7 @@ export class ThemeProgress extends LitElement {
         <div
           class="track"
           role="progressbar"
+          aria-label=${ifDefined(this.label || undefined)}
           aria-valuenow=${this.value}
           aria-valuemin="0"
           aria-valuemax=${this.max}
