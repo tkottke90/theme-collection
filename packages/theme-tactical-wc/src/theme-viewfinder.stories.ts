@@ -30,11 +30,3 @@ export const Default: Story = {};
 export const NoHeading: Story = {
   args: { heading: "", body: "A viewfinder panel with no heading." },
 };
-
-/** See theme-card.stories.ts for why `data-theme` is set on the element itself. */
-export const Light: Story = {
-  render: (args) =>
-    html`<theme-viewfinder data-theme="light" heading=${args["heading"]}
-      >${args["body"]}</theme-viewfinder
-    >`,
-};

@@ -5,27 +5,9 @@ import type { Preview } from "@storybook/preact";
 import "../dist/theme.css";
 
 const preview: Preview = {
-  globalTypes: {
-    theme: {
-      description: "Light/dark theme",
-      toolbar: {
-        title: "Theme",
-        icon: "mirror",
-        items: [
-          { value: "dark", title: "Dark" },
-          { value: "light", title: "Light" },
-        ],
-        dynamicTitle: true,
-      },
-    },
-  },
-  initialGlobals: {
-    theme: "dark",
-  },
   decorators: [
-    (Story, context) => (
+    (Story) => (
       <div
-        data-theme={context.globals["theme"]}
         style={{
           background: "var(--color-bg)",
           color: "var(--color-text)",

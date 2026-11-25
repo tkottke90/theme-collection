@@ -16,20 +16,11 @@ const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
  * stylesheet, whose Tailwind reset and utility classes would leak into the
  * page.
  *
- * `extraFiles` (paths relative to `themeDir`) are appended as-is after the
- * `:root` block, for a theme whose light/dark overrides live in a separate
- * file (e.g. `theme-modes.css`). They must hold only custom-property rules.
- *
  * Paths resolve from the current directory (the package, when run from its
  * build script). Add `"./tokens.css": "./dist/tokens.css"` to the package's
  * `exports` alongside it.
  */
-export function generateTokensCss({
-  themeDir,
-  outFile = "./dist/tokens.css",
-  packageName,
-  extraFiles = [],
-}) {
+export function generateTokensCss({ themeDir, outFile = "./dist/tokens.css", packageName }) {
   const themeFile = resolve(process.cwd(), themeDir, "theme.css");
   const theme = readFileSync(themeFile, "utf8");
   const open = theme.search(/@theme(\s+static)?\s*\{/);
@@ -43,9 +34,7 @@ export function generateTokensCss({
   const css = `/* ${label}, generated from ${source}. */
 :root {${body}
 }
-${extraFiles
-  .map((file) => `\n${readFileSync(resolve(process.cwd(), themeDir, file), "utf8").trim()}\n`)
-  .join("")}`;
+`;
   const absOut = resolve(process.cwd(), outFile);
   mkdirSync(dirname(absOut), { recursive: true });
   writeFileSync(absOut, css);

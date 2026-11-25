@@ -7,7 +7,7 @@ import { themeStyles } from "../src/generated/theme-styles.js";
 // Load the compiled tokens as a real page-level stylesheet (not just each
 // component's own shadow-scoped copy) so the backdrop below, and anything
 // else outside a `theme-*` element's shadow tree, can use the same
-// `var(--color-bg)` etc. tokens. They follow the OS light/dark setting.
+// `var(--color-bg)` etc. tokens.
 const pageStyle = document.createElement("style");
 pageStyle.textContent = themeStyles.cssText;
 document.head.appendChild(pageStyle);

@@ -1,17 +1,16 @@
 # @tkottke90/theme-tactical-wc
 
 A HUD-inspired component theme built as framework-agnostic Web Components with
-[Lit](https://lit.dev). It is dark by default: a near-black ground, cyan glow
+[Lit](https://lit.dev). It is dark only: a near-black ground, cyan glow
 accents, tracked uppercase labels, monospace readouts, and resizable SVG panel
 frames (a tab-and-chevron outline on Card and Stat, a tab-notch-and-bracket
-frame on Viewfinder). A light mode follows the OS setting or an explicit
-`data-theme`. It works in any project, with or without a framework.
+frame on Viewfinder). It works in any project, with or without a framework.
 
 ![Demo page for @tkottke90/theme-tactical-wc](./docs/screenshot.png)
 
 > The screenshot is generated: run `npm run build-storybook`, then
-> `npm run screenshot`. It shows the dark `Demo` story as it looks when the
-> story loads; the light version is the `Demo` story's **Light** variant.
+> `npm run screenshot`. The `Demo` story comes first, then each component's
+> intro and its stories.
 
 ## Usage
 
@@ -47,28 +46,17 @@ import "@tkottke90/theme-tactical-wc/tokens.css";
 (shipped with the package) has the style guide and usage for vanilla and
 Preact projects.
 
-## Light / dark mode
+## Dark only
 
-The theme is dark by default and follows the OS/browser `prefers-color-scheme`
-setting whenever nothing overrides it. To override it, set `data-theme="light"`
-or `data-theme="dark"` **directly on each `theme-*` element** you want to
-change, e.g. `<theme-card data-theme="light">`. See the **Light** stories on
-Card, Stat, Gauge, Viewfinder and the Demo for a live example.
-
-This per-element requirement (rather than one attribute on `<html>`) is a
-Shadow DOM constraint, not a choice: a `data-theme` set on an ancestor outside a
-component's shadow tree does not cascade into it. Set it on your own page
-wrapper as well, so your own elements (which read the tokens from `tokens.css`)
-change with the components. The React variant of this theme
-(`@tkottke90/theme-tactical-react`) has no such limitation: there `data-theme`
-can be set once on any ancestor and it cascades normally.
+The theme has one look, dark. It ignores `prefers-color-scheme` and has no
+`data-theme` switch, so there is nothing to set per element. Put the components
+on the tactical page background (`--color-bg`).
 
 ## Fonts
 
 The theme uses system font stacks only (`ui-sans-serif, system-ui, …` and
 `ui-monospace, …`), so there is nothing to load. The components are designed
-for the tactical page background: `--color-bg` (a near-black in dark mode,
-`#eef5f7` in light mode).
+for the tactical page background, `--color-bg` (near-black).
 
 ## Components
 
@@ -136,6 +124,5 @@ npm run build-storybook  # static Storybook, used by the screenshot
 npm run screenshot       # regenerate docs/screenshot.png
 ```
 
-Tokens live in `themes/tactical/theme.css` (light/dark overrides in
-`theme-modes.css`); component styles are compiled from them, never
+Tokens live in `themes/tactical/theme.css`; component styles are compiled from them, never
 hand-copied.

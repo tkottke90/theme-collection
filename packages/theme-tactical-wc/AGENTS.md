@@ -24,8 +24,7 @@ the repository's root `AGENTS.md` and `CONTRIBUTING.md`.
 A heads-up display. A near-black ground, thin cyan linework and glow, small
 tracked capitals for labels, and monospace numerals for readouts. Surfaces are
 dark glass panels with hairline borders and almost no corner radius; depth comes
-from a cyan glow, never from a drop shadow. Cyan is the only accent. A light
-mode keeps the same structure on a pale blue-grey ground with a deeper cyan.
+from a cyan glow, never from a drop shadow. Cyan is the only accent. The theme is dark only.
 
 ### Rules
 
@@ -57,27 +56,14 @@ warning,failure,danger,bug,example,quote}-500` belong to callouts and
    focus ring, which shows on both backgrounds. Never remove an outline without
    replacing it.
 9. **Contrast is measured, not assumed.** See the table at the end of this
-   part: dark mode passes AA for text; light mode has known failures.
+   part: every text pairing passes AA.
 
-### Light and dark
+### Dark only
 
-The theme is **dark by default**. `prefers-color-scheme: light` switches it to
-light automatically unless the document has opted out. To force a mode, set
-`data-theme="light"` or `data-theme="dark"`; it always beats the OS setting.
-
-- **Web Components** (`@tkottke90/theme-tactical-wc`): `data-theme` does **not**
-  cascade into a component's shadow root. Set it **on every `theme-*` element**
-  you want to change, and on your own page wrapper so your elements (which read
-  `tokens.css`) change with them. A mode set on `<html>` alone leaves the
-  components in the OS mode.
-- **React** (`@tkottke90/theme-tactical-react`): there is no shadow root, so set
-  `data-theme` once on any ancestor (or `<html>`) and it cascades.
-
-Only a subset of tokens changes between modes (`bg`, `surface`, `surface-alt`,
-`border`, `frame-inner`, `brand-500`, `brand-600`, `neutral-100/300/500/900`,
-`text`, `text-muted`, the skeleton colours and `--shadow-glow`). The status
-colours, `brand-50/100/900` and the radii do not. Style your own elements with
-tokens, not hex values, so both modes work.
+The theme has a single, dark look. There is no light mode and no `data-theme`
+switch: it ignores `prefers-color-scheme`, so there is nothing to set per
+element (Web Components) or per ancestor (React). Put the components on
+`--color-bg`, and style your own elements with tokens, not hex values.
 
 ### Using the tokens
 
@@ -120,8 +106,6 @@ A monospace readout line:
 
 - **Do** use `theme-field` (or a `<label>`) for every form control.
 - **Do** keep panel titles short and uppercase; they are labels, not sentences.
-- **Don't** put `--color-brand-500` text on light surfaces at body size: it is
-  below AA there (see below). Use `--color-text` for running text.
 - **Don't** rely on colour alone for meaning; pair a status colour with its label.
 - **Don't** add rounded "pill" shapes, soft shadows or gradients.
 
@@ -131,36 +115,26 @@ Measured in Chromium from the resolved colours on the surface each ink sits on
 (WCAG 2.x; text needs 4.5:1, large text and UI parts 3:1). Re-measure if the
 tokens change.
 
-| Pairing                                           | Dark               | Light              | AA                         |
-| ------------------------------------------------- | ------------------ | ------------------ | -------------------------- |
-| `text` on `bg` / `surface` / `surface-alt`        | 17.7 / 16.7 / 15.3 | 15.2 / 16.8 / 14.2 | pass                       |
-| `text-muted` on `bg` / `surface-alt`              | 5.29 / 4.58        | 5.28 / 4.94        | pass                       |
-| Placeholder (`text-muted`) on a field's fill      | 4.58               | 4.94               | pass                       |
-| `brand-500` on `bg` (links, headings)             | 11.06              | **3.34**           | dark pass, **light fails** |
-| `brand-500` on `surface-alt` (detail summary)     | 9.58               | **3.12**           | dark pass, **light fails** |
-| Link hover `brand-600` on `bg`                    | 6.85               | 4.86               | pass                       |
-| Primary button: `neutral-900` on `brand-500`      | 10.60              | 4.56               | pass                       |
-| Primary button hover: on `brand-600`              | 6.56               | **3.14**           | dark pass, **light fails** |
-| Secondary/ghost hover: `brand-500` on `brand-900` | 7.28               | **3.57**           | dark pass, **light fails** |
-| Callout label on its tint (10 types)              | 4.55–8.66          | **1.55–3.05**      | dark pass, **light fails** |
-| Callout body text on its tint                     | 12.7–14.8          | 13.9–15.6          | pass                       |
-| Disabled button text on its fill (exempt)         | 2.38               | 2.34               | n/a                        |
-| Field border on its fill (UI part, needs 3)       | **1.36**           | **1.26**           | **fails both**             |
+| Pairing                                           | Ratio              | AA        |
+| ------------------------------------------------- | ------------------ | --------- |
+| `text` on `bg` / `surface` / `surface-alt`        | 17.7 / 16.7 / 15.3 | pass      |
+| `text-muted` on `bg` / `surface-alt`              | 5.29 / 4.58        | pass      |
+| Placeholder (`text-muted`) on a field's fill      | 4.58               | pass      |
+| `brand-500` on `bg` (links, headings)             | 11.06              | pass      |
+| `brand-500` on `surface-alt` (detail summary)     | 9.58               | pass      |
+| Link hover `brand-600` on `bg`                    | 6.85               | pass      |
+| Primary button: `neutral-900` on `brand-500`      | 10.60              | pass      |
+| Primary button hover: on `brand-600`              | 6.56               | pass      |
+| Secondary/ghost hover: `brand-500` on `brand-900` | 7.28               | pass      |
+| Callout label on its tint (10 types)              | 4.55–8.66          | pass      |
+| Callout body text on its tint                     | 12.7–14.8          | pass      |
+| Disabled button text on its fill (exempt)         | 2.38               | n/a       |
+| Field border on its fill (UI part, needs 3)       | **1.36**           | **fails** |
 
 Known failures, not fixed here because changing tokens is a separate decision:
 
-- **Light mode: cyan text.** `--color-brand-500` is `#0891b2` in light mode,
-  3.1–3.3:1 on the light surfaces. It fails for body-size text (links, the
-  card and viewfinder titles, the detail summary, secondary and ghost button
-  labels). Large readouts (the stat value, the gauge number) clear 3:1.
-- **Light mode: callout labels.** The status colours aren't darkened in light
-  mode, so the coloured label on a callout is 1.55–3.05:1. The body text in the
-  callout is fine.
-- **Light mode: button hover.** `--color-brand-900` isn't overridden in light
-  mode, so secondary and ghost buttons hover to a dark teal fill with cyan text,
-  and the primary button's hover is 3.14:1.
 - **Field borders.** The 1px `--color-border` is under 3:1 against the field
-  fill in both modes. The field is still identifiable by its fill and the 2px
+  fill. The field is still identifiable by its fill and the 2px
   focus ring, but the resting edge is faint.
 - **Disabled controls** are dimmed (60% opacity on a `surface-alt` fill with a
   `border` outline, a visible change from every enabled variant) and are exempt
@@ -182,13 +156,10 @@ or any framework that renders DOM.
 - **`lit` is a peer dependency** (`^3.2.0`) and is not bundled: install it
   alongside, and make sure your toolchain or import map can resolve `lit`.
 - `@tkottke90/theme-tactical-wc/tokens.css` exports the design tokens as plain
-  `:root` custom properties, for both light and dark mode, for styling your own
-  elements.
-- Designed for the tactical page background, `--color-bg`: near-black in dark
-  mode, `#eef5f7` in light mode.
+  `:root` custom properties, for styling your own elements.
+- Designed for the tactical page background, `--color-bg`: near-black.
 - **No fonts to load**: the theme uses system sans and monospace stacks only.
-- **Light/dark:** see [Light and dark](#light-and-dark). `data-theme` must be
-  set on each `theme-*` element.
+- **Dark only:** no light mode and no `data-theme` to set.
 
 ### Components
 
@@ -259,19 +230,6 @@ the element:
 document.querySelector("theme-input[name=email]").addEventListener("change", (e) => {
   console.log(e.target.value);
 });
-```
-
-To switch to light mode, set `data-theme` on the wrapper **and** on each
-component (it doesn't cascade into shadow roots):
-
-```js
-function setMode(root, mode) {
-  root.setAttribute("data-theme", mode);
-  root.querySelectorAll("*").forEach((el) => {
-    if (el.localName.startsWith("theme-")) el.setAttribute("data-theme", mode);
-  });
-}
-setMode(document.body, "light");
 ```
 
 ### Vanilla (no bundler)
@@ -355,9 +313,7 @@ declare module "preact" {
 ### Tokens for your own elements
 
 `@tkottke90/theme-tactical-wc/tokens.css` defines every design token on
-`:root`, plus the light and dark overrides (`:root:not([data-theme])` under
-`prefers-color-scheme: light`, and `[data-theme="light"]` / `[data-theme="dark"]`
-anywhere on the page). It contains tokens only, no resets or utility classes, so
+`:root`. It contains tokens only, no resets or utility classes, so
 it is safe to load on any page. The groups:
 
 - Colours: `--color-bg`, `--color-surface`, `--color-surface-alt`,

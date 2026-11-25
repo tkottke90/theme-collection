@@ -34,13 +34,3 @@ export const Low: Story = {
 export const Full: Story = {
   args: { value: 100, label: "Shield" },
 };
-
-/** See theme-card.stories.ts for why `data-theme` is set on the element itself. */
-export const Light: Story = {
-  render: (args) =>
-    html`<theme-gauge
-      data-theme="light"
-      label=${args["label"]}
-      value=${args["value"]}
-    ></theme-gauge>`,
-};

@@ -1,17 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit";
-import { ref } from "lit/directives/ref.js";
 import "./index.js";
 
 /**
  * A full page composed only from this package's components: a mission
  * dashboard with telemetry panels, a working contact form and a few
- * supporting blocks. `data-theme` doesn't cascade into a shadow root, so
- * `demoPage` stamps the chosen mode on its wrapper and on every `theme-*`
- * element it contains (see `applyMode`).
+ * supporting blocks.
  */
-
-type Mode = "dark" | "light";
 
 const SYSTEMS = [
   { label: "Signal", value: 65 },
@@ -39,20 +34,9 @@ function onSubmit(e: SubmitEvent) {
   if (out) out.textContent = entries.length ? `Transmitted: ${entries.join(", ")}` : "Empty form.";
 }
 
-/** Sets `data-theme` on every `theme-*` element under `root`, including nested ones. */
-function applyMode(root: Element | undefined, mode: Mode) {
-  if (!root) return;
-  root.setAttribute("data-theme", mode);
-  root.querySelectorAll("*").forEach((el) => {
-    if (el.localName.startsWith("theme-")) el.setAttribute("data-theme", mode);
-  });
-}
-
-export const demoPage = (mode: Mode = "dark") => html`
+export const demoPage = () => html`
   <div
-    data-theme=${mode}
     style="background: var(--color-bg); color: var(--color-text); font-family: var(--font-sans); padding: 2.5rem; min-height: 100vh"
-    ${ref((el) => el && queueMicrotask(() => applyMode(el, mode)))}
   >
     <div style="max-width: 64rem; margin: 0 auto">
       <header style="display: flex; flex-direction: column; gap: 0.75rem; max-width: 40rem">
@@ -178,5 +162,4 @@ const meta: Meta = {
 };
 export default meta;
 
-export const Overview: StoryObj = { render: () => demoPage("dark") };
-export const Light: StoryObj = { render: () => demoPage("light") };
+export const Overview: StoryObj = { render: demoPage };

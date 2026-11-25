@@ -30,13 +30,3 @@ export const Default: Story = {};
 export const WithUnit: Story = {
   args: { label: "Altitude", value: "12800", unit: "ft" },
 };
-
-/** See theme-card.stories.ts for why `data-theme` is set on the element itself. */
-export const Light: Story = {
-  render: (args) =>
-    html`<theme-stat
-      data-theme="light"
-      label=${args["label"]}
-      value=${args["value"]}
-    ></theme-stat>`,
-};

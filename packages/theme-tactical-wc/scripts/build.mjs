@@ -7,5 +7,4 @@ await buildPackage({ entryPoints: ["src/index.ts"], external: ["lit"] });
 generateTokensCss({
   themeDir: "../../themes/tactical",
   packageName: "@tkottke90/theme-tactical-wc",
-  extraFiles: ["theme-modes.css"],
 });
