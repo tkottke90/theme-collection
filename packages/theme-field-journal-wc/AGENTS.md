@@ -85,7 +85,9 @@ never glossy or neon; texture from paper grain, never flat white.
     cream (the pale bug and example hues use 26% and 24% so they read as
     panels at all); labels are that colour blended into the body brown (55%
     colour; bug and example use 35% and 40% to pass), while the left border
-    keeps the pure colour. A darker panel lowers the text's contrast, so
+    keeps the pure colour, and the other three edges get a 1px border
+    halfway between the panel tint and the pure colour, so the panel lifts off
+    the page. A darker panel lowers the text's contrast, so
     raise the panel tint and the label blend together and re-measure.
 
     **Known gaps (not claimed as AA).**

@@ -10,7 +10,7 @@ const meta: Meta = {
       title: "Blockquote",
       description: [
         "A callout set into the page: a tinted cream panel with a coloured left rule and a small-caps label. Ten types (info, tip, question, success, warning, failure, danger, bug, example, quote) each take a hue from the theme's category palette so they stay distinct but never louder than the page.",
-        "The ink on each panel stays the dark brown body colour; the rule carries the type's pure colour, and the label is that colour blended into the brown so it stays readable.",
+        "The ink on each panel stays the dark brown body colour; the thick left rule carries the type's pure colour, a thinner border in a softer shade of it outlines the other three edges, and the label is that colour blended into the brown so it stays readable.",
       ],
     },
   },
