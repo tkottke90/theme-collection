@@ -117,7 +117,11 @@ each radio keeps its own label.
 
 **Migrating:** the form controls no longer read an `accessible-label`
 attribute; use `aria-label` instead (or a `<label>`, or `theme-field`).
-`theme-button` keeps `accessible-label` for now.
+`theme-button` likewise: use `aria-label` instead of `accessible-label`.
+
+`theme-button` is form-associated too: `type="submit"` submits its form and
+`type="reset"` resets it (no `type` does neither), and it follows
+`<fieldset disabled>`.
 
 ## Local development
 

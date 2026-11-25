@@ -24,18 +24,9 @@ const ROW = "display: flex; flex-wrap: wrap; gap: 10px; align-items: center";
 const INLINE_LABEL =
   "display: inline-flex; gap: 0.5rem; align-items: center; font-family: var(--font-sans); color: var(--color-text)";
 
-const formOf = (e: Event) => (e.currentTarget as Element).closest("form");
-
-/** theme-button isn't a form control, so the demo's buttons drive the form by hand. */
-function onSubmitClick(e: Event) {
-  formOf(e)?.requestSubmit();
-}
-
-function onResetClick(e: Event) {
-  const form = formOf(e);
-  form?.reset();
-  const out = form?.querySelector(".demo-result");
-  if (out) out.textContent = "Nothing logged yet.";
+function onReset(e: Event) {
+  const out = (e.currentTarget as HTMLFormElement).querySelector(".demo-result");
+  if (out) out.textContent = "Nothing submitted yet.";
 }
 
 function onSubmit(e: SubmitEvent) {
@@ -124,7 +115,7 @@ export const demoPage = () => html`
             ]}
             favorite
           ></theme-quest-card>
-          <form style=${STACK} @submit=${onSubmit}>
+          <form style=${STACK} @submit=${onSubmit} @reset=${onReset}>
             <theme-heading level="3">Log a find</theme-heading>
             <theme-field label="Name" for="demo-name">
               <theme-input
@@ -164,8 +155,8 @@ export const demoPage = () => html`
               collection</label
             >
             <div style=${ROW}>
-              <theme-button label="Log it" @click=${onSubmitClick}></theme-button>
-              <theme-button variant="secondary" label="Reset" @click=${onResetClick}></theme-button>
+              <theme-button type="submit" label="Log it"></theme-button>
+              <theme-button type="reset" variant="secondary" label="Reset"></theme-button>
               <theme-button variant="ghost" label="Skip"></theme-button>
               <theme-button label="Closed" disabled></theme-button>
             </div>

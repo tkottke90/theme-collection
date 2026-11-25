@@ -112,9 +112,9 @@ describe("theme-button", () => {
     el.remove();
   });
 
-  it("forwards accessible-label to the inner button", async () => {
+  it("names the inner button from the host aria-label", async () => {
     const el = document.createElement("theme-button") as ThemeButton;
-    el.setAttribute("accessible-label", "Play");
+    el.setAttribute("aria-label", "Play");
     document.body.appendChild(el);
     await el.updateComplete;
 
@@ -129,6 +129,30 @@ describe("theme-button", () => {
     await el.updateComplete;
 
     expect(el.shadowRoot?.querySelector("button")?.hasAttribute("aria-label")).toBe(false);
+
+    el.remove();
+  });
+
+  it("ignores the retired accessible-label attribute", async () => {
+    const el = document.createElement("theme-button") as ThemeButton;
+    el.setAttribute("accessible-label", "Play");
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    expect(el.shadowRoot?.querySelector("button")?.hasAttribute("aria-label")).toBe(false);
+
+    el.remove();
+  });
+
+  it("defaults to type button and reflects type", async () => {
+    const el = document.createElement("theme-button") as ThemeButton;
+    document.body.appendChild(el);
+    await el.updateComplete;
+    expect(el.type).toBe("button");
+
+    el.type = "submit";
+    await el.updateComplete;
+    expect(el.getAttribute("type")).toBe("submit");
 
     el.remove();
   });

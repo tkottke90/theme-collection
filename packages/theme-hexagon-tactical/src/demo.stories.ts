@@ -25,18 +25,9 @@ const GRID = (cols: string) => `display: grid; grid-template-columns: ${cols}; g
 const INLINE_LABEL =
   "display: inline-flex; gap: 0.5rem; align-items: center; font-family: var(--font-sans); color: var(--color-text)";
 
-const formOf = (e: Event) => (e.currentTarget as Element).closest("form");
-
-/** theme-button isn't a form control, so the demo's buttons drive the form by hand. */
-function onSubmitClick(e: Event) {
-  formOf(e)?.requestSubmit();
-}
-
-function onResetClick(e: Event) {
-  const form = formOf(e);
-  form?.reset();
-  const out = form?.querySelector(".demo-result");
-  if (out) out.textContent = "Awaiting orders.";
+function onReset(e: Event) {
+  const out = (e.currentTarget as HTMLFormElement).querySelector(".demo-result");
+  if (out) out.textContent = "Nothing submitted yet.";
 }
 
 function onSubmit(e: SubmitEvent) {
@@ -145,7 +136,7 @@ export const demoPage = () => html`
       <theme-heading level="2">Deploy squad</theme-heading>
       <div style=${GRID("repeat(auto-fit, minmax(20rem, 1fr))")}>
         <theme-container>
-          <form style=${STACK} @submit=${onSubmit}>
+          <form style=${STACK} @submit=${onSubmit} @reset=${onReset}>
             <theme-field label="Callsign">
               <theme-input name="callsign" placeholder="Hex-01"></theme-input>
             </theme-field>
@@ -192,8 +183,8 @@ export const demoPage = () => html`
               silence</label
             >
             <div style=${ROW}>
-              <theme-button label="Deploy" @click=${onSubmitClick}></theme-button>
-              <theme-button variant="secondary" label="Reset" @click=${onResetClick}></theme-button>
+              <theme-button type="submit" label="Deploy"></theme-button>
+              <theme-button type="reset" variant="secondary" label="Reset"></theme-button>
             </div>
             <theme-text variant="caption" class="demo-result" aria-live="polite"
               >Awaiting orders.</theme-text

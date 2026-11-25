@@ -91,22 +91,22 @@ _Template note: keep the bullets and fill in your page background and fonts
 
 ### Components
 
-| Tag                                             | What it is            | Attributes / properties                                                                                                    |
-| ----------------------------------------------- | --------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `theme-button`                                  | Button                | `label`, `variant` (`primary`, `secondary`, `ghost`), `disabled`, `accessible-label`; or slot the text                     |
-| `theme-card`                                    | Content surface       | `heading`; slot content                                                                                                    |
-| `theme-container`                               | Neutral wrapper       | `as` (`div`, `ol`, `ul`)                                                                                                   |
-| `theme-item`                                    | List row              | `as` (`li`, `div`)                                                                                                         |
-| `theme-detail`                                  | Collapsible section   | `summary`; slot content                                                                                                    |
-| `theme-blockquote`                              | Callout               | `type` (`info`, `tip`, `question`, `success`, `warning`, `failure`, `danger`, `bug`, `example`, `quote`)                   |
-| `theme-heading`                                 | Heading               | `level` (1–4)                                                                                                              |
-| `theme-text`                                    | Body copy or caption  | `variant` (`body`, `caption`)                                                                                              |
-| `theme-link`                                    | Link                  | `href`                                                                                                                     |
-| `theme-field`                                   | Label above a control | `label`, `for`; slot the control                                                                                           |
-| `theme-input`                                   | Form control          | `type` (`text`, `email`, `password`, `number`, `checkbox`, `radio`), `name`, `value`, `placeholder`, `checked`, `disabled` |
-| `theme-select`                                  | Form control          | `name`, `value`, `disabled`; `<option>` children                                                                           |
-| `theme-textarea`                                | Form control          | `name`, `value`, `placeholder`, `rows`, `disabled`                                                                         |
-| `theme-skeleton-heading`, `theme-skeleton-text` | Loading placeholders  | `width`                                                                                                                    |
+| Tag                                             | What it is            | Attributes / properties                                                                                                                |
+| ----------------------------------------------- | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `theme-button`                                  | Button                | `label`, `variant` (`primary`, `secondary`, `ghost`), `disabled`, `type` (`button`, `submit`, `reset`), `aria-label`; or slot the text |
+| `theme-card`                                    | Content surface       | `heading`; slot content                                                                                                                |
+| `theme-container`                               | Neutral wrapper       | `as` (`div`, `ol`, `ul`)                                                                                                               |
+| `theme-item`                                    | List row              | `as` (`li`, `div`)                                                                                                                     |
+| `theme-detail`                                  | Collapsible section   | `summary`; slot content                                                                                                                |
+| `theme-blockquote`                              | Callout               | `type` (`info`, `tip`, `question`, `success`, `warning`, `failure`, `danger`, `bug`, `example`, `quote`)                               |
+| `theme-heading`                                 | Heading               | `level` (1–4)                                                                                                                          |
+| `theme-text`                                    | Body copy or caption  | `variant` (`body`, `caption`)                                                                                                          |
+| `theme-link`                                    | Link                  | `href`                                                                                                                                 |
+| `theme-field`                                   | Label above a control | `label`, `for`; slot the control                                                                                                       |
+| `theme-input`                                   | Form control          | `type` (`text`, `email`, `password`, `number`, `checkbox`, `radio`), `name`, `value`, `placeholder`, `checked`, `disabled`             |
+| `theme-select`                                  | Form control          | `name`, `value`, `disabled`; `<option>` children                                                                                       |
+| `theme-textarea`                                | Form control          | `name`, `value`, `placeholder`, `rows`, `disabled`                                                                                     |
+| `theme-skeleton-heading`, `theme-skeleton-text` | Loading placeholders  | `width`                                                                                                                                |
 
 Form controls are **form-associated**: inside a `<form>` they submit under
 their `name`, reset with the form, follow `<fieldset disabled>`, fire `change`

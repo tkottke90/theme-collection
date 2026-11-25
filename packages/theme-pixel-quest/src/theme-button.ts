@@ -1,6 +1,7 @@
-import { LitElement, css, html } from "lit";
+import { css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
+import { FormButtonElement } from "./generated/core/form-button.js";
 import { themeStyles } from "./generated/theme-styles.js";
 import { pixelFrameStyles, pixelFrameShapes, pixelFrameShapeStyle } from "./pixel-frame.js";
 
@@ -12,7 +13,7 @@ const BADGE_SHAPE = pixelFrameShapes(1, 2, 3, 6);
 const FRAME_SHAPE = pixelFrameShapes(1, 2, 0, 6);
 
 @customElement("theme-button")
-export class ThemeButton extends LitElement {
+export class ThemeButton extends FormButtonElement {
   static styles = [
     themeStyles,
     pixelFrameStyles,
@@ -73,12 +74,6 @@ export class ThemeButton extends LitElement {
 
   @property({ type: String }) label = "Click me";
   @property({ type: String, reflect: true }) variant: "primary" | "secondary" | "ghost" = "primary";
-  @property({ type: Boolean, reflect: true }) disabled = false;
-  /**
-   * Accessible name, forwarded to the inner `<button>` — an `aria-label` left
-   * on the host never reaches it. Needed for icon-only buttons.
-   */
-  @property({ type: String, attribute: "accessible-label" }) accessibleLabel?: string;
 
   render() {
     const isBadge = this.variant === "primary";
@@ -86,8 +81,8 @@ export class ThemeButton extends LitElement {
     const shapeStyleValue = pixelFrameShapeStyle(isBadge ? BADGE_SHAPE : FRAME_SHAPE);
 
     return html`<button
-      aria-label=${ifDefined(this.accessibleLabel)}
-      ?disabled=${this.disabled}
+      aria-label=${ifDefined(this.accessibleName)}
+      ?disabled=${this.isDisabled}
       class=${frameClass}
       style=${shapeStyleValue}
     >

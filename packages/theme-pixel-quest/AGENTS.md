@@ -299,24 +299,24 @@ or any framework that renders DOM.
 
 ### Components
 
-| Tag                                             | What it is                         | Attributes / properties                                                                                                    |
-| ----------------------------------------------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `theme-button`                                  | Badge (primary) or outlined button | `label`, `variant` (`primary`, `secondary`, `ghost`), `disabled`, `accessible-label`; or slot the text                     |
-| `theme-card`                                    | Pixel-framed panel with a title    | `heading`; slot content                                                                                                    |
-| `theme-container`                               | Pixel-framed panel                 | `as` (`div`, `ol` numbered, `ul` square bullets)                                                                           |
-| `theme-item`                                    | Row with a rule underneath         | `as` (`li`, `div`)                                                                                                         |
-| `theme-detail`                                  | Collapsible pixel-framed panel     | `summary`; slot content                                                                                                    |
-| `theme-blockquote`                              | Callout panel with a coloured rule | `type` (`info`, `tip`, `question`, `success`, `warning`, `failure`, `danger`, `bug`, `example`, `quote`)                   |
-| `theme-heading`                                 | Heading                            | `level` (1–4), `banner` (the badge treatment, in Pixelify Sans)                                                            |
-| `theme-text`                                    | Body copy or caption               | `variant` (`body`, `caption`)                                                                                              |
-| `theme-link`                                    | Link                               | `href`                                                                                                                     |
-| `theme-field`                                   | Label above a control              | `label`, `for`; slot the control                                                                                           |
-| `theme-input`                                   | Form control                       | `type` (`text`, `email`, `password`, `number`, `checkbox`, `radio`), `name`, `value`, `placeholder`, `checked`, `disabled` |
-| `theme-select`                                  | Form control                       | `name`, `value`, `disabled`; `<option>` children                                                                           |
-| `theme-textarea`                                | Form control                       | `name`, `value`, `placeholder`, `rows`, `disabled`                                                                         |
-| `theme-skeleton-heading`, `theme-skeleton-text` | Loading placeholders               | `width`                                                                                                                    |
-| `theme-stat-meter`                              | Labelled stat bar with a readout   | `label`, `sublabel`, `value`, `max` (default 10); slot `icon` an SVG; CSS `--stat-meter-label-width` (default `9rem`)      |
-| `theme-page-frame`                              | The sheet's outer border           | slot the page                                                                                                              |
+| Tag                                             | What it is                         | Attributes / properties                                                                                                                |
+| ----------------------------------------------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `theme-button`                                  | Badge (primary) or outlined button | `label`, `variant` (`primary`, `secondary`, `ghost`), `disabled`, `type` (`button`, `submit`, `reset`), `aria-label`; or slot the text |
+| `theme-card`                                    | Pixel-framed panel with a title    | `heading`; slot content                                                                                                                |
+| `theme-container`                               | Pixel-framed panel                 | `as` (`div`, `ol` numbered, `ul` square bullets)                                                                                       |
+| `theme-item`                                    | Row with a rule underneath         | `as` (`li`, `div`)                                                                                                                     |
+| `theme-detail`                                  | Collapsible pixel-framed panel     | `summary`; slot content                                                                                                                |
+| `theme-blockquote`                              | Callout panel with a coloured rule | `type` (`info`, `tip`, `question`, `success`, `warning`, `failure`, `danger`, `bug`, `example`, `quote`)                               |
+| `theme-heading`                                 | Heading                            | `level` (1–4), `banner` (the badge treatment, in Pixelify Sans)                                                                        |
+| `theme-text`                                    | Body copy or caption               | `variant` (`body`, `caption`)                                                                                                          |
+| `theme-link`                                    | Link                               | `href`                                                                                                                                 |
+| `theme-field`                                   | Label above a control              | `label`, `for`; slot the control                                                                                                       |
+| `theme-input`                                   | Form control                       | `type` (`text`, `email`, `password`, `number`, `checkbox`, `radio`), `name`, `value`, `placeholder`, `checked`, `disabled`             |
+| `theme-select`                                  | Form control                       | `name`, `value`, `disabled`; `<option>` children                                                                                       |
+| `theme-textarea`                                | Form control                       | `name`, `value`, `placeholder`, `rows`, `disabled`                                                                                     |
+| `theme-skeleton-heading`, `theme-skeleton-text` | Loading placeholders               | `width`                                                                                                                                |
+| `theme-stat-meter`                              | Labelled stat bar with a readout   | `label`, `sublabel`, `value`, `max` (default 10); slot `icon` an SVG; CSS `--stat-meter-label-width` (default `9rem`)                  |
+| `theme-page-frame`                              | The sheet's outer border           | slot the page                                                                                                                          |
 
 Pairing rules:
 
@@ -330,8 +330,8 @@ Pairing rules:
   `.stats { --stat-meter-label-width: 12rem; }`.
 - `theme-page-frame` goes around a whole page once. It has square corners on
   purpose; don't nest one inside a panel.
-- `theme-button` is a plain button, not a form control: it doesn't submit a
-  form. Call `form.requestSubmit()` from a click handler.
+- `theme-button` is form-associated: `type="submit"` submits its form and
+  `type="reset"` resets it (no `type` does neither).
 
 Form controls are **form-associated**: inside a `<form>` they submit under
 their `name`, reset with the form, follow `<fieldset disabled>`, fire `change`
@@ -392,7 +392,7 @@ import "@tkottke90/theme-pixel-quest/tokens.css"; // tokens for your own CSS
         ><theme-input type="checkbox" name="hardcore" value="yes"></theme-input> Hardcore
         mode</label
       >
-      <theme-button label="Save hero"></theme-button>
+      <theme-button type="submit" label="Save hero"></theme-button>
     </form>
   </theme-page-frame>
 </body>
@@ -406,7 +406,6 @@ const energy = document.querySelector("theme-stat-meter");
 energy.value = 7;
 
 const form = document.getElementById("hero");
-form.querySelector("theme-button").addEventListener("click", () => form.requestSubmit());
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   console.log([...new FormData(form)]);
@@ -476,10 +475,7 @@ export function HeroForm() {
       <theme-heading level={2} banner>
         Daily Quests
       </theme-heading>
-      <theme-button
-        label="Save hero"
-        onClick={(e) => e.currentTarget.closest("form").requestSubmit()}
-      />
+      <theme-button type="submit" label="Save hero" />
     </form>
   );
 }
