@@ -209,13 +209,13 @@ Contrast was measured from the resolved tokens, on the surface each ink sits
 on (see Rule 10 in [`AGENTS.md`](./AGENTS.md) for the full table). Body text
 (9.8:1 on a card), links, the primary button and placeholders all meet AA.
 
-**Known failures, not claimed as AA:**
+Tab and ribbon labels (4.5–5.5:1, blue is the tightest) and blockquote labels
+(4.7–6.3:1) all meet AA.
 
-- Tab and ribbon labels measure 3.5–4.3:1 at the lighter end of their
-  gradient. The darkened `--tan-dark`, `--orange-dark` and `--green-dark`
-  fix those swatches on a flat fill (5.2–5.5:1) but not under the gradient.
-- Blockquote type labels: only `success` and `failure` pass; `bug` (2.3:1)
-  and `example` (2.7:1) are the lowest. Body text in every blockquote passes.
+**Known gaps, not claimed as AA:**
+
+- Disabled buttons measure 3.9:1. Disabled controls are exempt from WCAG's
+  contrast rule and are visibly different from enabled ones.
 - No Windows High Contrast fallback (`@media (forced-colors: active)`).
 - `theme-journal-book`'s tabs are plain `<button>`s with `aria-current`,
   not a full ARIA tab pattern (`role="tablist"`, arrow-key navigation).

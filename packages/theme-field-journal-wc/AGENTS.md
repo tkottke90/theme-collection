@@ -75,19 +75,17 @@ never glossy or neon; texture from paper grain, never flat white.
     | Secondary and ghost label on page                                                  | 4.6                               |
     | Tab or ribbon label on the flat colour: red / blue / tan / green / purple / orange | 5.0 / 4.5 / 5.2 / 5.5 / 5.0 / 5.3 |
     | Completed task green on card                                                       | 5.5                               |
+    | Blockquote label on its tint: info / tip / question / success / warning            | 5.3 / 4.8 / 5.6 / 5.8 / 5.6       |
+    | Blockquote label: failure / danger / bug / example / quote                         | 6.3 / 5.5 / 5.0 / 4.7 / 5.4       |
 
-    **Known failures (not claimed as AA).** Tokens aren't changed here; fix
-    them as their own decision.
+    Tab and ribbon gradients start at the flat category colour and darken
+    from there, so the flat figure is their lightest point; the blue label is
+    the tightest at 4.5. Blockquote labels are the type's colour blended into
+    the body brown (60% colour; the pale bug and example hues use 40% and 50%
+    to pass), while the left border keeps the pure colour.
 
-    - **Tab and ribbon labels** sit on a gradient whose lighter end is
-      lightened toward white. At that end the labels measure 3.5–4.3:1 (tabs:
-      red 3.9, blue 3.5, tan 4.0, green 4.1, purple 3.8, orange 4.0; ribbons:
-      3.7–4.3). The labels are small caps at 13–15px, so they miss AA.
-    - **Blockquote type labels** on their tinted panel: bug 2.3, example 2.7,
-      tip 3.4, info 3.9, quote 4.1, danger 4.2, question 4.2, warning 4.4.
-      Only success (4.6) and failure (5.2) pass. The body text in every
-      blockquote passes (8+), so the label is decoration over the type, not
-      the only signal.
+    **Known gaps (not claimed as AA).**
+
     - **Disabled buttons** (muted on `--color-neutral-100`) measure 3.9.
       Disabled controls are exempt from WCAG's contrast rule, but they are
       visibly different from enabled ones, which is the point.

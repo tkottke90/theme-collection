@@ -10,7 +10,7 @@ const meta: Meta = {
       title: "Ribbon",
       description: [
         "A cloth banner with notched ends, used as a section heading on a page. The page title itself uses theme-heading; the ribbon marks the sections below it.",
-        "Its colour comes from the category palette; the label is cream on a darkened shade so the text stays readable.",
+        "Its colour comes from the category palette; the label is cream on that colour, which darkens toward the bottom edge so the text stays readable.",
       ],
     },
   },
