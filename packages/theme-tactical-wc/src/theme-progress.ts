@@ -1,5 +1,6 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
+import { ifDefined } from "lit/directives/if-defined.js";
 import { themeStyles } from "./generated/theme-styles.js";
 
 /** Segmented linear bar meter, e.g. the tick-marked bars in HUD telemetry panels. */
@@ -34,6 +35,7 @@ export class ThemeProgress extends LitElement {
         }
         <div
           role="progressbar"
+          aria-label=${ifDefined(this.label || undefined)}
           aria-valuenow=${this.value}
           aria-valuemin="0"
           aria-valuemax=${this.max}

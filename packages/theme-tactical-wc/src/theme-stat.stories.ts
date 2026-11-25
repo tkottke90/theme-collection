@@ -4,6 +4,15 @@ import "./theme-stat.js";
 
 const meta: Meta = {
   title: "Theme/Tactical WC/Stat",
+  parameters: {
+    intro: {
+      tag: "theme-stat",
+      title: "Stat",
+      description: [
+        "A large numeric readout in the same HUD frame as the card: a tracked muted label above a monospace cyan value with an optional unit.",
+      ],
+    },
+  },
   render: (args) =>
     html`<theme-stat
       label=${args["label"]}

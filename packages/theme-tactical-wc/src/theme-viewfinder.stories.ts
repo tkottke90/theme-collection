@@ -4,6 +4,15 @@ import "./theme-viewfinder.js";
 
 const meta: Meta = {
   title: "Theme/Tactical WC/Viewfinder",
+  parameters: {
+    intro: {
+      tag: "theme-viewfinder",
+      title: "Viewfinder",
+      description: [
+        "A content panel framed like a camera viewfinder: a tab-notch at the top and corner brackets in cyan, resizing with its content. An optional heading sits above the slotted content.",
+      ],
+    },
+  },
   render: (args) => html`
     <theme-viewfinder heading=${args["heading"]}>${args["body"]}</theme-viewfinder>
   `,

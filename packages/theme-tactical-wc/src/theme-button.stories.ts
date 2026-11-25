@@ -4,6 +4,15 @@ import "./theme-button.js";
 
 const meta: Meta = {
   title: "Theme/Tactical WC/Button",
+  parameters: {
+    intro: {
+      tag: "theme-button",
+      title: "Button",
+      description: [
+        'A form-associated button. Primary is a solid cyan plate with a glow; secondary is an outlined cyan label on the dark ground; ghost drops the outline. Labels are uppercase and tracked like HUD readouts. type="submit" and type="reset" act on the surrounding form, and aria-label names it for assistive tech.',
+      ],
+    },
+  },
   render: (args) =>
     html`<theme-button
       label=${args["label"]}

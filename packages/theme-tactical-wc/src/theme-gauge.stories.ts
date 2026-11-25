@@ -4,6 +4,15 @@ import "./theme-gauge.js";
 
 const meta: Meta = {
   title: "Theme/Tactical WC/Gauge",
+  parameters: {
+    intro: {
+      tag: "theme-gauge",
+      title: "Gauge",
+      description: [
+        "A radial gauge: a cyan arc with a glow on a dim track, with the value and label in the centre in the monospace face. Value runs from 0 to max.",
+      ],
+    },
+  },
   render: (args) =>
     html`<theme-gauge
       label=${args["label"]}

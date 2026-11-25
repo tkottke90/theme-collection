@@ -5,6 +5,15 @@ import "./theme-item.js";
 
 const meta: Meta = {
   title: "Theme/Tactical WC/Container",
+  parameters: {
+    intro: {
+      tag: "theme-container",
+      title: "Container",
+      description: [
+        "A plain bordered surface: the alt-surface fill, a hairline border and the theme's small radius. Renders a div by default, or a ul/ol/section via the as attribute, for grouping items and forms.",
+      ],
+    },
+  },
   render: (args) => html`
     <theme-container as=${args["as"]}>
       <theme-item as=${args["as"] === "div" ? "div" : "li"}>First item</theme-item>

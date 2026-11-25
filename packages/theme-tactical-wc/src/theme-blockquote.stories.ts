@@ -4,6 +4,15 @@ import "./theme-blockquote.js";
 
 const meta: Meta = {
   title: "Theme/Tactical WC/Blockquote",
+  parameters: {
+    intro: {
+      tag: "theme-blockquote",
+      title: "Blockquote",
+      description: [
+        "A callout for notes, warnings and quotes. A cyan-family tinted panel with a 4px accent bar on the left and a coloured label; the ten types (info, tip, question, success, warning, failure, danger, bug, example, quote) each take their own accent from the status tokens.",
+      ],
+    },
+  },
   render: (args) =>
     html`<theme-blockquote type=${args["type"]}>${args["content"]}</theme-blockquote>`,
   args: { content: "A blockquote styled with theme tokens." },

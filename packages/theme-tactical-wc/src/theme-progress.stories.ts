@@ -4,6 +4,15 @@ import "./theme-progress.js";
 
 const meta: Meta = {
   title: "Theme/Tactical WC/Progress",
+  parameters: {
+    intro: {
+      tag: "theme-progress",
+      title: "Progress",
+      description: [
+        "A segmented progress bar in a bordered track, filled with a glowing cyan bar cut into ticks like a HUD meter. It is exposed as a progressbar named by its label.",
+      ],
+    },
+  },
   render: (args) =>
     html`<theme-progress
       label=${args["label"]}
