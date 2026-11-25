@@ -210,7 +210,7 @@ on (see Rule 10 in [`AGENTS.md`](./AGENTS.md) for the full table). Body text
 (9.8:1 on a card), links, the primary button and placeholders all meet AA.
 
 Tab and ribbon labels (4.5–5.5:1, blue is the tightest) and blockquote labels
-(4.7–6.3:1) all meet AA.
+(4.6–5.6:1) all meet AA.
 
 **Known gaps, not claimed as AA:**
 

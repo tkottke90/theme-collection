@@ -75,14 +75,18 @@ never glossy or neon; texture from paper grain, never flat white.
     | Secondary and ghost label on page                                                  | 4.6                               |
     | Tab or ribbon label on the flat colour: red / blue / tan / green / purple / orange | 5.0 / 4.5 / 5.2 / 5.5 / 5.0 / 5.3 |
     | Completed task green on card                                                       | 5.5                               |
-    | Blockquote label on its tint: info / tip / question / success / warning            | 5.3 / 4.8 / 5.6 / 5.8 / 5.6       |
-    | Blockquote label: failure / danger / bug / example / quote                         | 6.3 / 5.5 / 5.0 / 4.7 / 5.4       |
+    | Blockquote label on its tint: info / tip / question / success / warning            | 5.0 / 4.6 / 5.1 / 5.4 / 5.2       |
+    | Blockquote label: failure / danger / bug / example / quote                         | 5.6 / 5.1 / 4.8 / 4.8 / 5.1       |
+    | Blockquote panel against the page (not text): lowest / highest                     | 1.14 / 1.28                       |
 
     Tab and ribbon gradients start at the flat category colour and darken
     from there, so the flat figure is their lightest point; the blue label is
-    the tightest at 4.5. Blockquote labels are the type's colour blended into
-    the body brown (60% colour; the pale bug and example hues use 40% and 50%
-    to pass), while the left border keeps the pure colour.
+    the tightest at 4.5. Blockquote panels are the type's colour at 22% over the card
+    cream (the pale bug and example hues use 26% and 24% so they read as
+    panels at all); labels are that colour blended into the body brown (55%
+    colour; bug and example use 35% and 40% to pass), while the left border
+    keeps the pure colour. A darker panel lowers the text's contrast, so
+    raise the panel tint and the label blend together and re-measure.
 
     **Known gaps (not claimed as AA).**
 
