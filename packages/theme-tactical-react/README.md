@@ -1,6 +1,6 @@
 # @tkottke90/theme-tactical-react
 
-Dark/light HUD-inspired component theme, built with
+Dark HUD-inspired component theme, built with
 [Preact](https://preactjs.com) (React-API compatible). Cyan glow accents,
 resizable SVG panel frames (a tab-and-chevron style on Card/Stat, a rounded
 tab-notch-and-bracket style on Viewfinder), and a data-display set
@@ -30,16 +30,6 @@ import "@tkottke90/theme-tactical-react/theme.css";
 `preact` is a peer dependency so every component theme package in this repo
 shares a single copy of it. The compiled stylesheet is a separate export
 (`./theme.css`) — import it once, globally, rather than per component.
-
-## Light / dark mode
-
-The theme is dark by default (matching the source HUD design), and follows
-the OS/browser `prefers-color-scheme` setting automatically whenever nothing
-overrides it. To override that explicitly, set `data-theme="light"` or
-`data-theme="dark"` on **any ancestor element** (`<html>`, an app wrapper
-`<div>`, or an individual component) — it's a plain CSS custom property
-override, so it cascades normally to everything inside. Storybook's
-"Theme" toolbar toggle (top of the preview) demonstrates this.
 
 ## Local development
 

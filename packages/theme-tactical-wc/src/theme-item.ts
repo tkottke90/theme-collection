@@ -18,6 +18,11 @@ export class ThemeItem extends LitElement {
       :host {
         display: block;
       }
+      /* The inner element is the only child in this shadow root, so Tailwind's
+         last: variant always matched it; key the last row off the host instead. */
+      :host(:last-child) > * {
+        border-bottom-width: 0;
+      }
     `,
   ];
 
@@ -25,7 +30,7 @@ export class ThemeItem extends LitElement {
 
   render() {
     const tag = TAGS[this.as] ?? TAGS.li;
-    return staticHtml`<${tag} class="py-2 border-b border-border text-text last:border-b-0"><slot></slot></${tag}>`;
+    return staticHtml`<${tag} class="py-2 border-b border-border text-text"><slot></slot></${tag}>`;
   }
 }
 

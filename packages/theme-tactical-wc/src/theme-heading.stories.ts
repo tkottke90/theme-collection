@@ -4,6 +4,15 @@ import "./theme-heading.js";
 
 const meta: Meta = {
   title: "Theme/Tactical WC/Heading",
+  parameters: {
+    intro: {
+      tag: "theme-heading",
+      title: "Heading",
+      description: [
+        "Four heading levels on a tight, tracked, uppercase scale in the primary ink. Pick the level for document structure; the size follows it.",
+      ],
+    },
+  },
   render: (args) =>
     html`<theme-heading level=${args["level"]}>Heading level ${args["level"]}</theme-heading>`,
   args: { level: 1 },
