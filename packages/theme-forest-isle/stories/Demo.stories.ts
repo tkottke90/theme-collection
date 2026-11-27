@@ -90,11 +90,11 @@ ${LAYOUT}
         <h3 class="theme-heading theme-heading--h3">Residents</h3>
         <p class="theme-text">8 of 10 cottages are occupied.</p>
         <h4 class="theme-heading theme-heading--h4">Today</h4>
-        <ul class="theme-container">
+        <ol class="theme-container">
           <li class="theme-item">Water the garden</li>
           <li class="theme-item">Repair the dock</li>
           <li class="theme-item">Welcome the new neighbour</li>
-        </ul>
+        </ol>
         <div aria-busy="true" aria-label="Loading forecast">
           <div class="theme-skeleton-heading"></div>
           <div class="theme-skeleton-text"></div>

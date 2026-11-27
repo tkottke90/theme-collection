@@ -8,7 +8,7 @@ const meta: Meta = {
       title: "Container",
       description: [
         "A vertical stack that spaces its children 0.75rem apart. Use it on a div, ul or ol to lay out items without margins on the items themselves.",
-        "The container removes list markers, so an ol shows no numbers; use it for groups of cards or items, not for numbered instructions.",
+        "A ul or div shows no markers, but an ol keeps its numbers, set in the muted ink in the gap left of the items.",
       ],
     },
   },

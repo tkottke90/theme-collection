@@ -43,8 +43,8 @@ can style your own elements to match.
 
 It includes Tailwind's base reset, and styles `body` with the sand page
 colour and ink, so it is meant to own the whole page. Because of the reset,
-bare headings are unstyled (use `.theme-heading`) and `<ol>`/`<ul>` show no
-markers.
+bare headings are unstyled (use `.theme-heading`) and a plain `<ul>`/`<ol>` shows
+no markers; `ol.theme-container` brings its numbers back.
 
 **For AI agents and anyone extending the theme:** [`AGENTS.md`](./AGENTS.md)
 (shipped with the package) has the style guide and usage notes.
@@ -73,7 +73,7 @@ Every class is plain CSS on native elements:
 | ------------------------------------------------- | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `.theme-button`                                   | `<button>`                             | `--secondary`, `--ghost`; `disabled`                                                                                                                       |
 | `.theme-card`                                     | any block                              | spaces its children 0.75rem apart                                                                                                                          |
-| `.theme-container`                                | `<div>`, `<ul>`, `<ol>`                | vertical stack; no list markers                                                                                                                            |
+| `.theme-container`                                | `<div>`, `<ul>`, `<ol>`                | vertical stack; no markers on `<ul>`, but an `<ol>` shows its numbers                                                                                      |
 | `.theme-item`                                     | `<div>`, `<li>`                        | goes inside a container                                                                                                                                    |
 | `.theme-detail`                                   | `<details>`                            |                                                                                                                                                            |
 | `.theme-blockquote`                               | `<blockquote>`                         | `--info`, `--tip`, `--question`, `--success`, `--warning`, `--failure`, `--danger`, `--bug`, `--example`, `--quote`; label with `.theme-blockquote__label` |

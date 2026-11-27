@@ -3,6 +3,8 @@
   --color-surface: #f2e9d8;
   --color-surface-alt: #e0d7c8;
   --color-border: #d8cbb0;
+  /* Boundary of anything a user has to find or operate (text fields, selects): 3:1 or better on the page, a card and the field fill. */
+  --color-border-strong: #7a7464;
 
   --color-sidebar: var(--color-brand-900);
   --color-sidebar-raised: #6d6a40;
@@ -20,7 +22,7 @@
   --color-brand-50: #eef0e6;
   --color-brand-100: #dde2d0;
   --color-brand-500: #75835c;
-  --color-brand-600: #5f6c49;
+  --color-brand-600: #53603c;
   --color-brand-900: #394833;
 
   --color-neutral-50: #faf7f0;
@@ -41,7 +43,7 @@
   --color-quote-500: var(--color-text-muted);
 
   --color-text: #2a2a18;
-  --color-text-muted: #686850;
+  --color-text-muted: #5a5a44;
 
   --color-skeleton-base: #ece3d2;
   --color-skeleton-highlight: #f7f0e3;

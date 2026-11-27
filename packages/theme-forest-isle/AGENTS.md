@@ -36,7 +36,8 @@ wood-grain sign.
    brand green for status: status has its own colours.
 2. **Surfaces.** Page `--color-bg`; cards and details `--color-surface`;
    things inside a card (items, inputs) `--color-surface-alt`. Cards are lifted
-   by `--shadow-theme`, not a border; items and fields have a 1px border.
+   by `--shadow-theme`, not a border; items have a 1px `--color-border` and
+   fields a 1px `--color-border-strong`.
 3. **Shape.** `--radius-theme` (1rem) on every surface, item and field;
    `--radius-theme-pill` on buttons and nav links. The only shadow is
    `--shadow-theme`.
@@ -54,41 +55,42 @@ wood-grain sign.
 6. **Motion.** Only the skeleton shimmer moves, and it stops under
    `prefers-reduced-motion`.
 7. **Contrast.** Measured in Chromium from the resolved tokens, on the surface
-   each ink sits on. What passes WCAG AA (4.5:1 for text, 3:1 for
-   boundaries and focus indicators):
-   - Text on a card (`--color-surface`): ink 12.1:1, muted 4.73:1, links and
-     the primary button 4.67:1 (hover 8.1:1), outlined and ghost buttons
-     4.67:1 (4.89:1 on their hover wash).
-   - Placeholders (a mix of muted and ink) 5.34:1 on the field fill.
+   each ink sits on. Meets WCAG AA (4.5:1 for text, 3:1 for boundaries and
+   focus indicators) on the page (`--color-bg`), a card and an item:
+   - Ink is 9.9:1 on the page and 12.1:1 on a card. Muted ink is 4.79:1 on the
+     page, 5.85:1 on a card. Links, outlined and ghost buttons
+     (`--color-brand-600`) are 4.60:1 on the page and 5.61:1 on a card
+     (5.87:1 on their hover wash). The primary button's parchment ink on
+     `--color-brand-600` is 5.61:1 (hover 8.11:1).
+   - Placeholders (a mix of muted ink and ink) are 6.14:1 on the field fill.
    - Blockquote labels are pulled toward the ink
      (`color-mix(--bq-accent 70%, --color-text)`) and measure 5.4:1 or better
      on their tint; the left rule keeps the pure status colour.
-   - Text fields and selects use `--field-border` (the ink mixed 50% into the
-     field fill): 3.24:1 against a card. Focus outlines are 4.67:1 on a card
-     and 8.1:1 (parchment on green) in the sidebar. Sidebar ink is 8.1:1 and
-     muted nav ink 5.26:1; the sign's text is 4.77:1 on the wood.
-   - A field's focus border (`--color-brand-500`) is 3.38:1 on a card.
+   - Text fields and selects use `--color-border-strong`: 3.86:1 against a
+     card, 3.26:1 against their own fill and 3.17:1 against the page. Plain
+     `--color-border` (a 1.1–1.3:1 hairline) is only for items, which don't
+     need to be found; use the strong one for anything a user must operate.
+   - Focus outlines are 5.61:1 on a card, 4.60:1 on the page and 8.11:1
+     (parchment on green) in the sidebar. A field's focus border
+     (`--color-brand-500`) is 3.38:1 on a card. Invalid borders are 5.42:1.
+   - Sidebar ink is 8.11:1, muted nav ink 5.26:1, selected nav 8.11:1; the
+     sign's text is 4.77:1 on the wood.
 
-   What fails, and is left as it is because fixing it means changing tokens,
-   which is a separate decision:
-   - **Muted ink and brand ink directly on the page (`--color-bg`)**: caption
-     text 3.88:1, links and outlined/ghost buttons 3.83:1. Put them on a card
-     or an item; the Demo page's caption above its heading is an example of
-     the failure.
-   - **Disabled controls**: 2.56:1 (neutral-500 on neutral-100). WCAG exempts
-     disabled controls, but they are low-contrast on purpose; don't use
-     disabled state to carry information.
-   - A text field's border against its own fill is 2.74:1, below the 3:1 bar
-     (it passes against the card behind it).
+   Known exceptions:
+   - **Disabled controls**: 2.56:1 (`--color-neutral-500` on
+     `--color-neutral-100`). WCAG exempts disabled controls and they are meant
+     to recede; they differ from enabled ones by fill, ink and cursor. Don't
+     use the disabled state to carry information.
    - The sign's leaf icon is 1.41:1 on the wood. It is decorative and
      `aria-hidden`; don't use that pairing for anything meaningful.
    - Skeleton bars are 1.06:1 on a card; they are placeholders, not content.
    - An unchecked checkbox or radio is drawn by the browser, so its outline is
      the browser's, not the theme's.
 
-8. **Lists.** The Tailwind reset removes list markers, and `.theme-container`
-   does too, so an `<ol>` shows no numbers. That is left to the repo-wide
-   fix (tracked in issue #32); until then, number steps in the text.
+8. **Lists.** The Tailwind reset removes list markers, and so does
+   `.theme-container`, except that `ol.theme-container` shows its numbers
+   (muted, in a 2.25rem gutter left of the items). A bare `<ol>` outside a
+   container has no numbers.
 
 ### Using the tokens
 
@@ -98,7 +100,7 @@ wood-grain sign.
 the tokens are compiled from the theme's single source
 (`themes/forest-isle/theme.css`). The ones an outside element needs:
 `--color-bg`, `--color-surface`, `--color-surface-alt`, `--color-border`,
-`--color-text`, `--color-text-muted`, `--color-brand-50`/`-100`/`-500`/`-600`/`-900`,
+`--color-border-strong`, `--color-text`, `--color-text-muted`, `--color-brand-50`/`-100`/`-500`/`-600`/`-900`,
 `--color-neutral-100`/`-300`/`-500`, the `--color-<type>-500` status colours,
 `--color-sidebar`, `--color-sidebar-text`, `--color-sidebar-text-muted`,
 `--color-wood`, `--font-sans`, `--font-serif`, `--radius-theme`,
