@@ -369,13 +369,18 @@ a:focus-visible {
   list-style: none;
 }
 
-/* An <ol> shows its numbers, in the gap left of the items. */
+/* An <ol> shows numbers and a <ul> bullets, in the gap left of the items. */
 ol.theme-container {
   list-style: decimal;
   padding-left: 2.25rem;
 }
 
-ol.theme-container > li::marker {
+ul.theme-container {
+  list-style: disc;
+  padding-left: 2.25rem;
+}
+
+.theme-container > li::marker {
   color: var(--color-text-muted);
 }
 

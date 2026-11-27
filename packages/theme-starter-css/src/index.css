@@ -284,6 +284,21 @@
   list-style: none;
 }
 
+/* An <ol> shows numbers and a <ul> bullets, in the gap left of the items. */
+ol.theme-container {
+  list-style: decimal;
+  padding-left: 2.25rem;
+}
+
+ul.theme-container {
+  list-style: disc;
+  padding-left: 2.25rem;
+}
+
+.theme-container > li::marker {
+  color: var(--color-neutral-500);
+}
+
 .theme-item {
   border-radius: var(--radius-theme);
   border: 1px solid var(--color-neutral-100);

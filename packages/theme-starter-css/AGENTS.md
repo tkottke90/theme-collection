@@ -93,7 +93,7 @@ import "@tkottke90/theme-starter-css"; // with a bundler
 | -------------------------------------------------- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | `.theme-button`                                    | `<button>`            | `--secondary`, `--ghost`; `disabled`                                                                                           |
 | `.theme-card`                                      | any block             | spaces its children 0.75rem apart                                                                                              |
-| `.theme-container`, `.theme-item`                  | `<ul>`/`<ol>`/`<div>` | items go inside the container                                                                                                  |
+| `.theme-container`, `.theme-item`                  | `<ul>`/`<ol>`/`<div>` | items go inside; `ol` shows numbers, `ul` bullets                                                                              |
 | `.theme-detail`                                    | `<details>`           |                                                                                                                                |
 | `.theme-blockquote`                                | `<blockquote>`        | `--info`, `--tip`, `--question`, `--success`, `--warning`, `--failure`, `--danger`, `--bug`, `--example`, `--quote`; `__label` |
 | `.theme-heading`                                   | `<h1>`–`<h4>`         | `--h1` to `--h4` (independent of the element)                                                                                  |

@@ -22,6 +22,10 @@ export class ThemeItem extends LitElement {
       :host(:last-child) > * {
         border-bottom-width: 0;
       }
+      li::marker {
+        color: var(--color-text-muted);
+        font-family: var(--font-head);
+      }
     `,
   ];
 

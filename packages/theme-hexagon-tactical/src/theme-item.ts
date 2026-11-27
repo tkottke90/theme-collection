@@ -18,6 +18,13 @@ export class ThemeItem extends LitElement {
       :host {
         display: block;
       }
+      :host(:last-child) .row {
+        border-bottom-width: 0;
+      }
+      li::marker {
+        color: var(--color-text-muted);
+        font-family: var(--font-mono);
+      }
     `,
   ];
 
@@ -26,7 +33,7 @@ export class ThemeItem extends LitElement {
   render() {
     const tag = TAGS[this.as] ?? TAGS.li;
     return staticHtml`<${tag}
-      class="font-sans py-2 border-b border-border-lo text-text last:border-b-0"
+      class="row font-sans py-2 border-b border-border-lo text-text"
       ><slot></slot
     ></${tag}>`;
   }

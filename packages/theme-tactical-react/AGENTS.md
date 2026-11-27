@@ -155,7 +155,7 @@ components**. They render plain DOM (no Shadow DOM) styled by one stylesheet.
   component styles and the design tokens.
 - **`theme.css` includes Tailwind's base reset, and it applies to the whole
   page**, not only to these components: `h1`–`h6` inherit their size and
-  weight, `ol`/`ul` lose their markers (`ThemeContainer as="ol"` brings its numbers back), and `button`, `input`, `select` and
+  weight, `ol`/`ul` lose their markers (`ThemeContainer as="ol"` brings its numbers back, `as="ul"` its square bullets), and `button`, `input`, `select` and
   `textarea` become transparent and inherit font and colour. Style your own
   elements with that in mind (use the tokens, set the sizes you want).
 - It does **not** style `body`. Put the page on the tactical ground yourself:
