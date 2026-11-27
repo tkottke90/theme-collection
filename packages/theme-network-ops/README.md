@@ -127,7 +127,7 @@ npm run storybook          # preview the theme's component classes
 npm run screenshot         # regenerate docs/screenshot.png (after build-storybook)
 ```
 
-Tokens live in `themes/theme-network-ops/theme.css`; `src/index.css` imports
+Tokens live in `themes/network-ops/theme.css`; `src/index.css` imports
 them. Every stories file sets `parameters.intro` (shown above its stories),
 and `stories/Demo.stories.ts` is a full page built from the classes, and is
 what the screenshot shows.

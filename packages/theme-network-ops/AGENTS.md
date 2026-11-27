@@ -29,7 +29,10 @@ Values (addresses, thresholds) are set in monospace.
 ### Rules
 
 1. **Colour roles.** Coral is for the primary button, the glow button and
-   danger callouts only; hover darkens it to `--color-brand-600`. Indigo is
+   danger callouts only. The primary button fills with `--color-brand-600` and
+   darkens to `--color-brand-700` on hover (so its light text meets AA);
+   secondary and ghost buttons use the lighter `--color-brand-400` for their
+   ink and `--color-brand-500` for the outline. Indigo is
    for links (`--color-accent-400`), focus rings and checked controls
    (`--color-accent-500`), and pressed links (`--color-accent-600`). Never use
    coral for decoration, so it keeps meaning "act now".
@@ -56,14 +59,11 @@ Values (addresses, thresholds) are set in monospace.
 6. **Motion.** Only the skeleton shimmer moves, and it stops under
    `prefers-reduced-motion`.
 7. **Contrast.** Measured in Chromium from the resolved tokens, on the surface
-   each ink sits on. Body text, headings, links, placeholders, disabled
-   buttons and the seven other blockquote labels meet WCAG AA (4.5:1).
+   each ink sits on. Body text, headings, links, placeholders, every button
+   state (primary 4.64:1, secondary and ghost 5.2–7.1:1 on the page, a card or
+   an item, hover included, disabled 4.68:1) and the seven other blockquote
+   labels meet WCAG AA (4.5:1).
    **These do not**, and are not claimed:
-   - `--color-text` on `--color-brand-500` (primary and glow buttons): 3.41:1.
-     On hover (`--color-brand-600`) it is 4.64:1.
-   - Secondary and ghost buttons (coral ink): 5.0:1 on the page, but 4.45:1 on
-     a card (`--color-surface`) and 3.98:1 on `--color-surface-alt`. Their
-     hover wash lowers it further, to 3.4–4.4:1 depending on the surface.
    - `.theme-blockquote__label` on its tinted background: `--danger` 3.77:1,
      `--example` 3.35:1, `--quote` 4.18:1.
    - A field's 1px `--color-border` against its `--color-surface-alt` fill is
@@ -78,9 +78,9 @@ Values (addresses, thresholds) are set in monospace.
 `@layer theme`). Style your own elements with `var(--color-surface)`,
 `var(--font-sans)` and `var(--radius-theme)`; never paste hex values, since
 the tokens are compiled from the theme's single source
-(`themes/theme-network-ops/theme.css`). The ones an outside element needs:
+(`themes/network-ops/theme.css`). The ones an outside element needs:
 `--color-bg`, `--color-surface`, `--color-surface-alt`, `--color-border`,
-`--color-text`, `--color-text-muted`, `--color-brand-500`/`-600`,
+`--color-text`, `--color-text-muted`, `--color-brand-400`/`-500`/`-600`/`-700`,
 `--color-accent-400`/`-500`/`-600`, the `--color-<type>-500` status colours,
 `--font-sans`, `--font-mono`, `--radius-theme`, `--radius-theme-sm` and
 `--shadow-glow`.
@@ -125,7 +125,7 @@ to the system sans-serif):
 | ------------------------------------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | `.theme-button`                                   | `<button>`              | `--secondary`, `--ghost`, `--glow`; `disabled`                                                                                 |
 | `.theme-card`                                     | any block               | `__title`, `__body`                                                                                                            |
-| `.theme-container`                                | `<div>`, `<ul>`, `<ol>` | vertical stack; removes list markers, so an `<ol>` shows no numbers                                                            |
+| `.theme-container`                                | `<div>`, `<ul>`, `<ol>` | vertical stack; removes list markers on `<ul>`, but an `<ol>` shows its numbers                                                |
 | `.theme-item`                                     | `<div>`, `<li>`         | goes inside a container                                                                                                        |
 | `.theme-details`                                  | `<details>`             | `__body` on the content after `<summary>`                                                                                      |
 | `.theme-blockquote`                               | `<blockquote>`          | `--info`, `--tip`, `--question`, `--success`, `--warning`, `--failure`, `--danger`, `--bug`, `--example`, `--quote`; `__label` |

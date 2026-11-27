@@ -7,7 +7,7 @@ const meta: Meta = {
       tag: ".theme-container",
       title: "Container",
       description: [
-        "A vertical stack with a 0.75rem gap, for a group of items. It works on a div, ul or ol, and removes list markers, so a numbered list shows no numbers.",
+        "A vertical stack with a 0.75rem gap, for a group of items. It works on a div, ul or ol. A ul shows no bullets, but an ol keeps its numbers, in muted ink in the gap left of the items.",
         "Put theme-item children inside it. The container has no surface of its own, so it sits directly on the page or inside a card.",
       ],
     },

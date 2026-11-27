@@ -1,5 +1,5 @@
 /*
- * Design tokens for this theme live in themes/theme-network-ops/theme.css
+ * Design tokens for this theme live in themes/network-ops/theme.css
  * (the single source for this theme) and are exposed as CSS custom
  * properties via Tailwind v4's @theme directive. Consumers that also run
  * Tailwind can @import this file to pick up the tokens as utilities
@@ -7,7 +7,7 @@
  * component classes below.
  */
 @import "tailwindcss";
-@import "../../../themes/theme-network-ops/theme.css";
+@import "../../../themes/network-ops/theme.css";
 
 :root {
   color-scheme: dark;
@@ -123,7 +123,7 @@ a:focus-visible {
 
 .theme-button {
   border-radius: var(--radius-theme-sm);
-  background-color: var(--color-brand-500);
+  background-color: var(--color-brand-600);
   color: var(--color-text);
   padding: 0.5rem 1.25rem;
   font-family: var(--font-sans);
@@ -133,7 +133,7 @@ a:focus-visible {
 }
 
 .theme-button:hover {
-  background-color: var(--color-brand-600);
+  background-color: var(--color-brand-700);
 }
 
 .theme-button:focus-visible {
@@ -326,22 +326,22 @@ a:focus-visible {
 
 .theme-button--secondary {
   background-color: transparent;
-  color: var(--color-brand-500);
+  color: var(--color-brand-400);
   border: 1px solid var(--color-brand-500);
 }
 
 .theme-button--secondary:hover {
-  background-color: color-mix(in srgb, var(--color-brand-500) 15%, transparent);
+  background-color: color-mix(in srgb, var(--color-brand-500) 8%, transparent);
 }
 
 .theme-button--ghost {
   background-color: transparent;
-  color: var(--color-brand-500);
+  color: var(--color-brand-400);
   border: none;
 }
 
 .theme-button--ghost:hover {
-  background-color: color-mix(in srgb, var(--color-brand-500) 12%, transparent);
+  background-color: color-mix(in srgb, var(--color-brand-500) 8%, transparent);
 }
 
 .theme-button:disabled,
@@ -367,6 +367,16 @@ a:focus-visible {
   padding: 1rem;
   margin: 0;
   list-style: none;
+}
+
+/* An <ol> shows its numbers, in the gap left of the items. */
+ol.theme-container {
+  list-style: decimal;
+  padding-left: 2.25rem;
+}
+
+ol.theme-container > li::marker {
+  color: var(--color-text-muted);
 }
 
 .theme-item {

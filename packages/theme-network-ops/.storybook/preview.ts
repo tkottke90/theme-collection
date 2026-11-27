@@ -3,7 +3,7 @@ import { htmlIntroDecorator } from "../../../shared/storybook/intro-html.js";
 
 // Built by `npm run build` (runs automatically via the pre* npm hooks
 // before `storybook dev` / `build-storybook`). It carries the tokens from
-// themes/theme-network-ops/theme.css as custom properties, so the backdrop
+// themes/network-ops/theme.css as custom properties, so the backdrop
 // below can use them too.
 import "../dist/index.css";
 
