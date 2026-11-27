@@ -4,6 +4,16 @@ import { ThemeText } from "./ThemeText.js";
 const meta: Meta<typeof ThemeText> = {
   title: "Theme/Tactical React/Text",
   component: ThemeText,
+  parameters: {
+    intro: {
+      tag: "ThemeText",
+      title: "Text",
+      description: [
+        "Body copy in the primary ink on the dark ground, with a muted caption variant for secondary information.",
+        "Body copy is sentence case; only labels are capitals.",
+      ],
+    },
+  },
 };
 export default meta;
 

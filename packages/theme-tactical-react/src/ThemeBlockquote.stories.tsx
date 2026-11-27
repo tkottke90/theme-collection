@@ -4,6 +4,16 @@ import { ThemeBlockquote } from "./ThemeBlockquote.js";
 const meta: Meta<typeof ThemeBlockquote> = {
   title: "Theme/Tactical React/Blockquote",
   component: ThemeBlockquote,
+  parameters: {
+    intro: {
+      tag: "ThemeBlockquote",
+      title: "Blockquote",
+      description: [
+        "A callout for notes, warnings and quotes: a tinted panel (the status colour mixed into the surface) with a 4px bar of the full colour on the left and a coloured label. The ten types (info, tip, question, success, warning, failure, danger, bug, example, quote) each take their own accent from the status tokens.",
+        "The label is pulled toward the ink so it stays readable on the tint; colour never carries the meaning alone.",
+      ],
+    },
+  },
   args: { children: "Styled blockquote content." },
 };
 export default meta;

@@ -4,6 +4,16 @@ import { ThemeHeading } from "./ThemeHeading.js";
 const meta: Meta<typeof ThemeHeading> = {
   title: "Theme/Tactical React/Heading",
   component: ThemeHeading,
+  parameters: {
+    intro: {
+      tag: "ThemeHeading",
+      title: "Heading",
+      description: [
+        "Four heading levels on a tight, tracked, uppercase scale in the primary ink. Pick the level for document structure; the size follows it.",
+        "Headings are labels, not sentences: keep them short.",
+      ],
+    },
+  },
   args: { children: "Heading text" },
 };
 export default meta;

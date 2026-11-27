@@ -28,3 +28,10 @@ describe("ThemeProgress", () => {
     expect(screen.queryByText(/./, { selector: "p" })).toBeNull();
   });
 });
+
+describe("ThemeProgress name", () => {
+  it("is named by its label", () => {
+    render(<ThemeProgress label="Shield" value={40} />);
+    expect(screen.getByRole("progressbar", { name: "Shield" })).toBeTruthy();
+  });
+});
