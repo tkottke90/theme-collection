@@ -89,8 +89,9 @@ wood-grain sign.
      the browser's, not the theme's.
 
 8. **Lists.** The Tailwind reset removes list markers, and so does
-   `.theme-container`, except that `ol.theme-container` shows its numbers
-   (muted, in a 2.25rem gutter left of the items). A bare `<ol>` outside a
+   `.theme-container`, except that `ol.theme-container` shows numbers and
+   `ul.theme-container` shows disc bullets (muted, in a 2.25rem gutter left of
+   the items). A bare `<ol>` outside a
    container has no numbers.
 
 ### Using the tokens

@@ -130,7 +130,7 @@ to the system sans-serif):
 | ------------------------------------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | `.theme-button`                                   | `<button>`              | `--secondary`, `--ghost`, `--glow`; `disabled`                                                                                 |
 | `.theme-card`                                     | any block               | `__title`, `__body`                                                                                                            |
-| `.theme-container`                                | `<div>`, `<ul>`, `<ol>` | vertical stack; removes list markers on `<ul>`, but an `<ol>` shows its numbers                                                |
+| `.theme-container`                                | `<div>`, `<ul>`, `<ol>` | vertical stack; `<ol>` shows numbers and `<ul>` disc bullets (muted, in a gutter); a `<div>` shows none                        |
 | `.theme-item`                                     | `<div>`, `<li>`         | goes inside a container                                                                                                        |
 | `.theme-details`                                  | `<details>`             | `__body` on the content after `<summary>`                                                                                      |
 | `.theme-blockquote`                               | `<blockquote>`          | `--info`, `--tip`, `--question`, `--success`, `--warning`, `--failure`, `--danger`, `--bug`, `--example`, `--quote`; `__label` |

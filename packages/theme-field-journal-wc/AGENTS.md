@@ -170,7 +170,7 @@ or any framework that renders DOM.
 | ----------------------------------------------- | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
 | `theme-button`                                  | Leather-tab button         | `label`, `variant` (`primary`, `secondary`, `ghost`), `disabled`, `type` (`button`, `submit`, `reset`), `aria-label`             |
 | `theme-card`                                    | Cream content surface      | `heading`; slot content                                                                                                          |
-| `theme-container`                               | Panel wrapper              | `as` (`div`, `ol`, `ul`)                                                                                                         |
+| `theme-container`                               | Panel wrapper              | `as` (`div`, `ol`, `ul`; `ol` numbers, `ul` bullets)                                                                             |
 | `theme-item`                                    | List row                   | `as` (`li`, `div`)                                                                                                               |
 | `theme-detail`                                  | Collapsible section        | `summary`; slot content                                                                                                          |
 | `theme-blockquote`                              | Callout                    | `type` (`info`, `tip`, `question`, `success`, `warning`, `failure`, `danger`, `bug`, `example`, `quote`)                         |

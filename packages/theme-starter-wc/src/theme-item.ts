@@ -18,6 +18,14 @@ export class ThemeItem extends LitElement {
       :host {
         display: block;
       }
+      /* Each <li> is the only child of its shadow root, so a last: utility would
+         match every row; key the last row off the host instead. */
+      :host(:last-child) .row {
+        border-bottom-width: 0;
+      }
+      li::marker {
+        color: var(--color-text-muted);
+      }
     `,
   ];
 
@@ -25,7 +33,7 @@ export class ThemeItem extends LitElement {
 
   render() {
     const tag = TAGS[this.as] ?? TAGS.li;
-    return staticHtml`<${tag} class="py-2 border-b border-neutral-100 text-neutral-900 last:border-b-0"><slot></slot></${tag}>`;
+    return staticHtml`<${tag} class="row py-2 border-b border-neutral-100 text-neutral-900"><slot></slot></${tag}>`;
   }
 }
 

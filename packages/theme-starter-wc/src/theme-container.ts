@@ -19,6 +19,19 @@ export class ThemeContainer extends LitElement {
       :host {
         display: block;
       }
+      /*
+       * Lists keep their markers: numbers for ol, bullets for ul. Each theme-item's
+       * <li> sits in its own shadow root, but list numbering and list-style
+       * inheritance follow the flat tree, so the markers come from here.
+       */
+      ol.list {
+        list-style: decimal;
+        padding-left: 2.75rem;
+      }
+      ul.list {
+        list-style: disc;
+        padding-left: 2.75rem;
+      }
     `,
   ];
 
@@ -26,7 +39,7 @@ export class ThemeContainer extends LitElement {
 
   render() {
     const tag = TAGS[this.as] ?? TAGS.div;
-    return staticHtml`<${tag} class="rounded-theme border border-neutral-100 bg-neutral-50 px-5 py-4 m-0"><slot></slot></${tag}>`;
+    return staticHtml`<${tag} class="list list-none rounded-theme border border-neutral-100 bg-neutral-50 px-5 py-4 m-0"><slot></slot></${tag}>`;
   }
 }
 

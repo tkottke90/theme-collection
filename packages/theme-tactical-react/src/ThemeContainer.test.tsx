@@ -12,7 +12,7 @@ describe("ThemeContainer", () => {
     expect(container.querySelector("ul")).toBeTruthy();
   });
 
-  it("shows numbers on an ol, and no markers on a ul or div", () => {
+  it("shows numbers on an ol, bullets on a ul, and no markers on a div", () => {
     const style = (as: "ol" | "ul" | "div") => {
       const { container, unmount } = render(<ThemeContainer as={as}>Content</ThemeContainer>);
       const classes = (container.firstElementChild as HTMLElement).className;
@@ -21,7 +21,8 @@ describe("ThemeContainer", () => {
     };
     expect(style("ol")).toContain("list-decimal");
     expect(style("ol")).not.toContain("list-none");
-    expect(style("ul")).toContain("list-none");
+    expect(style("ul")).toContain("list-[square]");
+    expect(style("ul")).not.toContain("list-none");
     expect(style("div")).toContain("list-none");
   });
 });

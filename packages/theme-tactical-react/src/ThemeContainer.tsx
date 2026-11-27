@@ -10,9 +10,13 @@ export interface ThemeContainerProps {
 export function ThemeContainer({ as = "div", children }: ThemeContainerProps): JSX.Element {
   const Tag = as;
 
-  // An ol keeps its numbers (muted, in the left gutter); ul and div show none.
+  // ol and ul keep their markers (muted numbers, square bullets) in the left gutter; div shows none.
   const layout =
-    as === "ol" ? "list-decimal py-4 pr-5 pl-10 marker:text-text-muted" : "list-none px-5 py-4";
+    as === "ol"
+      ? "list-decimal py-4 pr-5 pl-10 marker:text-text-muted"
+      : as === "ul"
+        ? "list-[square] py-4 pr-5 pl-10 marker:text-text-muted"
+        : "list-none px-5 py-4";
 
   return (
     <Tag
