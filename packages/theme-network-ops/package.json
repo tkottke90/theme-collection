@@ -6,8 +6,17 @@
   "type": "module",
   "main": "./dist/index.css",
   "style": "./dist/index.css",
+  "exports": {
+    ".": {
+      "style": "./dist/index.css",
+      "default": "./dist/index.css"
+    },
+    "./dist/index.css": "./dist/index.css",
+    "./package.json": "./package.json"
+  },
   "files": [
-    "dist"
+    "dist",
+    "AGENTS.md"
   ],
   "scripts": {
     "build": "rimraf dist && tailwindcss -i ./src/index.css -o ./dist/index.css --minify",

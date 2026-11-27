@@ -2,6 +2,16 @@ import type { Meta, StoryObj } from "@storybook/html";
 
 const meta: Meta = {
   title: "Theme/Network Ops/Blockquote",
+  parameters: {
+    intro: {
+      tag: ".theme-blockquote",
+      title: "Blockquote",
+      description: [
+        "A callout for status notes: a 4px rule in the status colour, a faint tint of that colour over the surface, and a bold label in the same colour. Ten modifiers (theme-blockquote--info through --quote) each set one accent custom property, so every type is the same shape in a different colour.",
+        "Danger reuses the coral brand colour, so a critical callout reads as the same signal as a glowing button. The colour always comes with the text label.",
+      ],
+    },
+  },
 };
 export default meta;
 
