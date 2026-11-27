@@ -83,7 +83,8 @@ wood-grain sign.
      use the disabled state to carry information.
    - The sign's leaf icon is 1.41:1 on the wood. It is decorative and
      `aria-hidden`; don't use that pairing for anything meaningful.
-   - Skeleton bars are 1.06:1 on a card; they are placeholders, not content.
+   - Skeleton bars are 1.64:1 on a card (1.35:1 on the page); they are
+     placeholders, not content, so they are not held to 3:1.
    - An unchecked checkbox or radio is drawn by the browser, so its outline is
      the browser's, not the theme's.
 
