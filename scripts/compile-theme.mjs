@@ -10,7 +10,7 @@ import { dirname, join, resolve } from "node:path";
  * or bundler can't interpret on its own, so this has to run through Tailwind
  * before the result is usable by non-Tailwind build steps (esbuild/Jest/Vite).
  */
-function compile({ themeDir, contentGlobs, extraCss = "" }) {
+function compile({ themeDir, contentGlobs, extraCss = "", staticTokens = false }) {
   const absThemeFile = resolve(process.cwd(), themeDir, "theme.css");
   const absContentGlobs = contentGlobs.map((glob) => resolve(process.cwd(), glob));
 
@@ -22,9 +22,23 @@ function compile({ themeDir, contentGlobs, extraCss = "" }) {
   const entryFile = join(tmpDir, "entry.css");
   const outFile = join(tmpDir, "out.css");
 
+  // Tailwind drops any `@theme` variable no utility uses. `staticTokens`
+  // compiles a copy of the theme as `@theme static {}` instead, so every
+  // token reaches the stylesheet and is there for consumers' own elements.
+  let themeImport = absThemeFile;
+  if (staticTokens) {
+    const source = readFileSync(absThemeFile, "utf8");
+    const staticSource = source.replace(/@theme(\s+static)?\s*\{/, "@theme static {");
+    if (staticSource === source && !/@theme\s+static\s*\{/.test(source)) {
+      throw new Error(`compile-theme: no @theme block found in ${absThemeFile}`);
+    }
+    themeImport = join(tmpDir, "theme.css");
+    writeFileSync(themeImport, staticSource);
+  }
+
   const entry = [
     `@import "tailwindcss";`,
-    `@import "${absThemeFile}";`,
+    `@import "${themeImport}";`,
     ...absContentGlobs.map((glob) => `@source "${glob}";`),
     extraCss,
   ].join("\n");
@@ -39,9 +53,19 @@ function compile({ themeDir, contentGlobs, extraCss = "" }) {
   }
 }
 
-/** Compiles the theme + content into a real `.css` file at `outFile`. */
-export function compileThemeFile({ themeDir, contentGlobs, outFile, extraCss = "" }) {
-  const css = compile({ themeDir, contentGlobs, extraCss });
+/**
+ * Compiles the theme + content into a real `.css` file at `outFile`. Pass
+ * `staticTokens: true` to emit every theme token, not only those the
+ * package's components use.
+ */
+export function compileThemeFile({
+  themeDir,
+  contentGlobs,
+  outFile,
+  extraCss = "",
+  staticTokens = false,
+}) {
+  const css = compile({ themeDir, contentGlobs, extraCss, staticTokens });
   const absOutFile = resolve(process.cwd(), outFile);
   mkdirSync(dirname(absOutFile), { recursive: true });
   writeFileSync(absOutFile, css);

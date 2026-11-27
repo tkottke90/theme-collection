@@ -168,7 +168,7 @@ function DemoPage() {
             <ThemeBlockquote type="warning">
               Solar activity is rising. Expect intermittent signal loss.
             </ThemeBlockquote>
-            <ThemeContainer as="ul">
+            <ThemeContainer as="ol">
               <ThemeItem>Run pre-flight checks</ThemeItem>
               <ThemeItem>Confirm crew roster</ThemeItem>
               <ThemeItem>Open the comms channel</ThemeItem>

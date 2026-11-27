@@ -5,9 +5,8 @@ import { ThemeHeading, ThemeText } from "../src/index.js";
 
 // Built by `npm run build` (runs automatically via the pre* npm hooks
 // before `storybook dev` / `build-storybook`). It carries the tokens from
-// themes/tactical/theme.css as custom properties, so the backdrop below can
-// use them too. Tailwind only emits the tokens the components use, so the
-// backdrop tokens are ones the components use as well.
+// themes/tactical/theme.css as custom properties (all of them: the build
+// compiles with `staticTokens`), so the backdrop below can use them too.
 import "../dist/theme.css";
 
 const preview: Preview = {

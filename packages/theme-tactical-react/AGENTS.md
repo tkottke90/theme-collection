@@ -152,10 +152,10 @@ components**. They render plain DOM (no Shadow DOM) styled by one stylesheet.
 - ESM (`dist/index.mjs`) and CommonJS (`dist/index.cjs`) builds, with types.
 - **`preact` is a peer dependency** (`^10.24.0`) and is not bundled.
 - `@tkottke90/theme-tactical-react/theme.css` is **required**: it carries the
-  component styles and the tokens the components use.
+  component styles and the design tokens.
 - **`theme.css` includes Tailwind's base reset, and it applies to the whole
   page**, not only to these components: `h1`–`h6` inherit their size and
-  weight, `ol`/`ul` lose their markers, and `button`, `input`, `select` and
+  weight, `ol`/`ul` lose their markers (`ThemeContainer as="ol"` brings its numbers back), and `button`, `input`, `select` and
   `textarea` become transparent and inherit font and colour. Style your own
   elements with that in mind (use the tokens, set the sizes you want).
 - It does **not** style `body`. Put the page on the tactical ground yourself:
@@ -173,7 +173,7 @@ components**. They render plain DOM (no Shadow DOM) styled by one stylesheet.
 | `ThemeStat`                                 | Large numeric readout         | `label`, `value`, `unit`                                                                                           |
 | `ThemeProgress`                             | Segmented bar meter           | `label`, `value`, `max` (default 100)                                                                              |
 | `ThemeGauge`                                | Radial gauge                  | `label`, `value`, `max` (default 100)                                                                              |
-| `ThemeContainer`                            | Bordered wrapper              | `as` (`div`, `ul`, `ol`); children                                                                                 |
+| `ThemeContainer`                            | Bordered wrapper              | `as` (`div`, `ul`, `ol`; an `ol` shows its numbers); children                                                      |
 | `ThemeItem`                                 | Row in a container            | `as` (`li`, `div`); children                                                                                       |
 | `ThemeDetail`                               | Collapsible section           | `summary`; children                                                                                                |
 | `ThemeBlockquote`                           | Labelled callout              | `type` (`info`, `tip`, `question`, `success`, `warning`, `failure`, `danger`, `bug`, `example`, `quote`); children |
@@ -259,16 +259,32 @@ inside `preact`), so ref-based form libraries work.
 
 ### Tokens for your own elements
 
-`theme.css` defines the tokens as CSS custom properties on `:root`, so style
-your own elements with `var(--color-…)`, `var(--font-sans)` and
-`var(--radius-theme)`. **Only the tokens the components use are emitted**
-(Tailwind drops the rest), so some in Part 1's token groups are missing here.
-What `theme.css` defines: `--color-bg`, `--color-surface`, `--color-surface-alt`,
-`--color-border`, `--color-frame-inner`, `--color-brand-500`/`-600`/`-900`,
-`--color-neutral-900`, the status set
-`--color-{info,tip,question,success,warning,failure,danger,bug,example,quote}-500`,
-`--color-text`, `--color-text-muted`, the skeleton pair, `--font-sans`,
-`--font-mono` and `--radius-theme`. `--radius-theme-sm` and `--shadow-glow` are not
-custom properties here (the glow is a component utility); for your own
-element use `1px` for the small radius, and for the glow copy its two parts
-(`0 0 0 1px var(--color-brand-600), 0 0 16px 0 rgb(34 211 238 / 0.35)`).
+`theme.css` defines every design token as a CSS custom property on `:root`
+(inside `@layer theme`), whether or not a component uses it, so style your own
+elements with `var(--color-…)`, `var(--font-sans)` and `var(--radius-theme)`.
+The groups are the ones in Part 1:
+
+- Colours: `--color-bg`, `--color-surface`, `--color-surface-alt`,
+  `--color-border`, `--color-frame-inner`, the brand scale
+  `--color-brand-{50,100,500,600,900}`, the neutral scale
+  `--color-neutral-{50,100,300,500,900}`, the status set
+  `--color-{info,tip,question,success,warning,failure,danger,bug,example,quote}-500`,
+  `--color-text`, `--color-text-muted`, and the skeleton pair
+  (`--color-skeleton-base`, `--color-skeleton-highlight`).
+- Fonts: `--font-sans`, `--font-mono`.
+- Shape and light: `--radius-theme`, `--radius-theme-sm`, `--shadow-glow`.
+
+Never paste the hex values; they come from `themes/tactical/theme.css` in the
+monorepo. Tailwind's own variables (spacing, type scale, `--tw-*`) are in the
+file too; don't rely on them.
+
+```css
+.my-panel {
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-theme);
+  background: var(--color-surface-alt);
+  box-shadow: var(--shadow-glow);
+  color: var(--color-text);
+}
+```

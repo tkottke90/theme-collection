@@ -8,4 +8,7 @@ compileThemeFile({
   contentGlobs: ["./src/*.tsx"],
   outFile: "./dist/theme.css",
   extraCss: SKELETON_SHIMMER_CSS,
+  // Every token, not just the ones the components use, so AGENTS.md's token
+  // list is true and consumers can style their own elements with any of them.
+  staticTokens: true,
 });

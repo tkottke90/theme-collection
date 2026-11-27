@@ -43,9 +43,9 @@ export function Status() {
 shares a single copy of it. React projects can use the package through
 `preact/compat` (alias `react` and `react-dom` to it in your bundler).
 
-`theme.css` is required: it holds the compiled component styles and the design
-tokens the components use, as CSS custom properties, which you can use to style
-your own elements (`var(--color-brand-500)`, `var(--font-mono)`). **It also
+`theme.css` is required: it holds the compiled component styles and the
+design tokens as CSS custom properties (every token, not only the ones the
+components use), which you can use to style your own elements (`var(--color-brand-500)`, `var(--font-mono)`). **It also
 includes Tailwind's base reset, which applies to the whole page** (headings
 inherit their size and weight, lists lose their markers, form controls become
 transparent), and it does not style `body`: set
