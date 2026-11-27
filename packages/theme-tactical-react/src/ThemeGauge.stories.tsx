@@ -4,6 +4,16 @@ import { ThemeGauge } from "./ThemeGauge.js";
 const meta: Meta<typeof ThemeGauge> = {
   title: "Theme/Tactical React/Gauge",
   component: ThemeGauge,
+  parameters: {
+    intro: {
+      tag: "ThemeGauge",
+      title: "Gauge",
+      description: [
+        "A radial gauge: a cyan arc with a glow on a dim track, with the value and label in the centre in the monospace face. Value runs from 0 to max.",
+        "It is exposed as a meter named by its label.",
+      ],
+    },
+  },
   args: {
     label: "Power",
     value: 72,

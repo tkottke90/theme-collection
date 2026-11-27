@@ -16,7 +16,8 @@
     "./theme.css": "./dist/theme.css"
   },
   "files": [
-    "dist"
+    "dist",
+    "AGENTS.md"
   ],
   "scripts": {
     "build": "node scripts/build.mjs",

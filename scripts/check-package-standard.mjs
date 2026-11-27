@@ -22,7 +22,7 @@ import { fileURLToPath } from "node:url";
  * the check fails if a listed package already passes, so the list can't go
  * stale.
  */
-const PENDING = new Set(["theme-tactical-react"]);
+const PENDING = new Set([]);
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const PACKAGES = path.join(ROOT, "packages");

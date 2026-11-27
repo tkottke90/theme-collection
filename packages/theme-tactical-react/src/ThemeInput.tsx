@@ -1,37 +1,37 @@
 import type { JSX } from "preact";
+import { forwardRef } from "preact/compat";
 
 export type ThemeInputType = "text" | "email" | "password" | "number" | "checkbox" | "radio";
 
-export interface ThemeInputProps {
+/**
+ * Every native `<input>` prop is forwarded (`name`, `id`, `value` /
+ * `defaultValue`, `checked` / `defaultChecked`, `required`, `onInput`,
+ * `onChange`, `aria-*`, ...), so the control works in a plain `<form>`,
+ * controlled or uncontrolled. `type` is narrowed to the types this theme styles.
+ * A `ref` reaches the native `<input>` (e.g. for form libraries).
+ */
+export interface ThemeInputProps extends Omit<JSX.InputHTMLAttributes<HTMLInputElement>, "type"> {
   type?: ThemeInputType;
-  value?: string;
-  placeholder?: string;
-  disabled?: boolean;
-  onChange?: (event: Event) => void;
 }
 
 const BOX_TYPES: ThemeInputType[] = ["text", "email", "password", "number"];
 
-export function ThemeInput({
-  type = "text",
-  value,
-  placeholder,
-  disabled = false,
-  onChange,
-}: ThemeInputProps): JSX.Element {
-  const isBoxType = BOX_TYPES.includes(type);
-  const classes = isBoxType
-    ? "rounded-theme border border-border bg-surface-alt px-3 py-2 [font:inherit] text-text placeholder:text-text-muted cursor-text disabled:opacity-60 disabled:cursor-not-allowed focus:outline focus:outline-2 focus:outline-brand-500 focus:outline-offset-1"
-    : "accent-brand-500 h-[1.1rem] w-[1.1rem] cursor-pointer disabled:cursor-not-allowed";
+const BOX_CLASSES =
+  "rounded-theme border border-border bg-surface-alt px-3 py-2 [font:inherit] text-text placeholder:text-text-muted cursor-text disabled:opacity-60 disabled:cursor-not-allowed focus:outline focus:outline-2 focus:outline-brand-500 focus:outline-offset-1";
+const TOGGLE_CLASSES =
+  "accent-brand-500 h-[1.1rem] w-[1.1rem] cursor-pointer disabled:cursor-not-allowed";
 
+export const ThemeInput = forwardRef<HTMLInputElement, ThemeInputProps>(function ThemeInput(
+  { type = "text", class: cls, className, ...rest },
+  ref,
+) {
+  const base = BOX_TYPES.includes(type) ? BOX_CLASSES : TOGGLE_CLASSES;
   return (
     <input
+      {...rest}
+      ref={ref}
       type={type}
-      value={value}
-      placeholder={placeholder}
-      disabled={disabled}
-      onChange={onChange}
-      className={classes}
+      className={[base, cls, className].filter(Boolean).join(" ")}
     />
   );
-}
+});
