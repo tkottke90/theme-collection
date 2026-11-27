@@ -37,8 +37,8 @@ Values (addresses, thresholds) are set in monospace.
    (`--color-accent-500`), and pressed links (`--color-accent-600`). Never use
    coral for decoration, so it keeps meaning "act now".
 2. **Surfaces.** Page `--color-bg`; panels (card, details) `--color-surface`;
-   things inside a panel (items, inputs) `--color-surface-alt`. Every panel
-   and control has a 1px `--color-border`. Text on a surface is
+   things inside a panel (items, inputs) `--color-surface-alt`. Panels and items have a 1px `--color-border`; controls
+   have a 1px `--color-border-strong`. Text on a surface is
    `--color-text` or `--color-text-muted`.
 3. **Shape.** Panels use `--radius-theme` (0.75rem); controls and items use
    `--radius-theme-sm` (0.5rem). The only shadow is `--shadow-glow`, a coral
@@ -59,18 +59,23 @@ Values (addresses, thresholds) are set in monospace.
 6. **Motion.** Only the skeleton shimmer moves, and it stops under
    `prefers-reduced-motion`.
 7. **Contrast.** Measured in Chromium from the resolved tokens, on the surface
-   each ink sits on. Body text, headings, links, placeholders, every button
-   state (primary 4.64:1, secondary and ghost 5.2–7.1:1 on the page, a card or
-   an item, hover included, disabled 4.68:1) and the seven other blockquote
-   labels meet WCAG AA (4.5:1).
-   **These do not**, and are not claimed:
-   - `.theme-blockquote__label` on its tinted background: `--danger` 3.77:1,
-     `--example` 3.35:1, `--quote` 4.18:1.
-   - A field's 1px `--color-border` against its `--color-surface-alt` fill is
-     1.12:1, below the 3:1 WCAG asks of a control's boundary. The text and
-     the focus ring (3.57:1) are fine.
+   each ink sits on, and all meet WCAG AA:
+   - Text: body, headings, links, placeholders and muted ink are 4.68:1 or
+     better. Every button state (primary 4.64:1, secondary and ghost
+     5.2–7.1:1 on the page, a card or an item, hover included, disabled 4.68:1)
+     passes.
+   - Blockquote labels are lightened toward the ink
+     (`color-mix(--bq-accent 70%, --color-text)`) and measure 5.28:1 or better
+     on their tint; the rule keeps the pure status colour.
+   - A text field's or select's 1px `--color-border-strong` is 3.46:1 against
+     a card and 3.09:1 against its own fill (3:1 is the bar for a control's
+     boundary); the range track uses the same token. The focus ring is 3.57:1.
+   - Not measured: an unchecked checkbox or radio is drawn by the browser, so
+     its outline is the browser's, not the theme's.
 
-   Fixing these means changing tokens, which is a separate decision.
+   Plain `--color-border` (a 1.1–1.4:1 hairline) is only for panels and items,
+   which don't need to be found; use `--color-border-strong` for anything a
+   user has to find or operate.
 
 ### Using the tokens
 
@@ -79,7 +84,7 @@ Values (addresses, thresholds) are set in monospace.
 `var(--font-sans)` and `var(--radius-theme)`; never paste hex values, since
 the tokens are compiled from the theme's single source
 (`themes/network-ops/theme.css`). The ones an outside element needs:
-`--color-bg`, `--color-surface`, `--color-surface-alt`, `--color-border`,
+`--color-bg`, `--color-surface`, `--color-surface-alt`, `--color-border`, `--color-border-strong`,
 `--color-text`, `--color-text-muted`, `--color-brand-400`/`-500`/`-600`/`-700`,
 `--color-accent-400`/`-500`/`-600`, the `--color-<type>-500` status colours,
 `--font-sans`, `--font-mono`, `--radius-theme`, `--radius-theme-sm` and
