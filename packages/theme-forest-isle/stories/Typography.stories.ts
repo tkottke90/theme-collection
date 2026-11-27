@@ -2,6 +2,16 @@ import type { Meta, StoryObj } from "@storybook/html";
 
 const meta: Meta = {
   title: "Theme/Forest Isle/Typography",
+  parameters: {
+    intro: {
+      tag: ".theme-heading, .theme-text",
+      title: "Typography",
+      description: [
+        "Headings are set in a serif (Lora) at bold weight, which gives the cottage-journal feel; body copy and captions use a rounded sans (Nunito). The heading classes carry a size modifier (--h1 to --h4) that is independent of the element, so a document outline never has to bend to the visual scale.",
+        "Body copy is 1rem at a 1.6 line height. Captions are smaller and use the muted ink.",
+      ],
+    },
+  },
 };
 export default meta;
 

@@ -2,6 +2,16 @@ import type { Meta, StoryObj } from "@storybook/html";
 
 const meta: Meta = {
   title: "Theme/Forest Isle/Blockquote",
+  parameters: {
+    intro: {
+      tag: ".theme-blockquote",
+      title: "Blockquote",
+      description: [
+        "A callout with a 4px left rule and a faint tint, both taken from one --bq-accent custom property that each type modifier sets. Ten types are available: info, tip, question, success, warning, failure, danger, bug, example and quote.",
+        "Always include the label: colour alone never carries the meaning.",
+      ],
+    },
+  },
 };
 export default meta;
 

@@ -2,6 +2,16 @@ import type { Meta, StoryObj } from "@storybook/html";
 
 const meta: Meta = {
   title: "Theme/Forest Isle/Container",
+  parameters: {
+    intro: {
+      tag: ".theme-container",
+      title: "Container",
+      description: [
+        "A vertical stack that spaces its children 0.75rem apart. Use it on a div, ul or ol to lay out items without margins on the items themselves.",
+        "The container removes list markers, so an ol shows no numbers; use it for groups of cards or items, not for numbered instructions.",
+      ],
+    },
+  },
 };
 export default meta;
 
