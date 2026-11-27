@@ -2,6 +2,16 @@ import type { Meta, StoryObj } from "@storybook/html";
 
 const meta: Meta = {
   title: "Theme/Forest Isle/Card",
+  parameters: {
+    intro: {
+      tag: ".theme-card",
+      title: "Card",
+      description: [
+        "The main surface: parchment on the slightly darker page, with the theme's generous rounding and a soft warm shadow instead of a border. Its direct children are spaced 0.75rem apart.",
+        "Cards hold headings, text and actions; put form fields inside one for a settings panel.",
+      ],
+    },
+  },
 };
 export default meta;
 
