@@ -1,7 +1,7 @@
 ---
 layout: base.njk
 title: Themes
-permalink: /themes/
+permalink: /packages/
 ---
 
 <h1>Themes</h1>
@@ -10,7 +10,9 @@ permalink: /themes/
     <li>
       <h2>{{ pkg.name }} <small>v{{ pkg.version }}</small></h2>
       <p>{{ pkg.description }}</p>
-      <a href="/storybooks/{{ pkg.dirName }}/">View Storybook →</a>
+      <a href="{{ ('/packages/' + pkg.dirName + '/') | url }}">Install &amp; download →</a>
+      ·
+      <a href="{{ ('/storybooks/' + pkg.dirName + '/') | url }}">View Storybook →</a>
     </li>
   {% endfor %}
 </ul>

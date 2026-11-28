@@ -2,7 +2,7 @@
   "name": "theme-collection",
   "private": true,
   "version": "0.0.0",
-  "description": "Collection of drop-in CSS themes and component libraries, published as @tkottke90/theme-* npm packages.",
+  "description": "Collection of drop-in CSS themes and component libraries, distributed privately as @tkottke90/theme-* npm packages.",
   "license": "MIT",
   "engines": {
     "node": ">=20"

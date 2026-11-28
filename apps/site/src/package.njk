@@ -1,0 +1,44 @@
+---
+layout: base.njk
+pagination:
+  data: packages
+  size: 1
+  alias: pkg
+permalink: "/packages/{{ pkg.dirName }}/"
+eleventyComputed:
+  title: "{{ pkg.name }}"
+---
+
+<h1>{{ pkg.name }} <small>v{{ pkg.version }}</small></h1>
+<p>{{ pkg.description }}</p>
+<p><a href="{{ ('/storybooks/' + pkg.dirName + '/') | url }}">View Storybook →</a></p>
+
+<h2>Install</h2>
+<p>
+  This package is distributed privately. It is not on public npm. Pick one of
+  the two options below.
+</p>
+
+<h3>Option 1: private registry</h3>
+<p>
+  Requires a registry token. Ask the maintainer for one, then add this to your
+  project's <code>.npmrc</code> and export the token as <code>NPM_TOKEN</code>:
+</p>
+<pre><code>@tkottke90:registry={{ site.registryUrl }}
+//{{ site.registryHost }}/:_authToken=${NPM_TOKEN}</code></pre>
+<pre><code>npm install {{ pkg.name }}</code></pre>
+
+<h3>Option 2: download the tarball</h3>
+<p>
+  <a href="{{ pkg.releaseUrl }}">Download {{ pkg.tarballName }}</a>
+  (from the <a href="{{ site.repoUrl }}/releases/tag/v{{ pkg.version }}">v{{ pkg.version }} release</a>).
+  Then either install it directly:
+</p>
+<pre><code>npm install ./{{ pkg.tarballName }}</code></pre>
+<p>or unpack it into <code>node_modules</code> yourself:</p>
+<pre><code>mkdir -p node_modules/{{ pkg.name }}
+tar -xzf {{ pkg.tarballName }} -C node_modules/{{ pkg.name }} --strip-components=1</code></pre>
+<p>
+  Manual unpacking skips dependency installation. If the package lists
+  dependencies, run <code>npm install</code> in your project afterwards.
+</p>

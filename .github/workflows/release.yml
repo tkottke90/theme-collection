@@ -1,0 +1,120 @@
+name: Release
+
+# Runs when a release tag is pushed (use the `release` skill; see
+# CONTRIBUTING.md "Releasing"). Tags look like v1.2.3, or
+# v1.2.3-dry-run-<unix-ts> for a rehearsal: dry-run tags run `verify` and
+# `build` only.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Verify version
+    runs-on: ubuntu-latest
+    outputs:
+      dry_run: ${{ steps.dry.outputs.dry_run }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: dry
+        run: echo "dry_run=$(bin/release.sh detect-dry-run "$GITHUB_REF_NAME")" >> "$GITHUB_OUTPUT"
+      - run: bin/release.sh verify-tag "$GITHUB_REF_NAME"
+
+  build:
+    name: Build
+    needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run test --workspaces --if-present
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run build --workspaces --if-present
+      - run: npm run storybook:build
+      - run: npm run build -w site
+      - run: bin/release.sh pack-all tarballs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tarballs
+          path: tarballs/*.tgz
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: apps/site/_site
+          if-no-files-found: error
+
+  release:
+    name: GitHub Release
+    needs: [verify, build]
+    if: needs.verify.outputs.dry_run == 'false'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      # checkout can drop the annotated tag's message; re-fetch it.
+      - run: git fetch --tags --force
+      - uses: actions/download-artifact@v4
+        with:
+          name: tarballs
+          path: tarballs
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          bin/release.sh tag-message "$GITHUB_REF_NAME" > notes.md
+          gh release create "$GITHUB_REF_NAME" tarballs/*.tgz \
+            --title "$GITHUB_REF_NAME" --notes-file notes.md --verify-tag
+
+  publish-npm:
+    name: Publish to private registry
+    needs: [verify, release]
+    if: needs.verify.outputs.dry_run == 'false'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/download-artifact@v4
+        with:
+          name: tarballs
+          path: tarballs
+      - name: Publish tarballs
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          echo "//npm.artifacts.tdkottke.com/:_authToken=${NPM_TOKEN}" > "$RUNNER_TEMP/.npmrc"
+          NPM_CONFIG_USERCONFIG="$RUNNER_TEMP/.npmrc" bin/release.sh publish-npm tarballs
+
+  deploy-site:
+    name: Deploy site
+    needs: [verify, publish-npm]
+    if: needs.verify.outputs.dry_run == 'false'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: site
+      # BetaHuhn/do-spaces-action@v2, pinned to a commit because it handles
+      # deploy credentials.
+      - uses: BetaHuhn/do-spaces-action@47f34d70b97cced8e8dbb50e2ecfaaf4381593a7
+        with:
+          access_key: ${{ secrets.DIGITAL_OCEAN_STORAGE_ID }}
+          secret_key: ${{ secrets.DIGITAL_OCEAN_STORAGE_KEY }}
+          space_name: ${{ vars.DIGITAL_OCEAN_SPACES_NAME }}
+          space_region: ${{ vars.DIGITAL_OCEAN_SPACES_REGION }}
+          source: site
+          out_dir: themes
