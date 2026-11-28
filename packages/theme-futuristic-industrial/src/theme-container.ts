@@ -30,6 +30,18 @@ export class ThemeContainer extends LitElement {
         position: relative;
         isolation: isolate;
       }
+      /*
+       * An ol shows numbers in place of each item's hazard tab: list-style
+       * inherits through the flat tree into each theme-item's <li>, and the
+       * inherited custom property tells the item to hide its tab. A ul keeps
+       * the tabs as its bullets.
+       */
+      ol.list {
+        list-style: decimal;
+        padding-left: 2.75rem;
+        --fi-item-tab-display: none;
+        --fi-item-gutter: 0.5rem;
+      }
     `,
   ];
 
@@ -46,7 +58,7 @@ export class ThemeContainer extends LitElement {
     const tag = TAGS[this.as] ?? TAGS.div;
     return staticHtml`
       ${renderPlateFrame(this.frame.geometry)}
-      <${tag} class="relative font-sans text-neutral-900 px-5 py-4 m-0"><slot></slot></${tag}>
+      <${tag} class="list list-none relative font-sans text-neutral-900 px-5 py-4 m-0"><slot></slot></${tag}>
     `;
   }
 }
