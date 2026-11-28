@@ -58,11 +58,11 @@ local half (checks, version bump, changelog, tag, push).
 
 ## Approaches considered
 
-| | Approach | Trade-off |
-|---|---|---|
+|                | Approach                                                                              | Trade-off                                                                                |
+| -------------- | ------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
 | **A (chosen)** | Skill bumps all versions, commits, tags; CI verifies tag equals every package version | One bump commit per release; `main` and tarballs always agree; site needs no extra logic |
-| B | CI derives version from the tag and stamps it at build time | No bump commit, but repo versions go stale and the site would show wrong versions |
-| C | CI bumps and pushes back to `main` after the tag | Needs CI write access to `main`, races with merges; no advantage over A |
+| B              | CI derives version from the tag and stamps it at build time                           | No bump commit, but repo versions go stale and the site would show wrong versions        |
+| C              | CI bumps and pushes back to `main` after the tag                                      | Needs CI write access to `main`, races with merges; no advantage over A                  |
 
 Owner picked A.
 
@@ -101,7 +101,7 @@ previous:
    re-run safely (Verdaccio rejects republishing a version). Skipped for dry-run tags.
 5. **deploy-site** — upload `_site` to DigitalOcean Spaces with
    `BetaHuhn/do-spaces-action@v2` (the owner's existing pattern: `source:
-   apps/site/_site`, `out_dir: themes`), using the secrets/vars below. The
+apps/site/_site`, `out_dir: themes`), using the secrets/vars below. The
    action is pinned to a commit SHA, since it handles deploy credentials.
    Skipped for dry-run tags.
 
