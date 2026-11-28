@@ -7,6 +7,10 @@
   --color-neutral-500: #676b72;
   --color-neutral-900: #3d3e41;
 
+  /* Edge of form controls: 3.31:1 against the field fill and the page, the
+     3:1 a control's boundary needs (neutral-300 is only 1.94:1). */
+  --color-border-strong: #80858d;
+
   /* Text roles. Each reads an optional --theme-* override first, so a dark
      surface (theme-casing) can switch slotted text to light values; light
      surfaces reset the overrides back to these defaults. */
