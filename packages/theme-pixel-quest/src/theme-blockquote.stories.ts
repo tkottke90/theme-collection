@@ -4,6 +4,16 @@ import "./theme-blockquote.js";
 
 const meta: Meta = {
   title: "Theme/Pixel Quest/Blockquote",
+  parameters: {
+    intro: {
+      tag: "theme-blockquote",
+      title: "Blockquote",
+      description: [
+        "A callout in the same thin pixel frame as the cards: a dark 2px outline with pixel-stepped round corners on parchment, plus a thick 4px left rule in the type's accent colour.",
+        "Ten types (info, tip, question, success, warning, failure, danger, bug, example, quote) each pair a muted, earthy ink with a semibold label in the same colour. The accents are deliberately desaturated so they sit on parchment like old print, not like neon status lights.",
+      ],
+    },
+  },
   render: (args) =>
     html`<theme-blockquote type=${args["type"]}>${args["content"]}</theme-blockquote>`,
   args: { content: "A blockquote styled with theme tokens." },

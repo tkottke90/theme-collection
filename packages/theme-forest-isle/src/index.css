@@ -76,13 +76,18 @@ body {
   background-color: var(--color-neutral-100);
 }
 
+.theme-button:focus-visible {
+  outline: 2px solid var(--color-brand-600);
+  outline-offset: 2px;
+}
+
 /* Input */
 
 .theme-input {
   display: block;
   width: 100%;
   border-radius: var(--radius-theme);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border-strong);
   background-color: var(--color-surface-alt);
   color: var(--color-text);
   padding: 0.5rem 0.75rem;
@@ -115,7 +120,7 @@ body {
   min-height: 5rem;
   resize: vertical;
   border-radius: var(--radius-theme);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border-strong);
   background-color: var(--color-surface-alt);
   color: var(--color-text);
   padding: 0.5rem 0.75rem;
@@ -136,7 +141,7 @@ body {
   display: block;
   width: 100%;
   border-radius: var(--radius-theme);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border-strong);
   background-color: var(--color-surface-alt);
   color: var(--color-text);
   padding: 0.5rem 0.75rem;
@@ -149,6 +154,57 @@ body {
   outline: none;
   border-color: var(--color-brand-500);
   box-shadow: 0 0 0 3px var(--color-brand-100);
+}
+
+/* Form control states (shared by input, textarea and select) */
+
+.theme-input::placeholder,
+.theme-textarea::placeholder {
+  color: color-mix(in srgb, var(--color-text-muted) 70%, var(--color-text));
+}
+
+/* :user-invalid only matches once the user has interacted (or submitted),
+   so an empty required field isn't red on page load. aria-invalid lets
+   server-side or script validation opt in explicitly. */
+.theme-input:user-invalid,
+.theme-input[aria-invalid="true"],
+.theme-textarea:user-invalid,
+.theme-textarea[aria-invalid="true"],
+.theme-select:user-invalid,
+.theme-select[aria-invalid="true"] {
+  border-color: var(--color-danger-500);
+}
+
+.theme-input:user-invalid:focus-visible,
+.theme-input[aria-invalid="true"]:focus-visible,
+.theme-textarea:user-invalid:focus-visible,
+.theme-textarea[aria-invalid="true"]:focus-visible,
+.theme-select:user-invalid:focus-visible,
+.theme-select[aria-invalid="true"]:focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-danger-500) 25%, var(--color-surface));
+}
+
+.theme-input:disabled,
+.theme-textarea:disabled,
+.theme-select:disabled {
+  background-color: var(--color-neutral-100);
+  border-color: var(--color-neutral-100);
+  color: var(--color-neutral-500);
+  cursor: not-allowed;
+}
+
+/* Checkboxes and radios keep their native shape; accent-color (set on
+   .theme-input above) paints the :checked state in the brand colour. */
+.theme-input[type="checkbox"]:focus-visible,
+.theme-input[type="radio"]:focus-visible {
+  box-shadow: none;
+  outline: 2px solid var(--color-brand-600);
+  outline-offset: 2px;
+}
+
+.theme-input[type="checkbox"]:disabled,
+.theme-input[type="radio"]:disabled {
+  accent-color: var(--color-neutral-300);
 }
 
 /* Typography */
@@ -212,6 +268,12 @@ body {
   color: var(--color-brand-900);
 }
 
+.theme-link:focus-visible {
+  outline: 2px solid var(--color-brand-600);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
 /* Container / Item */
 
 .theme-container {
@@ -221,6 +283,21 @@ body {
   padding: 1rem;
   margin: 0;
   list-style: none;
+}
+
+/* An <ol> shows numbers and a <ul> bullets, in the gap left of the items. */
+ol.theme-container {
+  list-style: decimal;
+  padding-left: 2.25rem;
+}
+
+ul.theme-container {
+  list-style: disc;
+  padding-left: 2.25rem;
+}
+
+.theme-container > li::marker {
+  color: var(--color-text-muted);
 }
 
 .theme-item {
@@ -241,10 +318,43 @@ body {
   font-family: var(--font-sans);
 }
 
-.theme-field label {
+.theme-field label,
+.theme-field legend {
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--color-text-muted);
+}
+
+/* A <fieldset class="theme-field"> groups checkboxes or radios under a
+   <legend>; <fieldset disabled> disables every control inside it. */
+fieldset.theme-field {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+fieldset.theme-field legend {
+  padding: 0;
+  margin-bottom: 0.375rem;
+}
+
+/* A label wrapping a checkbox or radio: inline, regular weight. */
+.theme-field .theme-field__option {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 400;
+  font-size: 1rem;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.theme-field:disabled legend,
+.theme-field:disabled .theme-field__option,
+.theme-field__option:has(:disabled) {
+  color: var(--color-neutral-500);
+  cursor: not-allowed;
 }
 
 /* Detail */
@@ -264,6 +374,12 @@ body {
   font-family: var(--font-serif);
 }
 
+.theme-detail summary:focus-visible {
+  outline: 2px solid var(--color-brand-600);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
 /* Blockquote */
 
 .theme-blockquote {
@@ -281,7 +397,9 @@ body {
   display: block;
   font-weight: 600;
   margin-bottom: 0.25rem;
-  color: var(--bq-accent);
+  /* Pulled toward the ink so every type's label reaches 4.5:1 on its tint;
+     the rule keeps the pure status colour. */
+  color: color-mix(in srgb, var(--bq-accent) 70%, var(--color-text));
 }
 
 .theme-blockquote--info {
@@ -366,6 +484,12 @@ body {
   .theme-skeleton-text {
     animation: none;
   }
+}
+
+/* Space a card's children apart. Declared after the component classes
+   that reset margins (text, heading, blockquote, container), so it wins at equal specificity. */
+.theme-card > * + * {
+  margin-top: 0.75rem;
 }
 
 /*
@@ -466,4 +590,9 @@ body {
 .theme-nav-link--selected:hover,
 .theme-nav-link[aria-current="page"]:hover {
   background-color: var(--color-sidebar-text);
+}
+
+.theme-nav-link:focus-visible {
+  outline: 2px solid var(--color-sidebar-text);
+  outline-offset: 2px;
 }

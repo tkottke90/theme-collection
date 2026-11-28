@@ -18,6 +18,19 @@ export class ThemeItem extends LitElement {
       :host {
         display: block;
       }
+      /*
+       * Every row has a rule underneath except the last. A "last" utility
+       * can't do this: each <li> is the only child of its own shadow root,
+       * so it would match every row. Ask whether the host is the last child.
+       */
+      :host(:last-child) .row {
+        border-bottom-width: 0;
+      }
+      li::marker {
+        color: var(--color-text-muted);
+        font-family: var(--font-slab);
+        font-weight: 700;
+      }
     `,
   ];
 
@@ -26,7 +39,7 @@ export class ThemeItem extends LitElement {
   render() {
     const tag = TAGS[this.as] ?? TAGS.li;
     return staticHtml`<${tag}
-      class="py-2 border-b border-border font-sans text-text last:border-b-0"
+      class="row py-2 border-b border-border font-sans text-text"
       ><slot></slot
     ></${tag}>`;
   }

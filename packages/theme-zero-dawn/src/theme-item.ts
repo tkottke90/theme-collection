@@ -19,8 +19,20 @@ export class ThemeItem extends LitElement {
       :host {
         display: block;
       }
-      :host(:last-of-type) .row {
+      :host(:last-child) .row {
         border-bottom-color: transparent;
+      }
+      /* The container's ol hides the bead and lets the native number show. */
+      /* Inline, so the native number shares the first line instead of sitting above. */
+      .content {
+        display: var(--zd-row-display, flex);
+      }
+      .bead {
+        display: var(--zd-bead-display, inline);
+      }
+      li::marker {
+        color: var(--color-text-muted);
+        font-weight: 600;
       }
     `,
   ];
@@ -29,13 +41,13 @@ export class ThemeItem extends LitElement {
 
   render() {
     const tag = TAGS[this.as] ?? TAGS.li;
-    return staticHtml`<${tag} class="row flex list-none items-baseline gap-3 border-b border-plate-500 py-2.5 text-[var(--zd-ink,var(--color-text))]">${html`<svg
+    return staticHtml`<${tag} class="row border-b border-plate-500 py-2.5 text-[var(--zd-ink,var(--color-text))]"><div class="content items-baseline gap-3">${html`<svg
       viewBox="0 0 10 10"
-      class="h-2.5 w-2.5 shrink-0 translate-y-px"
+      class="bead h-2.5 w-2.5 shrink-0 translate-y-px"
       aria-hidden="true"
     >
       <path d="M5 0 L10 5 L5 10 L0 5 Z" fill="var(--zd-accent, var(--color-wire-300))" />
-    </svg>`}<span class="min-w-0 flex-1"><slot></slot></span></${tag}>`;
+    </svg>`}<span class="min-w-0 flex-1"><slot></slot></span></div></${tag}>`;
   }
 }
 

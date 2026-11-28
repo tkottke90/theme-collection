@@ -10,6 +10,10 @@ export class ThemeLink extends LitElement {
       :host {
         display: inline;
       }
+      a:focus-visible {
+        outline: 2px solid var(--color-brand-600);
+        outline-offset: 2px;
+      }
     `,
   ];
 

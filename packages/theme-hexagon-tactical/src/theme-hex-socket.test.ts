@@ -41,4 +41,18 @@ describe("theme-hex-socket", () => {
 
     el.remove();
   });
+
+  it("forwards the host's aria-label to the inner button", async () => {
+    const el = document.createElement("theme-hex-socket") as ThemeHexSocket;
+    el.setAttribute("aria-label", "Lift, step 3");
+    document.body.appendChild(el);
+    await el.updateComplete;
+    const button = el.shadowRoot!.querySelector("button")!;
+    expect(button.getAttribute("aria-label")).toBe("Lift, step 3");
+
+    el.removeAttribute("aria-label");
+    await el.updateComplete;
+    expect(button.hasAttribute("aria-label")).toBe(false);
+    el.remove();
+  });
 });

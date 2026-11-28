@@ -26,7 +26,7 @@ export class ThemeRibbon extends LitElement {
           var(--grain),
           linear-gradient(
             180deg,
-            color-mix(in srgb, var(--ribbon-color) 90%, white),
+            var(--ribbon-color),
             color-mix(in srgb, var(--ribbon-color) 85%, black)
           );
         clip-path: polygon(0 0, 100% 0, calc(100% - 12px) 50%, 100% 100%, 0 100%, 12px 50%);

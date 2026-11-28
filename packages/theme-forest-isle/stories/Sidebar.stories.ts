@@ -2,6 +2,16 @@ import type { Meta, StoryObj } from "@storybook/html";
 
 const meta: Meta = {
   title: "Theme/Forest Isle/Sidebar",
+  parameters: {
+    intro: {
+      tag: ".theme-sidebar",
+      title: "Sidebar",
+      description: [
+        "A dark forest-green column that holds a wood-grain sign and a nav list. The sign is pure CSS: layered gradients for the grain and a mask that notches its four corners, so no images ship.",
+        'Nav links are pills. The selected link inverts to parchment on green; the others use a warm tan. Mark the current page with aria-current="page" or the --selected modifier. Keyboard focus draws a parchment outline.',
+      ],
+    },
+  },
 };
 export default meta;
 

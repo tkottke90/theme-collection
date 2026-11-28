@@ -10,7 +10,7 @@ describe("ThemeGauge", () => {
   it("sets the dashoffset on the value arc relative to value/max", () => {
     render(<ThemeGauge value={100} max={100} />);
     const circles = document.querySelectorAll("circle");
-    const valueArc = circles[1];
+    const valueArc = circles[1]!;
     expect(valueArc.getAttribute("stroke-dashoffset")).toBe("0");
   });
 

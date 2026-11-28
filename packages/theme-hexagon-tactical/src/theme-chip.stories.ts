@@ -7,6 +7,16 @@ const PLACEHOLDER_ICON = svg`<svg viewBox="0 0 24 24" aria-hidden="true"><path d
 
 const meta: Meta = {
   title: "Theme/Hexagon Tactical WC/Chip",
+  parameters: {
+    intro: {
+      tag: "theme-chip",
+      title: "Chip",
+      description: [
+        "A round game tile. Its face is a radial gradient lit from above, separated by a 4px void gap from a thin 3px outer ring, so it reads as a token seated in a bezel. Default is graphite; blue and rust are the two tile colours, each with its own brighter ring. Slot a glyph or an SVG icon, which is sized to 58% of the tile.",
+        "Charge swaps the ring for a eight-segment red gauge filled to charge (0 to 1). Wheel is a red-and-grey segmented dial with a dark hub. nub adds a small white pointer on the ring, turned by rotation in degrees, to show which way a tile faces.",
+      ],
+    },
+  },
   render: (args) => html`
     <theme-chip
       variant=${args["variant"]}

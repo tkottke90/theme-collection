@@ -4,6 +4,16 @@ import { ThemeSkeletonText } from "./ThemeSkeletonText.js";
 const meta: Meta<typeof ThemeSkeletonText> = {
   title: "Theme/Tactical React/Skeleton/Text",
   component: ThemeSkeletonText,
+  parameters: {
+    intro: {
+      tag: "ThemeSkeletonText",
+      title: "Skeleton Text",
+      description: [
+        "A loading placeholder for a line of body text: a shorter shimmering bar in the dark skeleton tones. Width is configurable.",
+        "The shimmer stops under prefers-reduced-motion.",
+      ],
+    },
+  },
 };
 export default meta;
 

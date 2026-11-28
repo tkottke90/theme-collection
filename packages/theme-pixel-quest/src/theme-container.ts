@@ -34,6 +34,20 @@ export class ThemeContainer extends LitElement {
         font-family: var(--font-sans);
         color: var(--color-text);
       }
+      /*
+       * Lists keep their markers: numbers for ol, square "pixel" bullets for
+       * ul. Each theme-item's <li> sits in its own shadow root, but list
+       * numbering and list-style inheritance follow the flat tree, so the
+       * markers come from here. theme-item styles the marker itself.
+       */
+      ol.pixel-frame__fill {
+        list-style: decimal;
+        padding-left: 2.75rem;
+      }
+      ul.pixel-frame__fill {
+        list-style: square;
+        padding-left: 2.75rem;
+      }
     `,
   ];
 

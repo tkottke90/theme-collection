@@ -1,5 +1,7 @@
-import { LitElement, css, html } from "lit";
+import { css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
+import { ifDefined } from "lit/directives/if-defined.js";
+import { FormButtonElement } from "./generated/core/form-button.js";
 import { themeStyles } from "./generated/theme-styles.js";
 import { pixelFrameStyles, pixelFrameShapes, pixelFrameShapeStyle } from "./pixel-frame.js";
 
@@ -11,7 +13,7 @@ const BADGE_SHAPE = pixelFrameShapes(1, 2, 3, 6);
 const FRAME_SHAPE = pixelFrameShapes(1, 2, 0, 6);
 
 @customElement("theme-button")
-export class ThemeButton extends LitElement {
+export class ThemeButton extends FormButtonElement {
   static styles = [
     themeStyles,
     pixelFrameStyles,
@@ -26,6 +28,10 @@ export class ThemeButton extends LitElement {
         cursor: pointer;
         font-family: var(--font-slab);
         font-weight: 700;
+      }
+      button:focus-visible {
+        outline: 2px solid var(--color-brand-600);
+        outline-offset: 2px;
       }
       button:disabled {
         cursor: not-allowed;
@@ -46,9 +52,19 @@ export class ThemeButton extends LitElement {
         background-color: transparent;
         color: var(--color-brand-600);
       }
+      /*
+       * Disabled: parchment fill and muted ink (5.6:1, readable), with the
+       * frame faded so it reads as inactive. Applies to every variant.
+       */
       .pixel-frame.badge:disabled .pixel-frame__fill {
         background-color: var(--color-neutral-100);
-        color: var(--color-neutral-500);
+      }
+      button.pixel-frame:disabled .pixel-frame__fill {
+        color: var(--color-text-muted);
+      }
+      button:disabled::before,
+      button:disabled::after {
+        opacity: 0.35;
       }
       button:not(:disabled):hover .pixel-frame__fill {
         filter: brightness(1.08);
@@ -58,14 +74,18 @@ export class ThemeButton extends LitElement {
 
   @property({ type: String }) label = "Click me";
   @property({ type: String, reflect: true }) variant: "primary" | "secondary" | "ghost" = "primary";
-  @property({ type: Boolean, reflect: true }) disabled = false;
 
   render() {
     const isBadge = this.variant === "primary";
     const frameClass = `pixel-frame ${isBadge ? "badge" : ""} ${this.variant}`;
     const shapeStyleValue = pixelFrameShapeStyle(isBadge ? BADGE_SHAPE : FRAME_SHAPE);
 
-    return html`<button ?disabled=${this.disabled} class=${frameClass} style=${shapeStyleValue}>
+    return html`<button
+      aria-label=${ifDefined(this.accessibleName)}
+      ?disabled=${this.isDisabled}
+      class=${frameClass}
+      style=${shapeStyleValue}
+    >
       <span class="pixel-frame__fill"><slot>${this.label}</slot></span>
     </button>`;
   }

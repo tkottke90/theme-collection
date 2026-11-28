@@ -1,0 +1,15 @@
+{
+  "name": "@tkottke90/theme-wc-core",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Internal, unpublished base classes shared by every @tkottke90/theme-* Web Component package. Copied into each consumer's src/generated/core/ at build time; never a runtime dependency.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "lit": "^3.2.0"
+  }
+}

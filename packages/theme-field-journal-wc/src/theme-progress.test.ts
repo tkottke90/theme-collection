@@ -42,3 +42,16 @@ describe("theme-progress", () => {
     el.remove();
   });
 });
+
+describe("theme-progress accessible name", () => {
+  it("names the progressbar from its label", async () => {
+    const el = document.createElement("theme-progress") as ThemeProgress;
+    el.label = "Overall progress";
+    document.body.appendChild(el);
+    await el.updateComplete;
+    expect(el.shadowRoot?.querySelector('[role="progressbar"]')?.getAttribute("aria-label")).toBe(
+      "Overall progress",
+    );
+    el.remove();
+  });
+});

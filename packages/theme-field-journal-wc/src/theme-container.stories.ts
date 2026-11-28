@@ -5,6 +5,16 @@ import "./theme-item.js";
 
 const meta: Meta = {
   title: "Theme/Field Journal WC/Container",
+  parameters: {
+    intro: {
+      tag: "theme-container",
+      title: "Container",
+      description: [
+        "A grainy cream panel with a tan border that renders as a div, ul or ol through its as property, so a list keeps its native semantics.",
+        "Pair it with theme-item for list children.",
+      ],
+    },
+  },
   render: (args) => html`
     <theme-container as=${args["as"]}>
       <theme-item as=${args["as"] === "div" ? "div" : "li"}>First item</theme-item>

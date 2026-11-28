@@ -18,7 +18,15 @@ points at it and adds agent-specific guardrails.
   from here via `scripts/compile-theme.mjs`, never hand-copied into the
   package. See `CONTRIBUTING.md`'s "`themes/` vs `packages/`" and
   `docs/adr/` for why.
-- `scripts/` — shared build helpers (`esbuild-base.mjs`, `compile-theme.mjs`).
+- `shared/` — internal code packages share, never published.
+  `shared/wc-core` (a private workspace) holds the Web Component form and
+  field base classes; WC packages get a build-time copy in
+  `src/generated/core/`, never an import (`docs/adr/0002-shared-wc-core.md`).
+  Change behaviour there, not in a package's generated copy.
+  `shared/storybook` holds the story-intro decorators.
+- `scripts/` — shared build helpers (`esbuild-base.mjs`, `compile-theme.mjs`,
+  `wc-core.mjs`, `generate-tokens-css.mjs`, `screenshot.mjs`,
+  `check-package-standard.mjs`).
   Package-level `scripts/build.mjs` files should stay thin wrappers around them.
 - Root `tsconfig.base.json`, `eslint.config.mjs`, `.prettierrc.json`,
   `jest.config.base.cjs` — the single source of truth for TS/lint/format/test
@@ -35,6 +43,11 @@ points at it and adds agent-specific guardrails.
 3. Every package keeps the `build`, `test`, `lint`, `storybook`, and
    `build-storybook` npm scripts — the Eleventy site and CI both assume they
    exist.
+4. Every package meets `CONTRIBUTING.md`'s "Package standard" (README and
+   AGENTS.md from the starter templates, an intro on every story, a demo
+   story, form-ready controls). `npm run lint` enforces most of it. Don't
+   add a package to `PENDING` in `scripts/check-package-standard.mjs` to get
+   past it; that list only shrinks.
 
 ## Before considering a change done
 
@@ -42,6 +55,7 @@ Run from the repo root (or scope with `-w <package>` for a single package):
 
 ```
 npm run lint
+npm run typecheck
 npm run format:check
 npm run test --workspaces --if-present
 npm run build --workspaces --if-present
@@ -49,12 +63,13 @@ npm run build-storybook -w <package-name>   # for any package you touched
 ```
 
 A change isn't finished if any of these fail. These are also the exact
-checks CI enforces (`Test`, `Lint`, `Style`, `Build Site`).
+checks CI enforces (`Test`, `Lint` (which also runs `typecheck`), `Style`,
+`Build Site`).
 
 ## Guardrails
 
 - Don't commit build output (`dist/`, `storybook-static/`, `_site/`,
-  `packages/theme-starter-wc/src/generated/`) — all gitignored on purpose.
+  `packages/*/src/generated/`) — all gitignored on purpose.
 - Don't hand-copy token values into a WC/React package's own source (a
   `tokens.ts`, an inline hex, a duplicated custom property). Styling is
   compiled from `themes/<name>/theme.css` via `scripts/compile-theme.mjs` —
@@ -63,11 +78,15 @@ checks CI enforces (`Test`, `Lint`, `Style`, `Build Site`).
   dependency that duplicates something already in `scripts/esbuild-base.mjs`,
   `tsconfig.base.json`, `eslint.config.mjs`, or `jest.config.base.cjs` —
   extend the shared config instead.
-- Don't add an npm-publish workflow or `NPM_TOKEN` usage — publishing to the
-  `@tkottke90` scope is an intentionally deferred follow-up (tracked as a
-  GitHub issue), not something to wire up opportunistically.
-- Don't fill in the S3 upload step in `.github/workflows/site-deploy.yml` —
-  it's a deliberate TODO stub until the user connects the bucket/credentials
-  themselves. Don't add deploy credentials or secrets on your own initiative.
 - Don't weaken or remove the `Test`/`Lint`/`Style`/`Build Site` CI jobs to
   get a PR green — fix the underlying failure instead.
+
+## Releasing
+
+Releases are tag-driven and automated; use the `release` skill
+(`.claude/skills/release`) rather than tagging by hand. Pushing `vX.Y.Z`
+runs `.github/workflows/release.yml`, which verifies the version, builds,
+creates the GitHub Release with one tarball per package, publishes to the
+private registry, and deploys the site. All packages share one version,
+bumped together on every release. Don't change `packages/*` versions by hand
+or push release tags outside that flow. See `CONTRIBUTING.md`'s "Releasing".

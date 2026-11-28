@@ -5,7 +5,7 @@ tribe" look: light, faceted armour plates sitting on dark machine cores,
 thin cyan seams, amber wiring, and hand-painted tribal glyphs. Nearly every
 surface is drawn in SVG.
 
-![Component gallery for @tkottke90/theme-zero-dawn](./docs/screenshot.png)
+![Demo page for @tkottke90/theme-zero-dawn](./docs/screenshot.png)
 
 ## Usage
 
@@ -104,7 +104,9 @@ Each control passes its accessible name to the native element inside it, so
 screen readers announce the label: from `aria-label` on the element, or from
 its `<label>`. `theme-field` names the control it wraps with its own label
 (unless the control already has a name) and focuses it when the label is
-clicked.
+clicked. Wrapping radios, it labels their group instead: put the radios in an
+element (a `<div>`) and the field names that element as a `radiogroup`, so
+each radio keeps its own label.
 
 ```html
 <form>

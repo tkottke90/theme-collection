@@ -4,6 +4,16 @@ import "./theme-blockquote.js";
 
 const meta: Meta = {
   title: "Theme/Starter WC/Blockquote",
+  parameters: {
+    intro: {
+      tag: "theme-blockquote",
+      title: "Blockquote",
+      description: [
+        "A callout for asides, warnings and quotes. Each of the ten types gets its own status colour as a left border and a 10% tint of that colour behind the text, so the type reads at a glance without an icon.",
+        "Copying this starter? Describe how your theme marks each callout type (colour, icon, border, shape) and what keeps the text readable on the tinted surface.",
+      ],
+    },
+  },
   render: (args) =>
     html`<theme-blockquote type=${args["type"]}>${args["content"]}</theme-blockquote>`,
   args: { content: "A blockquote styled with theme tokens." },

@@ -7,6 +7,16 @@ const UPLOAD_ICON = svg`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12
 
 const meta: Meta = {
   title: "Theme/Hexagon Tactical WC/Toolbar Button",
+  parameters: {
+    intro: {
+      tag: "theme-toolbar-button",
+      title: "Toolbar Button",
+      description: [
+        "A square 56px key with Button's gradient face, void border and hard ledge, sized for an icon or a single glyph. Graphite is the default. Steel is a light brushed face with dark ink, for the tool you want found first. Danger is a dark red face with red ink.",
+        "Toggle adds a dark folded corner at the bottom right and lights lime while pressed, exposing aria-pressed. label is the button's accessible name; icon-only buttons need it.",
+      ],
+    },
+  },
   render: (args) => html`
     <theme-toolbar-button
       material=${args["material"]}

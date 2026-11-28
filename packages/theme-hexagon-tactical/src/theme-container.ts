@@ -25,6 +25,19 @@ export class ThemeContainer extends LitElement {
         margin: 0;
         list-style: none;
       }
+      /*
+       * Lists keep their markers: numbers for ol, square bullets for ul. Each
+       * theme-item's <li> sits in its own shadow root, but list numbering and
+       * list-style inheritance follow the flat tree, so the markers come from here.
+       */
+      ol.panel {
+        list-style: decimal;
+        padding-left: calc(var(--cut) * 0.5 + 14px + 1.75rem);
+      }
+      ul.panel {
+        list-style: square;
+        padding-left: calc(var(--cut) * 0.5 + 14px + 1.75rem);
+      }
     `,
   ];
 

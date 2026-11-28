@@ -4,6 +4,16 @@ import "./theme-heading.js";
 
 const meta: Meta = {
   title: "Theme/Starter WC/Heading",
+  parameters: {
+    intro: {
+      tag: "theme-heading",
+      title: "Heading",
+      description: [
+        "Headings at four levels on a fixed type scale, from 4xl bold down to xl semibold, in the theme's sans face and neutral-900 ink. Each level renders the matching h1 to h4.",
+        "Copying this starter? Describe your theme's display type: the face, the scale, and any ornament on the higher levels.",
+      ],
+    },
+  },
   render: (args) =>
     html`<theme-heading level=${args["level"]}>Heading level ${args["level"]}</theme-heading>`,
   args: { level: 1 },

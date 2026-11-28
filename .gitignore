@@ -16,3 +16,4 @@ packages/theme-zero-dawn/src/generated/
 .env
 .env.*
 !.env.example
+.tsconfig.typecheck.json

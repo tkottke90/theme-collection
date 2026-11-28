@@ -5,6 +5,16 @@ import { ThemeItem } from "./ThemeItem.js";
 const meta: Meta<typeof ThemeContainer> = {
   title: "Theme/Starter React/Container",
   component: ThemeContainer,
+  parameters: {
+    intro: {
+      tag: "ThemeContainer",
+      title: "Container",
+      description: [
+        "A grouping surface that renders as a div, ul or ol, usually holding ThemeItem rows. The starter draws it as a quiet neutral panel so the items inside carry the detail.",
+        "When copying the starter, explain how the container differs from a card in your theme and how list semantics (bullets, numbers) are drawn.",
+      ],
+    },
+  },
 };
 export default meta;
 

@@ -1,9 +1,16 @@
-import { LitElement, css, html } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { css, html } from "lit";
+import { customElement } from "lit/decorators.js";
+import { FieldElement } from "./generated/core/field.js";
 import { themeStyles } from "./generated/theme-styles.js";
 
+/**
+ * A semibold, muted label stacked over the control slotted into it.
+ *
+ * Linking the label to its control (accessible name, click-to-focus) comes
+ * from the shared `FieldElement` base; see its docs.
+ */
 @customElement("theme-field")
-export class ThemeField extends LitElement {
+export class ThemeField extends FieldElement {
   static styles = [
     themeStyles,
     css`
@@ -13,14 +20,13 @@ export class ThemeField extends LitElement {
     `,
   ];
 
-  @property({ type: String }) label = "";
-  @property({ type: String }) for = "";
-
   render() {
     return html`
       <div class="field font-sans flex flex-col gap-1.5">
-        <label for=${this.for} class="font-semibold text-text-muted">${this.label}</label>
-        <slot></slot>
+        <label @click=${this.onLabelClick} class="font-semibold text-text-muted"
+          >${this.label}</label
+        >
+        <slot @slotchange=${this.link}></slot>
       </div>
     `;
   }

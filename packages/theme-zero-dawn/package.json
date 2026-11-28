@@ -21,13 +21,13 @@
   ],
   "scripts": {
     "build": "node scripts/build.mjs",
-    "generate-theme-styles": "node scripts/generate-theme-styles.mjs",
-    "pretest": "npm run generate-theme-styles",
+    "generate": "node scripts/generate.mjs",
+    "pretest": "npm run generate",
     "test": "jest",
     "lint": "eslint .",
-    "prestorybook": "npm run generate-theme-styles",
+    "prestorybook": "npm run generate",
     "storybook": "storybook dev -p 6006",
-    "prebuild-storybook": "npm run generate-theme-styles",
+    "prebuild-storybook": "npm run generate",
     "build-storybook": "storybook build",
     "screenshot": "node ../../scripts/screenshot.mjs"
   },

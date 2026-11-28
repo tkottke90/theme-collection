@@ -23,6 +23,17 @@ export class ThemeContainer extends LitElement {
         position: relative;
         isolation: isolate;
       }
+      /*
+       * An ol shows numbers instead of the diamond bead: list-style inherits
+       * through the flat tree into each theme-item's <li>, and the inherited
+       * custom property tells the item to hide its bead. ul keeps the beads.
+       */
+      ol.list {
+        list-style: decimal;
+        padding-left: 3rem;
+        --zd-bead-display: none;
+        --zd-row-display: inline;
+      }
     `,
   ];
 
@@ -32,7 +43,7 @@ export class ThemeContainer extends LitElement {
 
   render() {
     const tag = TAGS[this.as] ?? TAGS.div;
-    return html`${renderPlateFrame(this.frame.geometry, "steel")}${staticHtml`<${tag} class="relative m-0 list-none px-6 py-5 font-serif text-text ${PLATE_INK_CLASSES.steel}"><slot></slot></${tag}>`}`;
+    return html`${renderPlateFrame(this.frame.geometry, "steel")}${staticHtml`<${tag} class="list relative m-0 list-none px-6 py-5 font-serif text-text ${PLATE_INK_CLASSES.steel}"><slot></slot></${tag}>`}`;
   }
 }
 

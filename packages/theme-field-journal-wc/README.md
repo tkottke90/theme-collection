@@ -9,20 +9,27 @@ notes) on top of the repo's baseline component set. Warm and muted
 throughout — no glossy or neon colors, no thick cartoon outlines; texture
 comes from hairline rules, warm shadows and SVG-filter grain.
 
-![Component gallery for @tkottke90/theme-field-journal-wc](./docs/screenshot.png)
+![Demo page for @tkottke90/theme-field-journal-wc](./docs/screenshot.png)
+
+> The screenshot is generated: run `npm run screenshot` after
+> `npm run build-storybook`. The `Demo` story comes first, then each
+> component's intro and its stories.
 
 ## Demo
 
-`demo/index.html` is a full, interactive page built from every component in
-the package — a six-section book (Quests, Places, People, Creatures, Notes,
-Collection) with real tab switching, not just isolated Storybook stories.
-It imports the actual `dist/` build, the same way a real consumer would:
+The **Demo** story (`Theme/Field Journal WC/Demo` in Storybook) is a full,
+interactive page built from the package's components: a six-section book
+(Quests, Places, People, Creatures, Notes, Collection) with real tab
+switching, and a working form on the first tab that submits and resets. It
+replaces the old `demo/index.html`, so there's one demo to keep up to date
+and it appears in Storybook and the screenshot.
 
 ```
-npm run build
-npx http-server .   # or any static server — ES modules need http(s), not file://
-# open http://localhost:8080/demo/index.html
+npm run storybook
 ```
+
+The screenshot shows the first tab; click through the others in Storybook to
+see the rest of the set.
 
 ## Usage
 
@@ -83,14 +90,33 @@ Georgia/serif/cursive, just without the period look.
 ```
 
 `lit` is a peer dependency so every theme package in this repo shares a
-single copy of it. See Storybook for every component (baseline set plus the
-field-journal signature components below) and its stories.
+single copy of it.
 
-### Signature components
+To style your own elements with the theme's colours and fonts, load the design
+tokens on your page:
 
-Beyond the repo's baseline set (Button, Input/Textarea/Select, Card,
-Heading/Text, Link, Container/Item, Field, Detail, Blockquote, Skeleton),
-this theme adds the book itself:
+```js
+import "@tkottke90/theme-field-journal-wc/tokens.css";
+```
+
+**For AI agents and anyone extending the theme:** [`AGENTS.md`](./AGENTS.md)
+(shipped with the package) has the style guide and usage for vanilla and
+Preact projects.
+
+The components are designed to sit on the green table (`--color-bg`). See
+Storybook for every component and its stories.
+
+## Components
+
+`theme-button`, `theme-input`, `theme-textarea`, `theme-select`,
+`theme-card`, `theme-heading`, `theme-text`, `theme-link`, `theme-container`,
+`theme-item`, `theme-field`, `theme-detail`, `theme-blockquote` (10 types),
+`theme-skeleton-heading`, and `theme-skeleton-text`, plus the signature
+components below.
+
+### Extras
+
+Beyond the baseline set, this theme adds the book itself:
 
 | Component            | What it is                                                                                                            |
 | -------------------- | --------------------------------------------------------------------------------------------------------------------- |
@@ -119,6 +145,44 @@ all take the same `color` enum — `"red" | "blue" | "tan" | "green" |
 Notes/Collection in the reference). Give each section one color and use it
 everywhere that section appears.
 
+### Forms
+
+`theme-input`, `theme-select` and `theme-textarea` are form-associated custom
+elements: inside a `<form>` they submit under their `name`, reset with the
+form, follow `<fieldset disabled>`, and fire `change` from the host. They're
+labelable, so both `<label for="id">` and a wrapping `<label>` work, including
+toggling a checkbox or radio by clicking the label text. Radios with the same
+`name` form a group.
+
+Each control passes its accessible name to the native element inside it, so
+screen readers announce the label: from `aria-label` on the element, or from
+its `<label>`. `theme-field` names the control it wraps with its own label
+(unless the control already has a name) and focuses it when the label is
+clicked. Wrapping radios, it labels their group instead: put the radios in an
+element (a `<div>`) and the field names that element as a `radiogroup`, so
+each radio keeps its own label.
+
+```html
+<form>
+  <theme-field label="Email">
+    <theme-input name="email" type="email"></theme-input>
+  </theme-field>
+  <label><theme-input type="checkbox" name="news" value="yes"></theme-input> Newsletter</label>
+  <theme-select name="plan" aria-label="Plan"
+    ><option>Starter</option>
+    <option>Team</option></theme-select
+  >
+</form>
+```
+
+**Migrating:** the form controls no longer read an `accessible-label`
+attribute; use `aria-label` instead. `theme-button` likewise: use `aria-label`
+instead of `accessible-label`, and `type="submit"` / `type="reset"` to submit or
+reset its form.
+
+This behaviour comes from the shared `FormControlElement` and `FieldElement`
+base classes (see `docs/adr/0002-shared-wc-core.md`).
+
 ## Where Tailwind stops
 
 Component styling in this repo is normally authored with Tailwind utility
@@ -142,28 +206,34 @@ glow filter. Duplicating these tiny, static filters per instance is cheap.
 
 ## Accessibility
 
-The style guide this theme was built from flagged several contrast
-failures for light text on three of its six category colors (tan, orange,
-green), plus green status text on a cream card. This theme fixes those by
-darkening those three colors specifically for use behind light text or as
-status text (`--tan-dark`, `--orange-dark`, `--green-dark` in
-`themes/field-journal/theme.css`) — every component that needs one of
-those colors reaches for the darkened version automatically (see
-`journal-categories.ts`), so consumers never pick the wrong variant. These
-are estimated darkenings, not measured to the same rigor as the style
-guide's own numbers — re-verify with a contrast checker before relying on
-them for a production UI.
+Contrast was measured from the resolved tokens, on the surface each ink sits
+on (see Rule 10 in [`AGENTS.md`](./AGENTS.md) for the full table). Body text
+(9.8:1 on a card), links, the primary button and placeholders all meet AA.
 
-Known gaps carried over from the style guide, not yet addressed here:
+Tab and ribbon labels (4.5–5.5:1, blue is the tightest) and blockquote labels
+(4.6–5.6:1) all meet AA.
 
+**Known gaps, not claimed as AA:**
+
+- Disabled buttons measure 3.9:1. Disabled controls are exempt from WCAG's
+  contrast rule and are visibly different from enabled ones.
 - No Windows High Contrast fallback (`@media (forced-colors: active)`).
 - `theme-journal-book`'s tabs are plain `<button>`s with `aria-current`,
   not a full ARIA tab pattern (`role="tablist"`, arrow-key navigation).
 
+Every control is announced with its label (checked in a Chromium
+accessibility snapshot), and `theme-progress` is named from its `label`.
+
 ## Local development
 
 ```
-npm run build        # esbuild -> dist/{index.mjs,index.cjs,index.d.ts}
-npm test             # jest + jsdom
-npm run storybook    # preview components
+npm run generate         # src/generated/: compiled theme styles + shared WC base classes
+npm run build            # esbuild -> dist/{index.mjs,index.cjs,*.d.ts,tokens.css}
+npm test                 # jest + jsdom
+npm run storybook        # preview components
+npm run build-storybook  # static Storybook, used by the screenshot
+npm run screenshot       # regenerate docs/screenshot.png
 ```
+
+Tokens live in `themes/field-journal/theme.css`; component styles are
+compiled from them, never hand-copied.

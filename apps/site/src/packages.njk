@@ -1,0 +1,18 @@
+---
+layout: base.njk
+title: Themes
+permalink: /packages/
+---
+
+<h1>Themes</h1>
+<ul>
+  {% for pkg in packages %}
+    <li>
+      <h2>{{ pkg.name }} <small>v{{ pkg.version }}</small></h2>
+      <p>{{ pkg.description }}</p>
+      <a href="{{ ('/packages/' + pkg.dirName + '/') | url }}">Install &amp; download →</a>
+      ·
+      <a href="{{ ('/storybooks/' + pkg.dirName + '/') | url }}">View Storybook →</a>
+    </li>
+  {% endfor %}
+</ul>

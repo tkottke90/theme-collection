@@ -18,6 +18,14 @@ export class ThemeItem extends LitElement {
       :host {
         display: block;
       }
+      /* Tailwind's last: can't see siblings from inside the shadow root, so the host decides. */
+      :host(:last-child) > * {
+        border-bottom-width: 0;
+      }
+      li::marker {
+        color: var(--color-text-muted);
+        font-family: var(--font-head);
+      }
     `,
   ];
 
@@ -25,7 +33,7 @@ export class ThemeItem extends LitElement {
 
   render() {
     const tag = TAGS[this.as] ?? TAGS.li;
-    return staticHtml`<${tag} class="py-2 border-b border-border text-text last:border-b-0"><slot></slot></${tag}>`;
+    return staticHtml`<${tag} class="py-2 border-b border-border text-text"><slot></slot></${tag}>`;
   }
 }
 

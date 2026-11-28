@@ -4,6 +4,16 @@ import { ThemeStat } from "./ThemeStat.js";
 const meta: Meta<typeof ThemeStat> = {
   title: "Theme/Tactical React/Stat",
   component: ThemeStat,
+  parameters: {
+    intro: {
+      tag: "ThemeStat",
+      title: "Stat",
+      description: [
+        "A large numeric readout in the same HUD frame as the card: a tracked muted label above a monospace cyan value with an optional unit.",
+        "Readouts use the monospace face; everything else is sans.",
+      ],
+    },
+  },
   args: {
     label: "System Status",
     value: "1565",

@@ -136,13 +136,10 @@ export class ThemeJournalBook extends LitElement {
         cursor: pointer;
         background:
           var(--grain),
-          linear-gradient(
-            180deg,
-            color-mix(in srgb, var(--tab-color) 88%, white),
-            color-mix(in srgb, var(--tab-color) 80%, black)
-          );
+          linear-gradient(180deg, var(--tab-color), color-mix(in srgb, var(--tab-color) 80%, black));
         box-shadow:
           inset 0 0 0 1px rgba(0, 0, 0, 0.35),
+          inset 0 2px 0 rgba(255, 255, 255, 0.16),
           0 3px 6px rgba(0, 0, 0, 0.45);
         transition: transform 0.15s ease;
       }

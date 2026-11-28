@@ -24,6 +24,10 @@ export class ThemeDetail extends LitElement {
         font-family: var(--font-sans);
         color: var(--color-text);
       }
+      summary:focus-visible {
+        outline: 2px solid var(--color-brand-600);
+        outline-offset: 2px;
+      }
       summary {
         font-family: var(--font-slab);
         font-weight: 700;

@@ -19,6 +19,7 @@ export function ThemeProgress({ label, value = 0, max = 100 }: ThemeProgressProp
       ) : null}
       <div
         role="progressbar"
+        aria-label={label || "progress"}
         aria-valuenow={value}
         aria-valuemin={0}
         aria-valuemax={max}

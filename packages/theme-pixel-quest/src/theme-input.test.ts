@@ -25,3 +25,37 @@ describe("theme-input", () => {
     el.remove();
   });
 });
+
+describe("theme-input radio grouping", () => {
+  it("unchecks same-named radios when one is chosen", async () => {
+    const a = document.createElement("theme-input") as ThemeInput;
+    const b = document.createElement("theme-input") as ThemeInput;
+    for (const el of [a, b]) {
+      el.type = "radio";
+      el.name = "plan";
+      document.body.appendChild(el);
+    }
+    b.checked = true;
+    await Promise.all([a.updateComplete, b.updateComplete]);
+
+    a.shadowRoot?.querySelector("input")?.click();
+    await Promise.all([a.updateComplete, b.updateComplete]);
+
+    expect(a.checked).toBe(true);
+    expect(b.checked).toBe(false);
+
+    a.remove();
+    b.remove();
+  });
+
+  it("renders no placeholder attribute when none is set", async () => {
+    const el = document.createElement("theme-input") as ThemeInput;
+    document.body.appendChild(el);
+    await el.updateComplete;
+    expect(el.shadowRoot?.querySelector("input")?.hasAttribute("placeholder")).toBe(false);
+    el.placeholder = "Name";
+    await el.updateComplete;
+    expect(el.shadowRoot?.querySelector("input")?.getAttribute("placeholder")).toBe("Name");
+    el.remove();
+  });
+});

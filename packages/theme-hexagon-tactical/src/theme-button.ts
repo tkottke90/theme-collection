@@ -1,5 +1,7 @@
-import { LitElement, css, html } from "lit";
+import { css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
+import { ifDefined } from "lit/directives/if-defined.js";
+import { FormButtonElement } from "./generated/core/form-button.js";
 import { themeStyles } from "./generated/theme-styles.js";
 
 const VARIANT_CLASSES: Record<"primary" | "secondary" | "ghost", string> = {
@@ -9,7 +11,7 @@ const VARIANT_CLASSES: Record<"primary" | "secondary" | "ghost", string> = {
 };
 
 @customElement("theme-button")
-export class ThemeButton extends LitElement {
+export class ThemeButton extends FormButtonElement {
   static styles = [
     themeStyles,
     css`
@@ -94,10 +96,13 @@ export class ThemeButton extends LitElement {
 
   @property({ type: String }) label = "Click me";
   @property({ type: String, reflect: true }) variant: "primary" | "secondary" | "ghost" = "primary";
-  @property({ type: Boolean, reflect: true }) disabled = false;
 
   render() {
-    return html`<button ?disabled=${this.disabled} class="btn ${VARIANT_CLASSES[this.variant]}">
+    return html`<button
+      aria-label=${ifDefined(this.accessibleName)}
+      ?disabled=${this.isDisabled}
+      class="btn ${VARIANT_CLASSES[this.variant]}"
+    >
       <slot>${this.label}</slot>
     </button>`;
   }
