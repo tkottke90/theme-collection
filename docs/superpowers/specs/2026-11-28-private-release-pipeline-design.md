@@ -18,7 +18,7 @@ local half (checks, version bump, changelog, tag, push).
 
 - One tag `vX.Y.Z` produces: a GitHub Release with one tarball per package,
   every package published to the private registry, and the static site
-  deployed to S3.
+  deployed to DigitalOcean Spaces (S3-compatible object storage).
 - Every package shares one version, bumped on every release even if the
   package did not change (owner's decision: simpler to manage).
 - The site has a dedicated page per package with both install methods, the
@@ -32,8 +32,8 @@ local half (checks, version bump, changelog, tag, push).
 - Independent per-package versioning or "only release what changed".
 - Rolling back a public release automatically (recovery is fix-forward with
   the next patch version).
-- Building the S3 bucket, IAM, or private registry. The owner configures
-  S3; the registry already exists.
+- Creating the Spaces bucket, its keys, or the private registry. The owner
+  configures Spaces; the registry already exists.
 
 ## Anti-goals
 
@@ -53,7 +53,7 @@ local half (checks, version bump, changelog, tag, push).
 - Eleventy site is generated from `packages/*/package.json` at build time
   (`apps/site/src/_data/packages.js`); Storybook output is copied in by
   `apps/site/scripts/collect-storybooks.mjs`.
-- S3 secrets/bucket are provided by the owner later. The workflow step must
+- Spaces secrets/variables are provided by the owner later. The workflow step must
   be real but may be untestable until then.
 
 ## Approaches considered
@@ -99,7 +99,10 @@ previous:
    was attached to the release). Each package is checked with `npm view`
    first and skipped if that version already exists, so a failed job can be
    re-run safely (Verdaccio rejects republishing a version). Skipped for dry-run tags.
-5. **deploy-site** — sync `_site` to S3 using owner-supplied secrets/vars.
+5. **deploy-site** — upload `_site` to DigitalOcean Spaces with
+   `BetaHuhn/do-spaces-action@v2` (the owner's existing pattern: `source:
+   apps/site/_site`, `out_dir: themes`), using the secrets/vars below. The
+   action is pinned to a commit SHA, since it handles deploy credentials.
    Skipped for dry-run tags.
 
 Dry-run tags run steps 1 and 2 for real and skip 3–5, mirroring the attached
@@ -111,9 +114,21 @@ from tags. `site-build.yml` (PR build check) stays.
 ### Secrets and variables (named here, set by owner)
 
 - `NPM_TOKEN` — publish-scoped token for the private registry (Verdaccio).
-- AWS: `AWS_ROLE_ARN` (OIDC role) or key pair, `AWS_REGION`, and a
-  repository variable `S3_BUCKET`. Exact auth mechanism is the owner's call;
-  the workflow is written against OIDC role-assumption by default.
+- Spaces, reusing the owner's existing names: secrets
+  `DIGITAL_OCEAN_STORAGE_ID` and `DIGITAL_OCEAN_STORAGE_KEY`; variables
+  `DIGITAL_OCEAN_SPACES_NAME` and `DIGITAL_OCEAN_SPACES_REGION`.
+
+### Site is served from a `/themes/` prefix
+
+`out_dir: themes` puts the site at `<host>/themes/`. The templates use
+root-absolute links (`/themes/`, `/storybooks/<pkg>/`), which would break.
+Eleventy gets a `pathPrefix: "/themes/"` and the templates use the `url`
+filter. The current `/themes/` listing page becomes the site's package list
+at `<host>/themes/themes/` unless the builder renames its permalink, which is
+left to them. Local dev (`serve`) uses the same prefix.
+
+The action uploads but may not delete files removed from the site; stale
+files are an accepted limitation unless the builder finds a cheap fix.
 
 ### Site changes
 
@@ -164,7 +179,7 @@ do not roll back.
 ### Docs and guardrail updates
 
 - `AGENTS.md`: remove the "no npm-publish workflow / `NPM_TOKEN`" and "don't
-  fill in the S3 upload step" guardrails; add a short "Releasing" pointer to
+  fill in the S3 upload step" guardrails (the deploy target is now Spaces); add a short "Releasing" pointer to
   the skill and the tag-driven flow.
 - `CONTRIBUTING.md`: replace "published" language where needed with the
   private-registry + release-tarball distribution model; document the
@@ -198,7 +213,8 @@ do not roll back.
 - Changelog travels to CI in the annotated tag message.
 - Tarballs published to the registry are the same `.tgz` files attached to the
   release.
-- OIDC role-assumption as the default AWS auth.
+- Site deploy uses the owner's `BetaHuhn/do-spaces-action@v2` pattern with
+  the action pinned to a SHA.
 
 ## Left to the builder
 
