@@ -6,6 +6,16 @@ import "./theme-text.js";
 
 const meta: Meta = {
   title: "Theme/Futuristic Industrial/Blockquote",
+  parameters: {
+    intro: {
+      tag: "theme-blockquote",
+      title: "Blockquote",
+      description: [
+        "Ten callout types. Eight keep a light tint of their status colour, a 4px rule down the left and the label in the status colour.",
+        "Warning and danger use the reference sheet's CAUTION and BIOHAZARD tags instead: a solid plate (caution yellow or deep red), an ink outline separated from it by a hairline of the page, and the label in its own strip. Text and links slotted inside switch to colours that pass AA on each plate.",
+      ],
+    },
+  },
   render: (args) =>
     html`<theme-blockquote type=${args["type"]}>${args["content"]}</theme-blockquote>`,
   args: { content: "A blockquote styled with theme tokens." },

@@ -4,6 +4,16 @@ import "./theme-stripe-band.js";
 
 const meta: Meta = {
   title: "Theme/Futuristic Industrial/Stripe Band",
+  parameters: {
+    intro: {
+      tag: "theme-stripe-band",
+      title: "Stripe Band",
+      description: [
+        "A band for a footer or the end of a section, from the sheet's bottom-right corner: a solid orange block that breaks into evenly spaced stripes, inside a thin ink outline with a slanted end.",
+        "Stripe width, spacing and lean are measured from the source. solid sets how much of the band is solid block.",
+      ],
+    },
+  },
   render: () => html`<theme-stripe-band></theme-stripe-band>`,
 };
 export default meta;

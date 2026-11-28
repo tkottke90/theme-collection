@@ -6,6 +6,16 @@ import "./theme-text.js";
 
 const meta: Meta = {
   title: "Theme/Futuristic Industrial/Tile",
+  parameters: {
+    intro: {
+      tag: "theme-tile",
+      title: "Tile",
+      description: [
+        "A dark tile for an icon, a short status or a number, from the sheet's rounded tile with light stripes cut into its bottom-right corner, parallel to the corner's diagonal. plain drops the stripes.",
+        "Slotted text switches to light colours, and the content centres when tiles in a row stretch to the same height.",
+      ],
+    },
+  },
   render: () => html`
     <div style="display:flex;gap:16px;flex-wrap:wrap">
       <theme-tile>

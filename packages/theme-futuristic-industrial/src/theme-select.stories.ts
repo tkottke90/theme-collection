@@ -4,6 +4,16 @@ import "./theme-select.js";
 
 const meta: Meta = {
   title: "Theme/Futuristic Industrial/Select",
+  parameters: {
+    intro: {
+      tag: "theme-select",
+      title: "Select",
+      description: [
+        "A native select inside a form control, styled to match Input.",
+        "The options you write inside it are copied into the inner select, because Chromium doesn't render options passed into a shadow root.",
+      ],
+    },
+  },
   render: () => html`
     <theme-select>
       <option value="one">One</option>

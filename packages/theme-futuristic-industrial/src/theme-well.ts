@@ -38,7 +38,7 @@ export class ThemeWell extends LitElement {
           <path d=${g?.innerD ?? ""} fill="none" stroke="var(--color-fg)" stroke-width="1" />
         `}
       </svg>
-      <div class="relative flex items-center gap-2 p-3"><slot></slot></div>
+      <div class="relative flex flex-wrap items-center gap-2 p-3"><slot></slot></div>
     `;
   }
 }

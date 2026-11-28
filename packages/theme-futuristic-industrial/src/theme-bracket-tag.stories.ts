@@ -5,6 +5,16 @@ import "./theme-casing.js";
 
 const meta: Meta = {
   title: "Theme/Futuristic Industrial/Bracket Tag",
+  parameters: {
+    intro: {
+      tag: "theme-bracket-tag",
+      title: "Bracket Tag",
+      description: [
+        "An inline code or ID label. square wraps the text in square brackets like the sheet's “[MT-22467R]”; flared sets it between a rule above and below that bend out at the ends, like “MOD:X5C”.",
+        "The text is bold, uppercase monospace. The lines use the current text colour, so the tag reads on light and dark surfaces alike.",
+      ],
+    },
+  },
   render: () => html`<theme-bracket-tag>MT-22467R</theme-bracket-tag>`,
 };
 export default meta;

@@ -92,7 +92,7 @@ export class ThemeSelect extends FormControlElement {
     return html`<select
       ?disabled=${this.isDisabled}
       aria-label=${ifDefined(this.accessibleName)}
-      class="rounded-theme border border-neutral-300 px-3 py-2 [font:inherit] text-neutral-900 bg-neutral-50 focus:outline focus:outline-2 focus:outline-brand-500 focus:outline-offset-1"
+      class="w-full rounded-theme border border-neutral-300 px-3 py-2 [font:inherit] text-neutral-900 bg-neutral-50 focus:outline focus:outline-2 focus:outline-brand-500 focus:outline-offset-1"
       @change=${this.onChange}
     >
       ${this.options.map(

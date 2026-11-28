@@ -5,6 +5,16 @@ import "./theme-item.js";
 
 const meta: Meta = {
   title: "Theme/Futuristic Industrial/Hazard Container",
+  parameters: {
+    intro: {
+      tag: "theme-hazard-container",
+      title: "Hazard Container",
+      description: [
+        "A container framed in the sheet's hazard tape: an orange band with charcoal stripes inset from both edges, cut at the top-right and bottom-left like the bar's ends. The stripes are one continuous pattern, so they turn the corners instead of restarting on each edge.",
+        'variant="light" is the quieter tape from the sheet\'s right edge: darker orange stripes and edges on a light band, for areas that need marking but not alarm.',
+      ],
+    },
+  },
   render: () => html`
     <theme-hazard-container>
       Restricted zone. Authorised personnel only beyond this point.

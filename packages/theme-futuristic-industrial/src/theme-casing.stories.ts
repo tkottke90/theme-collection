@@ -8,6 +8,16 @@ import "./theme-card.js";
 
 const meta: Meta = {
   title: "Theme/Futuristic Industrial/Casing",
+  parameters: {
+    intro: {
+      tag: "theme-casing",
+      title: "Casing",
+      description: [
+        "The theme's dark surface, from the sheet's mechanical-arm body: a charcoal panel with rounded corners, a thin inset rule, a rivet in each corner and a strip of hazard tape set into the bottom edge.",
+        "Text, headings, links, list items and field labels slotted inside switch to light, contrast-checked colours. Light panels placed inside it, such as a Card or Detail, keep their own dark-on-light text.",
+      ],
+    },
+  },
   render: () => html`
     <theme-casing heading="Reactor control">
       <theme-text>Core output holding at 92% of rated load.</theme-text>

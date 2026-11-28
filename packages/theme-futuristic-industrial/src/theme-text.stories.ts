@@ -4,6 +4,16 @@ import "./theme-text.js";
 
 const meta: Meta = {
   title: "Theme/Futuristic Industrial/Text",
+  parameters: {
+    intro: {
+      tag: "theme-text",
+      title: "Text",
+      description: [
+        "Body and caption text in the theme's monospace face. Body is the ink colour (9.5:1 on the page); caption is the muted grey (4.77:1).",
+        "Both switch to light colours on a dark surface.",
+      ],
+    },
+  },
   render: (args) => html`<theme-text variant=${args["variant"]}>${args["content"]}</theme-text>`,
   args: { content: "Body copy styled with theme tokens." },
 };

@@ -17,6 +17,13 @@ export class ThemeField extends FieldElement {
       :host {
         display: block;
       }
+      /* A field's text control spans the field, so it never overflows a narrow panel. */
+      ::slotted(theme-input:not([type="checkbox"]):not([type="radio"])),
+      ::slotted(theme-select),
+      ::slotted(theme-textarea) {
+        display: block;
+        width: 100%;
+      }
     `,
   ];
 

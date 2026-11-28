@@ -51,7 +51,7 @@ export class ThemeButton extends FormButtonElement {
     return html`<button
       aria-label=${ifDefined(this.accessibleName)}
       ?disabled=${this.isDisabled}
-      class="px-4 py-2 cursor-pointer text-sm font-semibold tracking-wide uppercase [font:inherit] disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-neutral-100 disabled:text-neutral-500 disabled:border-neutral-100 ${VARIANT_CLASSES[this.variant]}"
+      class="px-4 py-2 cursor-pointer whitespace-nowrap text-sm font-semibold tracking-wide uppercase [font:inherit] disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-neutral-100 disabled:text-neutral-500 disabled:border-neutral-100 ${VARIANT_CLASSES[this.variant]}"
     >
       <slot>${this.label}</slot>
     </button>`;

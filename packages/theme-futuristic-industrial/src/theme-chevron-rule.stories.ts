@@ -4,6 +4,16 @@ import "./theme-chevron-rule.js";
 
 const meta: Meta = {
   title: "Theme/Futuristic Industrial/Chevron Rule",
+  parameters: {
+    intro: {
+      tag: "theme-chevron-rule",
+      title: "Chevron Rule",
+      description: [
+        "A directional divider: a row of chunky chevrons, with proportions measured from the uncropped chevron stack in the middle of the sheet.",
+        "It points right, left, down or up, and only ever shows whole chevrons, centred along its length. Assistive technology treats it as a separator.",
+      ],
+    },
+  },
   render: () => html`<theme-chevron-rule></theme-chevron-rule>`,
 };
 export default meta;

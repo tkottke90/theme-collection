@@ -4,6 +4,16 @@ import "./theme-input.js";
 
 const meta: Meta = {
   title: "Theme/Futuristic Industrial/Input",
+  parameters: {
+    intro: {
+      tag: "theme-input",
+      title: "Input",
+      description: [
+        "A native input inside a form control: it submits under its name, resets with its form and follows <fieldset disabled>.",
+        "Square-cornered, with a grey edge, the page's light fill and an orange focus ring. Checkboxes and radios use the brand orange as their accent colour.",
+      ],
+    },
+  },
   render: (args) =>
     html`<theme-input type=${args["type"]} placeholder=${args["placeholder"]}></theme-input>`,
   args: { placeholder: "" },

@@ -7,7 +7,7 @@ import { themeStyles } from "./generated/theme-styles.js";
 export type ThemeInputType = "text" | "email" | "password" | "number" | "checkbox" | "radio";
 
 const TEXT_CLASSES =
-  "rounded-theme border border-neutral-300 bg-neutral-50 px-3 py-2 [font:inherit] text-neutral-900 focus:outline focus:outline-2 focus:outline-brand-500 focus:outline-offset-1";
+  "w-full rounded-theme border border-neutral-300 bg-neutral-50 px-3 py-2 [font:inherit] text-neutral-900 focus:outline focus:outline-2 focus:outline-brand-500 focus:outline-offset-1";
 const BOX_CLASSES = "accent-brand-500";
 
 /**

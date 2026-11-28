@@ -6,6 +6,16 @@ import "./theme-text.js";
 
 const meta: Meta = {
   title: "Theme/Futuristic Industrial/Registration Frame",
+  parameters: {
+    intro: {
+      tag: "theme-registration-frame",
+      title: "Registration Frame",
+      description: [
+        "A light frame for media or a “target” panel, from the sheet's crosshair square: chamfered corner brackets, a gap at the middle of each edge, and a pair of registration ticks closing off each gap.",
+        "The gaps are sized from the shorter side so all four match. The source's thick centre cross is left out because it would cover the content.",
+      ],
+    },
+  },
   render: () => html`
     <theme-registration-frame>
       <theme-heading level="4">Target lock</theme-heading>

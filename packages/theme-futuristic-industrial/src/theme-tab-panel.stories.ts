@@ -5,6 +5,16 @@ import "./theme-text.js";
 
 const meta: Meta = {
   title: "Theme/Futuristic Industrial/Tab Panel",
+  parameters: {
+    intro: {
+      tag: "theme-tab-panel",
+      title: "Tab Panel",
+      description: [
+        "A thin-ruled panel whose heading sits in a raised tab, from the sheet's large outlined panel. The tab joins the body through a 45° shoulder, the top-right corner is cut, and the bottom edge has a step.",
+        "The tab is sized to the rendered heading, so it fits any label.",
+      ],
+    },
+  },
   render: (args) => html`
     <theme-tab-panel heading=${args["heading"]}>
       <theme-text
