@@ -1,5 +1,5 @@
 import { buildPackage } from "../../../scripts/esbuild-base.mjs";
-import { generateThemeStyles } from "./generate-theme-styles.mjs";
+import { generate } from "./generate.mjs";
 
-generateThemeStyles();
+generate();
 await buildPackage({ entryPoints: ["src/index.ts"], external: ["lit"] });
