@@ -1,0 +1,77 @@
+@theme static {
+  /* Light hazard-tag background + charcoal "stencil ink" — both sampled
+     directly from the reference sheet. */
+  --color-neutral-50: #eff2f7;
+  --color-neutral-100: #dde1e8;
+  --color-neutral-300: #aab0ba;
+  --color-neutral-500: #676b72;
+  --color-neutral-900: #3d3e41;
+
+  /* Edge of form controls: 3.31:1 against the field fill and the page, the
+     3:1 a control's boundary needs (neutral-300 is only 1.94:1). */
+  --color-border-strong: #80858d;
+
+  /* Text roles. Each reads an optional --theme-* override first, so a dark
+     surface (theme-casing) can switch slotted text to light values; light
+     surfaces reset the overrides back to these defaults. */
+  --color-fg: var(--theme-fg, var(--color-neutral-900));
+  --color-fg-muted: var(--theme-fg-muted, var(--color-neutral-500));
+  --color-link: var(--theme-link, var(--color-brand-700));
+  --color-link-hover: var(--theme-link-hover, var(--color-brand-900));
+
+  /* Brand orange sampled directly from the sheet's stripe/accent fills.
+     600/700 are the same hue darkened (never re-hued) so brand text/links
+     clear 4.5:1 on the light background — the sampled 500 only clears 3:1,
+     fine for fills and bordered icons but not for body-sized text. */
+  --color-brand-50: #fdf1df;
+  --color-brand-500: #ed9528;
+  --color-brand-600: #c77510;
+  --color-brand-700: #98590c;
+  --color-brand-900: #4a2c08;
+
+  /* Caution-tag yellow sampled directly from the CAUTION/BIOHAZARD badges.
+     It's the warning Blockquote's plate, with ink text on it (6.86:1). */
+  --color-caution-500: #f6cb13;
+
+  /* Semantic set, estimated to fit the same hazard-tag family while each
+     clearing 4.5:1 on the background. Warning has no token of its own: it is
+     the caution plate above. */
+  --color-info-500: #1d6fb8;
+  --color-tip-500: #0a6e61;
+  --color-question-500: #6b3fa0;
+  --color-success-500: #1f7a3d;
+  --color-failure-500: #b23a2e;
+  --color-danger-500: #8c1f1f;
+  --color-bug-500: #a02463;
+  --color-example-500: #3a4a9f;
+  --color-quote-500: #5b5f66;
+
+  --color-skeleton-base: #dde1e8;
+  --color-skeleton-highlight: #f4f6f9;
+
+  /* Mono-sized display font, as requested, with system monospace fallbacks
+     since this repo doesn't load webfonts for any theme (see other themes'
+     theme.css files — Chakra Petch, EB Garamond etc. are named without a
+     font loader and fall back the same way). */
+  --font-sans:
+    "JetBrains Mono", "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas,
+    "Liberation Mono", monospace;
+  --font-mono:
+    "JetBrains Mono", "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas,
+    "Liberation Mono", monospace;
+
+  /* The sheet's corners are square or chamfered, never rounded — radius-theme
+     only shows up on small controls (inputs, buttons' non-clipped corners). */
+  --radius-theme: 0.125rem;
+  --radius-theme-sm: 0.0625rem;
+
+  --shadow-plate: 0 2px 6px rgb(61 62 65 / 0.18);
+
+  /* Rung-1 hazard-stripe utility (bg-hazard) for small accents that don't
+     need a resizable SVG frame — e.g. Item's left edge. */
+  --background-image-hazard: repeating-linear-gradient(
+    45deg,
+    var(--color-brand-500) 0 6px,
+    var(--color-neutral-900) 6px 12px
+  );
+}

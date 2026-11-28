@@ -1,0 +1,46 @@
+{
+  "name": "@tkottke90/theme-futuristic-industrial",
+  "version": "0.1.0",
+  "description": "Light, stencilled industrial/hazard-tape Web Component theme (Lit) with a mono display font, orange/charcoal caution-tag palette, and resizable SVG panel frames (chamfered corners, rivets, hazard-stripe accent) on Card, Container, and a bonus ID-plate readout component.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./tokens.css": "./dist/tokens.css"
+  },
+  "files": [
+    "dist",
+    "AGENTS.md"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "generate": "node scripts/generate.mjs",
+    "pretest": "npm run generate",
+    "test": "jest",
+    "lint": "eslint .",
+    "prestorybook": "npm run generate",
+    "storybook": "storybook dev -p 6006",
+    "prebuild-storybook": "npm run generate",
+    "build-storybook": "storybook build",
+    "screenshot": "node ../../scripts/screenshot.mjs"
+  },
+  "peerDependencies": {
+    "lit": "^3.2.0"
+  },
+  "devDependencies": {
+    "@storybook/addon-essentials": "^8.4.0",
+    "@storybook/web-components": "^8.4.0",
+    "@storybook/web-components-vite": "^8.4.0",
+    "@tailwindcss/cli": "^4.0.0",
+    "lit": "^3.2.0",
+    "storybook": "^8.4.0",
+    "tailwindcss": "^4.0.0"
+  }
+}
