@@ -78,11 +78,15 @@ checks CI enforces (`Test`, `Lint` (which also runs `typecheck`), `Style`,
   dependency that duplicates something already in `scripts/esbuild-base.mjs`,
   `tsconfig.base.json`, `eslint.config.mjs`, or `jest.config.base.cjs` —
   extend the shared config instead.
-- Don't add an npm-publish workflow or `NPM_TOKEN` usage — publishing to the
-  `@tkottke90` scope is an intentionally deferred follow-up (tracked as a
-  GitHub issue), not something to wire up opportunistically.
-- Don't fill in the S3 upload step in `.github/workflows/site-deploy.yml` —
-  it's a deliberate TODO stub until the user connects the bucket/credentials
-  themselves. Don't add deploy credentials or secrets on your own initiative.
 - Don't weaken or remove the `Test`/`Lint`/`Style`/`Build Site` CI jobs to
   get a PR green — fix the underlying failure instead.
+
+## Releasing
+
+Releases are tag-driven and automated; use the `release` skill
+(`.claude/skills/release`) rather than tagging by hand. Pushing `vX.Y.Z`
+runs `.github/workflows/release.yml`, which verifies the version, builds,
+creates the GitHub Release with one tarball per package, publishes to the
+private registry, and deploys the site. All packages share one version,
+bumped together on every release. Don't change `packages/*` versions by hand
+or push release tags outside that flow. See `CONTRIBUTING.md`'s "Releasing".

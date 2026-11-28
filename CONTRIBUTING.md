@@ -1,13 +1,13 @@
 # Contributing
 
-This repo is an npm-workspaces monorepo. Every theme is published as its own
-package under the `@tkottke90/theme-*` scope, and shares the same root
-tooling (TypeScript, ESLint, Prettier, Jest, esbuild).
+This repo is an npm-workspaces monorepo. Every theme is its own package under
+the `@tkottke90/theme-*` scope (distributed privately, never on public npm; see
+"Releasing"), and shares the same root tooling (TypeScript, ESLint, Prettier, Jest, esbuild).
 
 ## Repo layout
 
 ```
-packages/      every published theme package (@tkottke90/theme-*)
+packages/      every released theme package (@tkottke90/theme-*)
 themes/        shared design tokens per theme (themes/<name>/theme.css) —
                not an npm workspace, not published on its own; see below
 shared/        internal code shared by packages, never published:
@@ -225,3 +225,34 @@ files.
 
 These are the same checks CI runs (`Test`, `Lint` (which also runs
 `typecheck`), `Style`, `Build Site`).
+
+## Releasing
+
+Packages are not published to public npm. Each release is distributed two
+ways: from the private registry `npm.artifacts.tdkottke.com`, and as one
+`.tgz` per package attached to the GitHub Release. All packages share one
+version (the tag's), and every package is bumped on every release, changed or
+not.
+
+Cut a release with the `release` skill (`.claude/skills/release/SKILL.md`),
+which runs `bin/release.sh`: checks the tree is clean and on `main`, runs the
+full build guard, bumps every `packages/*` version and the root, drafts a
+changelog, and (after a confirmation) pushes the `vX.Y.Z` tag. `shared/wc-core`
+and `apps/site` are not bumped or published.
+
+Pushing the tag runs `.github/workflows/release.yml`:
+`verify` (tag matches every package version) -> `build` -> `release` (GitHub
+Release + tarballs) -> `publish-npm` (private registry, skipping versions that
+already exist) -> `deploy-site` (DigitalOcean Spaces, under `/themes/`).
+A tag like `vX.Y.Z-dry-run-<timestamp>` runs `verify` and `build` only.
+
+Repository secrets and variables the workflow needs:
+
+| Name                                                       | Kind     | Used for                 |
+| ---------------------------------------------------------- | -------- | ------------------------ |
+| `NPM_TOKEN`                                                | secret   | publish to the registry  |
+| `DIGITAL_OCEAN_STORAGE_ID`, `DIGITAL_OCEAN_STORAGE_KEY`    | secret   | Spaces upload            |
+| `DIGITAL_OCEAN_SPACES_NAME`, `DIGITAL_OCEAN_SPACES_REGION` | variable | Spaces bucket and region |
+
+Installing a released package needs a registry token; each package page on the
+site shows the `.npmrc` setup and the tarball download link.
