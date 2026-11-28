@@ -9,10 +9,10 @@ const meta: Meta = {
   title: "Theme/Futuristic Industrial/Well",
   render: () => html`
     <theme-well>
-      <theme-button variant="ghost" label="▲" accessible-label="Lift up"></theme-button>
+      <theme-button variant="ghost" label="▲" aria-label="Lift up"></theme-button>
     </theme-well>
     <theme-well>
-      <theme-button variant="ghost" label="▼" accessible-label="Lift down"></theme-button>
+      <theme-button variant="ghost" label="▼" aria-label="Lift down"></theme-button>
     </theme-well>
   `,
 };
@@ -35,10 +35,10 @@ export const OnDark: Story = {
   render: () => html`
     <theme-casing>
       <theme-well>
-        <theme-button variant="ghost" label="▲" accessible-label="Lift up"></theme-button>
+        <theme-button variant="ghost" label="▲" aria-label="Lift up"></theme-button>
       </theme-well>
       <theme-well>
-        <theme-button variant="ghost" label="▼" accessible-label="Lift down"></theme-button>
+        <theme-button variant="ghost" label="▼" aria-label="Lift down"></theme-button>
       </theme-well>
     </theme-casing>
   `,

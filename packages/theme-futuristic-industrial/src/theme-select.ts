@@ -1,6 +1,7 @@
-import { LitElement, css, html } from "lit";
+import { css, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
+import { FormControlElement } from "./generated/core/form-control.js";
 import { themeStyles } from "./generated/theme-styles.js";
 
 interface OptionData {
@@ -11,34 +12,33 @@ interface OptionData {
 }
 
 /**
- * A styled native `<select>` built from light-DOM `<option>` children.
+ * A styled native `<select>` built from light-DOM `<option>` children, in a
+ * form-associated host (see `FormControlElement`).
  *
  * The options are mirrored into the shadow `<select>` rather than slotted:
  * Chromium doesn't render `<option>`s slotted into a shadow-root `<select>`,
- * which left the control empty. A MutationObserver keeps the mirror in sync
- * when options are added, removed or edited.
+ * which leaves the control empty. A MutationObserver keeps the mirror in
+ * sync when options are added, removed or edited.
  */
 @customElement("theme-select")
-export class ThemeSelect extends LitElement {
-  /** Focusing the element focuses the inner control (used by `theme-field`'s label). */
-  static shadowRootOptions = { ...LitElement.shadowRootOptions, delegatesFocus: true };
-
+export class ThemeSelect extends FormControlElement {
   static styles = [
     themeStyles,
     css`
       :host {
         display: inline-block;
+        font-family: var(--font-sans);
+      }
+      :host([disabled]),
+      :host([data-disabled]) {
+        opacity: 0.5;
+        pointer-events: none;
       }
     `,
   ];
 
   /** The selected option's value. Defaults to the `selected` option, else the first. */
   @property({ type: String }) value = "";
-  /**
-   * Accessible name, forwarded to the inner control. `theme-field` sets this
-   * from its label, since a label outside this shadow root can't reach it.
-   */
-  @property({ type: String, attribute: "accessible-label" }) accessibleLabel?: string;
 
   @state() private options: OptionData[] = [];
 
@@ -64,7 +64,7 @@ export class ThemeSelect extends LitElement {
   private readOptions(): void {
     this.options = [...this.querySelectorAll("option")].map((o) => ({
       value: o.value,
-      label: o.textContent ?? "",
+      label: o.textContent?.trim() ?? "",
       selected: o.hasAttribute("selected"),
       disabled: o.disabled,
     }));
@@ -75,12 +75,23 @@ export class ThemeSelect extends LitElement {
 
   private onChange(e: Event): void {
     this.value = (e.target as HTMLSelectElement).value;
-    this.dispatchEvent(new Event("change", { bubbles: true, composed: true }));
+    this.emitChange();
+  }
+
+  protected formValue(): string {
+    return this.value;
+  }
+
+  /** Back to the option marked `selected` in markup, or the first one. */
+  protected restoreDefault(): void {
+    this.value = "";
+    this.readOptions();
   }
 
   render() {
     return html`<select
-      aria-label=${ifDefined(this.accessibleLabel)}
+      ?disabled=${this.isDisabled}
+      aria-label=${ifDefined(this.accessibleName)}
       class="rounded-theme border border-neutral-300 px-3 py-2 [font:inherit] text-neutral-900 bg-neutral-50 focus:outline focus:outline-2 focus:outline-brand-500 focus:outline-offset-1"
       @change=${this.onChange}
     >

@@ -1,6 +1,7 @@
-import { LitElement, css, html } from "lit";
+import { css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
+import { FormButtonElement } from "./generated/core/form-button.js";
 import { themeStyles } from "./generated/theme-styles.js";
 
 const VARIANT_CLASSES: Record<"primary" | "secondary" | "ghost", string> = {
@@ -11,8 +12,13 @@ const VARIANT_CLASSES: Record<"primary" | "secondary" | "ghost", string> = {
     "rounded-theme bg-transparent text-link hover:bg-[color-mix(in_srgb,currentColor_10%,transparent)]",
 };
 
+/**
+ * A form-associated button (see `FormButtonElement`): `type="submit"` or
+ * `"reset"` acts on its form, it follows `<fieldset disabled>`, and it is
+ * named by the host's `aria-label`.
+ */
 @customElement("theme-button")
-export class ThemeButton extends LitElement {
+export class ThemeButton extends FormButtonElement {
   static styles = [
     themeStyles,
     css`
@@ -40,17 +46,11 @@ export class ThemeButton extends LitElement {
 
   @property({ type: String }) label = "Click me";
   @property({ type: String, reflect: true }) variant: "primary" | "secondary" | "ghost" = "primary";
-  @property({ type: Boolean, reflect: true }) disabled = false;
-  /**
-   * Accessible name for an icon-only button. Forwarded to the inner
-   * `<button>`: an `aria-label` left on the host would never reach it.
-   */
-  @property({ type: String, attribute: "accessible-label" }) accessibleLabel?: string;
 
   render() {
     return html`<button
-      ?disabled=${this.disabled}
-      aria-label=${ifDefined(this.accessibleLabel)}
+      aria-label=${ifDefined(this.accessibleName)}
+      ?disabled=${this.isDisabled}
       class="px-4 py-2 cursor-pointer text-sm font-semibold tracking-wide uppercase [font:inherit] disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-neutral-100 disabled:text-neutral-500 disabled:border-neutral-100 ${VARIANT_CLASSES[this.variant]}"
     >
       <slot>${this.label}</slot>
